@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="MuaGioVe"
+run/main_scene="uid://uu2p00jlyk5q"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
