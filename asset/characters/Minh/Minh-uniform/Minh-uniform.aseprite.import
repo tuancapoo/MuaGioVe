@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://dmhglbhicso02"
+path="res://.godot/imported/Minh-uniform.aseprite-2c89c8c79b0b15a677391ee78394997c.res"
+
+[deps]
+
+source_file="res://asset/characters/Minh/Minh-uniform/Minh-uniform.aseprite"
+dest_files=["res://.godot/imported/Minh-uniform.aseprite-2c89c8c79b0b15a677391ee78394997c.res"]
+
+[params]
+

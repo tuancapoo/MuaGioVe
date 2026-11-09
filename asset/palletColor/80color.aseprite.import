@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://dmy0er86lgljs"
+path="res://.godot/imported/80color.aseprite-f2279187dd922c0adfc6010ad407491d.res"
+
+[deps]
+
+source_file="res://asset/palletColor/80color.aseprite"
+dest_files=["res://.godot/imported/80color.aseprite-f2279187dd922c0adfc6010ad407491d.res"]
+
+[params]
+
