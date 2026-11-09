@@ -1,5 +1,9 @@
 # Mùa Gió Về
 
+## Yêu cầu
+
+Xem [REQUIREMENTS.md](REQUIREMENTS.md) để biết các yêu cầu chạy dự án.
+
 ## 1. Giới thiệu
 
 **Mùa Gió Về** là game 2D tập trung vào khám phá thế giới, tương tác với NPC, thực hiện nhiệm vụ (Quest) và tham gia các hoạt động nhỏ (Minigame).
