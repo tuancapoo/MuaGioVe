@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://cu2lslx68um6s"
+path="res://.godot/imported/yard_01_all.ase_layer_tex-d060382eb1f2b8337c7ad522b03eb464.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/yard/yard_01_all.ase_layer_tex"
+dest_files=["res://.godot/imported/yard_01_all.ase_layer_tex-d060382eb1f2b8337c7ad522b03eb464.res"]
+
+[params]
+

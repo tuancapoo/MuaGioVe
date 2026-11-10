@@ -1,0 +1,133 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_01_Bau_troi.ase_layer_tex" id="L00"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_02_May.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_03_Nui_xa.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_04_Canh_dong_xa.ase_layer_tex" id="L03"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_05_Nha_lang_tre_chuoi.ase_layer_tex" id="L04"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_06_Nuoc_ruong.ase_layer_tex" id="L05"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_07_Lua_non.ase_layer_tex" id="L06"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_08_Bo_ngan_ruong.ase_layer_tex" id="L07"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_09_Bo_di_bo.ase_layer_tex" id="L08"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_10_Duong_di_field.ase_layer_tex" id="L09"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_11_Nuoc_muong.ase_layer_tex" id="L10"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_12_Bong_nuoc_muong.ase_layer_tex" id="L11"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_13_Co_ven_muong.ase_layer_tex" id="L12"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/ruong_sau_nha_na/ruong_sau_nha_na_90_Tien_canh_truoc_duong.ase_layer_tex" id="L13"]
+
+[sub_resource type="RectangleShape2D" id="Shape_ground"]
+size = Vector2(1040, 40)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(20, 504)
+
+[node name="RuongSauNhaNa" type="Node2D"]
+script = ExtResource("1_map")
+map_id = "ruong_sau_nha_na"
+map_name = "Ruộng sau nhà Na"
+map_size = Vector2i(960, 384)
+
+[node name="Background" type="Node2D" parent="."]
+z_index = -10
+texture_filter = 1
+
+[node name="01_Bau_troi" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.1, 1)
+repeat_size = Vector2(960, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/01_Bau_troi"]
+texture = ExtResource("L00")
+centered = false
+
+[node name="02_May" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.2, 1)
+repeat_size = Vector2(960, 0)
+repeat_times = 3
+autoscroll = Vector2(-8, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/02_May"]
+texture = ExtResource("L01")
+centered = false
+
+[node name="03_Nui_xa" type="Sprite2D" parent="Background"]
+texture = ExtResource("L02")
+centered = false
+
+[node name="04_Canh_dong_xa" type="Sprite2D" parent="Background"]
+texture = ExtResource("L03")
+centered = false
+
+[node name="05_Nha_lang_tre_chuoi" type="Sprite2D" parent="Background"]
+texture = ExtResource("L04")
+centered = false
+
+[node name="06_Nuoc_ruong" type="Sprite2D" parent="Background"]
+texture = ExtResource("L05")
+centered = false
+
+[node name="07_Lua_non" type="Sprite2D" parent="Background"]
+texture = ExtResource("L06")
+centered = false
+
+[node name="08_Bo_ngan_ruong" type="Sprite2D" parent="Background"]
+texture = ExtResource("L07")
+centered = false
+
+[node name="09_Bo_di_bo" type="Sprite2D" parent="Background"]
+texture = ExtResource("L08")
+centered = false
+
+[node name="10_Duong_di_field" type="Sprite2D" parent="Background"]
+texture = ExtResource("L09")
+centered = false
+
+[node name="11_Nuoc_muong" type="Sprite2D" parent="Background"]
+texture = ExtResource("L10")
+centered = false
+
+[node name="12_Bong_nuoc_muong" type="Sprite2D" parent="Background"]
+texture = ExtResource("L11")
+centered = false
+
+[node name="13_Co_ven_muong" type="Sprite2D" parent="Background"]
+texture = ExtResource("L12")
+centered = false
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+
+[node name="Ground" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(480.0, 334)
+shape = SubResource("Shape_ground")
+
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(-10, 192.0)
+shape = SubResource("Shape_wall")
+
+[node name="WallRight" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(970, 192.0)
+shape = SubResource("Shape_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(80, 314)
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Markers" type="Node2D" parent="."]
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="Collectibles" type="Node2D" parent="."]
+
+[node name="Exits" type="Node2D" parent="."]
+
+[node name="Foreground" type="Node2D" parent="."]
+z_index = 50
+texture_filter = 1
+
+[node name="90_Tien_canh_truoc_duong" type="Sprite2D" parent="Foreground"]
+texture = ExtResource("L13")
+centered = false

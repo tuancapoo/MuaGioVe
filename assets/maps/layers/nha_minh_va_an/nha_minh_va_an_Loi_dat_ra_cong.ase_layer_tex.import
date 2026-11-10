@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://dbefsh8crruog"
+path="res://.godot/imported/nha_minh_va_an_Loi_dat_ra_cong.ase_layer_tex-6eb128b38db91a529e21e8a98f95ac7f.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/nha_minh_va_an/nha_minh_va_an_Loi_dat_ra_cong.ase_layer_tex"
+dest_files=["res://.godot/imported/nha_minh_va_an_Loi_dat_ra_cong.ase_layer_tex-6eb128b38db91a529e21e8a98f95ac7f.res"]
+
+[params]
+

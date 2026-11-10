@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://83kx84rliqbx"]
+
+[ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="Texture2D" uid="uid://cvdkjshxjrygh" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_01_Bau_troi.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" uid="uid://cqmr0xnbexthp" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_02_May.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" uid="uid://dv4guem31jw55" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_03_Nui.ase_layer_tex" id="L03"]
+[ext_resource type="Texture2D" uid="uid://cr5qrcm5q07md" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_04_Canh_dong_xa.ase_layer_tex" id="L04"]
+[ext_resource type="Texture2D" uid="uid://c3qv1yyqkjfgn" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_04_Loi_dat_ra_cong.ase_layer_tex" id="L04_PATH"]
+[ext_resource type="Texture2D" uid="uid://d3vla5x21w5h1" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_05_Nha_lang_tre_chuoi.ase_layer_tex" id="L05"]
+[ext_resource type="Texture2D" uid="uid://bt3saaw3jv4ug" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_06_cong.ase_layer_tex" id="L06"]
+[ext_resource type="Texture2D" uid="uid://bv2jay6e133uj" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_07_Duong_di.ase_layer_tex" id="L07_PATH"]
+[ext_resource type="Texture2D" uid="uid://dlc7fj5x57r7c" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_08_Co_tien_canh.ase_layer_tex" id="L08"]
+[ext_resource type="Texture2D" uid="uid://c24xiu2jvr3bn" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_09_Cau_thang_da.ase_layer_tex" id="L09"]
+[ext_resource type="Texture2D" uid="uid://chcpfvn3wk802" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_91_Bui_cay_tien_canh.ase_layer_tex" id="L91"]
+[ext_resource type="Texture2D" uid="uid://by0houf7qqrap" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_92_Cay_tan_rong_tien_canh.ase_layer_tex" id="L92"]
+[ext_resource type="Texture2D" uid="uid://b1c6xrcbxtwqr" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_93_Cay_than_manh_tien_canh.ase_layer_tex" id="L93"]
+
+[sub_resource type="RectangleShape2D" id="Shape_ground"]
+size = Vector2(4608, 40)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(20, 500)
+
+[node name="Field" type="Node2D" unique_id=1273733710]
+script = ExtResource("1_map")
+map_name = "Làng quê"
+
+[node name="Background" type="Node2D" parent="." unique_id=1224648000]
+z_index = -10
+texture_filter = 1
+
+[node name="01_Bau_troi" type="Sprite2D" parent="Background" unique_id=287986349]
+texture = ExtResource("L01")
+centered = false
+
+[node name="02_May" type="Parallax2D" parent="Background" unique_id=1241300516]
+scroll_scale = Vector2(0.85, 1)
+repeat_size = Vector2(4608, 0)
+autoscroll = Vector2(-10, 0)
+repeat_times = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/02_May" unique_id=552933519]
+texture = ExtResource("L02")
+centered = false
+
+[node name="03_Nui" type="Parallax2D" parent="Background" unique_id=1158056687]
+scroll_scale = Vector2(0.95, 1)
+repeat_size = Vector2(4608, 0)
+repeat_times = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/03_Nui" unique_id=144536954]
+texture = ExtResource("L03")
+centered = false
+
+[node name="04_Canh_dong_xa" type="Sprite2D" parent="Background" unique_id=1983234121]
+texture = ExtResource("L04")
+centered = false
+
+[node name="04_Loi_dat_ra_cong" type="Sprite2D" parent="Background" unique_id=88913093]
+texture = ExtResource("L04_PATH")
+centered = false
+
+[node name="05_Nha_lang_tre_chuoi" type="Sprite2D" parent="Background" unique_id=27873908]
+texture = ExtResource("L05")
+centered = false
+
+[node name="06_cong" type="Sprite2D" parent="Background" unique_id=583201721]
+texture = ExtResource("L06")
+centered = false
+
+[node name="07_Duong_di" type="Sprite2D" parent="Background" unique_id=927530344]
+texture = ExtResource("L07_PATH")
+centered = false
+
+[node name="09_Cau_thang_da" type="Sprite2D" parent="Background" unique_id=867199656]
+texture = ExtResource("L09")
+centered = false
+
+[node name="Bounds" type="StaticBody2D" parent="." unique_id=1930848972]
+
+[node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=1223114364]
+position = Vector2(2303, 334)
+shape = SubResource("Shape_ground")
+
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds" unique_id=1025255316]
+position = Vector2(-10, 192)
+shape = SubResource("Shape_wall")
+
+[node name="WallRight" type="CollisionShape2D" parent="Bounds" unique_id=834562375]
+position = Vector2(4618, 192)
+shape = SubResource("Shape_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1764476794]
+position = Vector2(160, 320)
+
+[node name="NPCs" type="Node2D" parent="." unique_id=1886096165]
+
+[node name="Objects" type="Node2D" parent="." unique_id=701000574]
+
+[node name="Collectibles" type="Node2D" parent="." unique_id=803744164]
+
+[node name="Foreground" type="Node2D" parent="." unique_id=758567952]
+z_index = 50
+texture_filter = 1
+
+[node name="08_Co_tien_canh" type="Sprite2D" parent="Foreground" unique_id=597942]
+texture = ExtResource("L08")
+centered = false
+
+[node name="91_Bui_cay_tien_canh" type="Sprite2D" parent="Foreground" unique_id=1152100005]
+texture = ExtResource("L91")
+centered = false
+
+[node name="92_Cay_tan_rong_tien_canh" type="Sprite2D" parent="Foreground" unique_id=1151642592]
+texture = ExtResource("L92")
+centered = false
+
+[node name="93_Cay_than_manh_tien_canh" type="Sprite2D" parent="Foreground" unique_id=747049703]
+texture = ExtResource("L93")
+centered = false

@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://cyixlh8ct2kbh"
+path="res://.godot/imported/pho_truoc_truong_03_Building.ase_layer_tex-a70caeceb34376a8b5c02c29064f9992.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_03_Building.ase_layer_tex"
+dest_files=["res://.godot/imported/pho_truoc_truong_03_Building.ase_layer_tex-a70caeceb34376a8b5c02c29064f9992.res"]
+
+[params]
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://2anmixuav61t"
+path="res://.godot/imported/phong_minh_o_thanh_pho_Layer 1.ase_layer_tex-aa3c004c27633feab41f6c30b64933f5.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_Layer 1.ase_layer_tex"
+dest_files=["res://.godot/imported/phong_minh_o_thanh_pho_Layer 1.ase_layer_tex-aa3c004c27633feab41f6c30b64933f5.res"]
+
+[params]
+

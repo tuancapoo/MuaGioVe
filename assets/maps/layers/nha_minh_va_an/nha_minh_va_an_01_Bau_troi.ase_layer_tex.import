@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://dt6u2inbmyhoe"
+path="res://.godot/imported/nha_minh_va_an_01_Bau_troi.ase_layer_tex-0c2167822d8da88435f87b1203036e6b.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/nha_minh_va_an/nha_minh_va_an_01_Bau_troi.ase_layer_tex"
+dest_files=["res://.godot/imported/nha_minh_va_an_01_Bau_troi.ase_layer_tex-0c2167822d8da88435f87b1203036e6b.res"]
+
+[params]
+

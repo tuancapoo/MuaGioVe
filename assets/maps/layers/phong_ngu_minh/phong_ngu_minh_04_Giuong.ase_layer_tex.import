@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://dauvwkagg7wcr"
+path="res://.godot/imported/phong_ngu_minh_04_Giuong.ase_layer_tex-d395645ef63efb79cd08b993808a6246.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/phong_ngu_minh/phong_ngu_minh_04_Giuong.ase_layer_tex"
+dest_files=["res://.godot/imported/phong_ngu_minh_04_Giuong.ase_layer_tex-d395645ef63efb79cd08b993808a6246.res"]
+
+[params]
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://ddoal0qn33jjr"
+path="res://.godot/imported/phong_minh_o_thanh_pho_chair.ase_layer_tex-638a0a6255c5d090eceab0cf935e7682.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_chair.ase_layer_tex"
+dest_files=["res://.godot/imported/phong_minh_o_thanh_pho_chair.ase_layer_tex-638a0a6255c5d090eceab0cf935e7682.res"]
+
+[params]
+

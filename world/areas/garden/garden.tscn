@@ -1,18 +1,18 @@
 [gd_scene format=3 uid="uid://g11wg48wiqxw"]
 
-[ext_resource type="Script" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
 [ext_resource type="PackedScene" path="res://narrative/npc/characters/ong_noi/ong_noi.tscn" id="4_ongnoi"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_01_Bau_troi.ase_layer_tex" id="L01"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_02_May.ase_layer_tex" id="L02"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_03_Cay_hau_canh.ase_layer_tex" id="L03"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_04_Hang_rao_phia_sau.ase_layer_tex" id="L04"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_05_Dat_vuon.ase_layer_tex" id="L05"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_06_Dat_luong_rau.ase_layer_tex" id="L06"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_07_Rau_moi_nhu.ase_layer_tex" id="L07"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_08_Cay_xoai.ase_layer_tex" id="L08"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_09_Qua_xoai_vang.ase_layer_tex" id="L09"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_10_Duong_di.ase_layer_tex" id="L10"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_11_Co_tien_canh.ase_layer_tex" id="L11"]
+[ext_resource type="Texture2D" uid="uid://d0d85j5qxg5pm" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_01_Bau_troi.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" uid="uid://bufensycotq6k" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_02_May.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" uid="uid://u0kqqjodtuiv" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_03_Cay_hau_canh.ase_layer_tex" id="L03"]
+[ext_resource type="Texture2D" uid="uid://cmhx38q3g18y8" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_04_Hang_rao_phia_sau.ase_layer_tex" id="L04"]
+[ext_resource type="Texture2D" uid="uid://vrvhk36xthep" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_05_Dat_vuon.ase_layer_tex" id="L05"]
+[ext_resource type="Texture2D" uid="uid://c316uw4wp8t1j" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_06_Dat_luong_rau.ase_layer_tex" id="L06"]
+[ext_resource type="Texture2D" uid="uid://tfi24rdsut5f" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_07_Rau_moi_nhu.ase_layer_tex" id="L07"]
+[ext_resource type="Texture2D" uid="uid://dsv0lqoa670hj" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_08_Cay_xoai.ase_layer_tex" id="L08"]
+[ext_resource type="Texture2D" uid="uid://3mc2di87gxvv" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_09_Qua_xoai_vang.ase_layer_tex" id="L09"]
+[ext_resource type="Texture2D" uid="uid://7s4jwhruu0v4" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_10_Duong_di.ase_layer_tex" id="L10"]
+[ext_resource type="Texture2D" uid="uid://bqq6c7gv8f0fq" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_11_Co_tien_canh.ase_layer_tex" id="L11"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(720, 40)
@@ -34,22 +34,22 @@ texture_filter = 1
 texture = ExtResource("L01")
 centered = false
 
-[node name="02_May" type="Parallax2D" parent="Background"]
+[node name="02_May" type="Parallax2D" parent="Background" unique_id=2132642938]
 scroll_scale = Vector2(0.85, 1)
 repeat_size = Vector2(640, 0)
-repeat_times = 3
 autoscroll = Vector2(-10, 0)
+repeat_times = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/02_May"]
+[node name="Sprite2D" type="Sprite2D" parent="Background/02_May" unique_id=1263301116]
 texture = ExtResource("L02")
 centered = false
 
-[node name="03_Cay_hau_canh" type="Parallax2D" parent="Background"]
+[node name="03_Cay_hau_canh" type="Parallax2D" parent="Background" unique_id=251151962]
 scroll_scale = Vector2(0.95, 1)
 repeat_size = Vector2(640, 0)
 repeat_times = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/03_Cay_hau_canh"]
+[node name="Sprite2D" type="Sprite2D" parent="Background/03_Cay_hau_canh" unique_id=679174670]
 texture = ExtResource("L03")
 centered = false
 
@@ -111,11 +111,11 @@ position = Vector2(470, 320)
 z_index = 50
 texture_filter = 1
 
-[node name="11_Co_tien_canh" type="Parallax2D" parent="Foreground"]
+[node name="11_Co_tien_canh" type="Parallax2D" parent="Foreground" unique_id=62534075]
 scroll_scale = Vector2(1.05, 1)
 repeat_size = Vector2(640, 0)
 repeat_times = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="Foreground/11_Co_tien_canh"]
+[node name="Sprite2D" type="Sprite2D" parent="Foreground/11_Co_tien_canh" unique_id=113272337]
 texture = ExtResource("L11")
 centered = false

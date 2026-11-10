@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://dpp8ffkn4lsq1"
+path="res://.godot/imported/phong_minh_o_thanh_pho_wardorbe.ase_layer_tex-6c27c103cca717e14e3fe648ae4080b5.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_wardorbe.ase_layer_tex"
+dest_files=["res://.godot/imported/phong_minh_o_thanh_pho_wardorbe.ase_layer_tex-6c27c103cca717e14e3fe648ae4080b5.res"]
+
+[params]
+

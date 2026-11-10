@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://1facrwvw18pt" path="res://gameplay/player/player.gd" id="1_8afob"]
 [ext_resource type="PackedScene" path="res://gameplay/interaction/interaction_prompt.tscn" id="2_prompt"]
+[ext_resource type="Script" uid="uid://df4qqmqns5nuu" path="res://core/components/shadow.gd" id="3_shadow"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a80cd"]
 size = Vector2(46, 113)
@@ -184,6 +185,10 @@ radius = 48.0
 collision_layer = 2
 script = ExtResource("1_8afob")
 
+[node name="Shadow" type="Node2D" parent="." unique_id=674310772]
+position = Vector2(0, 56)
+script = ExtResource("3_shadow")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1577244150]
 position = Vector2(1, -0.5)
 shape = SubResource("RectangleShape2D_a80cd")
@@ -220,6 +225,6 @@ position = Vector2(0, 20)
 shape = SubResource("CircleShape2D_interact")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1203948573]
-zoom = Vector2(3.5, 3.5)
+zoom = Vector2(3, 3)
 
 [node name="InteractionPrompt" parent="." unique_id=1203948574 instance=ExtResource("2_prompt")]

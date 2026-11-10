@@ -1,6 +1,6 @@
 [remap]
 
-importer="aseprite_wizard.plugin.noop"
+importer="aseprite_wizard.plugin.static-texture-split"
 type="PackedDataContainer"
 uid="uid://docan17oldvmy"
 path="res://.godot/imported/bo_muong_chan_de.aseprite-060945a45283f70dd623d85c0409cd00.res"
@@ -12,3 +12,13 @@ dest_files=["res://.godot/imported/bo_muong_chan_de.aseprite-060945a45283f70dd62
 
 [params]
 
+first_frame_only=true
+layer/exclude_layers_pattern="lua:[0-9]+:"
+layer/only_visible_layers=false
+layer/merge_duplicate_layers=false
+sheet/trim_cels=false
+sheet/sheet_type="packed"
+sheet/sheet_columns=12
+sheet/frame_padding=0
+sheet/scale=1
+output/layers_resources_folder="res://assets/maps/layers/bo_muong_chan_de"

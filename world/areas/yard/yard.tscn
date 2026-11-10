@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_01_all.ase_layer_tex" id="L00"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_02_path.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_98_foreground.ase_layer_tex" id="L02"]
+
+[sub_resource type="RectangleShape2D" id="Shape_ground"]
+size = Vector2(1104, 40)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(20, 504)
+
+[node name="Yard" type="Node2D"]
+script = ExtResource("1_map")
+map_id = "yard"
+map_name = "Sân"
+map_size = Vector2i(1024, 384)
+
+[node name="Background" type="Node2D" parent="."]
+z_index = -10
+texture_filter = 1
+
+[node name="01_all" type="Sprite2D" parent="Background"]
+texture = ExtResource("L00")
+centered = false
+
+[node name="02_path" type="Sprite2D" parent="Background"]
+texture = ExtResource("L01")
+centered = false
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+
+[node name="Ground" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(512.0, 333)
+shape = SubResource("Shape_ground")
+
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(-10, 192.0)
+shape = SubResource("Shape_wall")
+
+[node name="WallRight" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(1034, 192.0)
+shape = SubResource("Shape_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(80, 313)
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Markers" type="Node2D" parent="."]
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="Collectibles" type="Node2D" parent="."]
+
+[node name="Exits" type="Node2D" parent="."]
+
+[node name="Foreground" type="Node2D" parent="."]
+z_index = 50
+texture_filter = 1
+
+[node name="98_foreground" type="Sprite2D" parent="Foreground"]
+texture = ExtResource("L02")
+centered = false

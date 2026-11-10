@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://dikn5nbfydjvl"
+path="res://.godot/imported/nha_minh_va_an_05_San_vuon_An.ase_layer_tex-cf956eb3263bf2073382e837b2f7123a.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/nha_minh_va_an/nha_minh_va_an_05_San_vuon_An.ase_layer_tex"
+dest_files=["res://.godot/imported/nha_minh_va_an_05_San_vuon_An.ase_layer_tex-cf956eb3263bf2073382e837b2f7123a.res"]
+
+[params]
+

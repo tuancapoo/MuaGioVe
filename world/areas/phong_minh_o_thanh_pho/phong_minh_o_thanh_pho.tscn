@@ -1,0 +1,113 @@
+[gd_scene format=3 uid="uid://0b1505ov1sh4"]
+
+[ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="Texture2D" uid="uid://b8ufowkewu7jl" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_Layer 2.ase_layer_tex" id="L00"]
+[ext_resource type="Texture2D" uid="uid://bid4xw5no3v0u" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_wall.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" uid="uid://c8ygri2h72r1r" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_door.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" uid="uid://2anmixuav61t" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_Layer 1.ase_layer_tex" id="L03"]
+[ext_resource type="Texture2D" uid="uid://ccpxo4xyvp5sx" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_bed.ase_layer_tex" id="L04"]
+[ext_resource type="Texture2D" uid="uid://djdkatencbmxp" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_bag.ase_layer_tex" id="L05"]
+[ext_resource type="Texture2D" uid="uid://dpp8ffkn4lsq1" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_wardorbe.ase_layer_tex" id="L06"]
+[ext_resource type="Texture2D" uid="uid://cltt1h2j1aauk" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_window.ase_layer_tex" id="L07"]
+[ext_resource type="Texture2D" uid="uid://cvh5c7w4irbpq" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_table.ase_layer_tex" id="L08"]
+[ext_resource type="Texture2D" uid="uid://bmcxagjngtddk" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_item.ase_layer_tex" id="L09"]
+[ext_resource type="Texture2D" uid="uid://ddoal0qn33jjr" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_chair.ase_layer_tex" id="L10"]
+[ext_resource type="Texture2D" uid="uid://b2yfae1guf3g0" path="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_Tien canh.ase_layer_tex" id="L11"]
+
+[sub_resource type="RectangleShape2D" id="Shape_ground"]
+size = Vector2(720, 40)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(20, 480)
+
+[node name="PhongMinhOThanhPho" type="Node2D" unique_id=380822700]
+scale = Vector2(0.75, 0.75)
+script = ExtResource("1_map")
+map_id = "phong_minh_o_thanh_pho"
+map_name = "Phòng Minh ở thành phố"
+map_size = Vector2i(480, 270)
+
+[node name="Background" type="Node2D" parent="." unique_id=1908163827]
+z_index = -10
+texture_filter = 1
+
+[node name="Layer_2" type="Sprite2D" parent="Background" unique_id=1051612902]
+texture = ExtResource("L00")
+centered = false
+
+[node name="wall" type="Sprite2D" parent="Background" unique_id=1141616325]
+texture = ExtResource("L01")
+centered = false
+
+[node name="door" type="Sprite2D" parent="Background" unique_id=1455814235]
+texture = ExtResource("L02")
+centered = false
+
+[node name="Layer_1" type="Sprite2D" parent="Background" unique_id=1083682388]
+texture = ExtResource("L03")
+centered = false
+
+[node name="bed" type="Sprite2D" parent="Background" unique_id=488437146]
+texture = ExtResource("L04")
+centered = false
+
+[node name="bag" type="Sprite2D" parent="Background" unique_id=1486241887]
+texture = ExtResource("L05")
+centered = false
+
+[node name="wardorbe" type="Sprite2D" parent="Background" unique_id=72118097]
+texture = ExtResource("L06")
+centered = false
+
+[node name="window" type="Sprite2D" parent="Background" unique_id=1950313210]
+texture = ExtResource("L07")
+centered = false
+
+[node name="table" type="Sprite2D" parent="Background" unique_id=659928589]
+texture = ExtResource("L08")
+centered = false
+
+[node name="item" type="Sprite2D" parent="Background" unique_id=1628000363]
+texture = ExtResource("L09")
+centered = false
+
+[node name="chair" type="Sprite2D" parent="Background" unique_id=767180370]
+texture = ExtResource("L10")
+centered = false
+
+[node name="Bounds" type="StaticBody2D" parent="." unique_id=59632135]
+
+[node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=262746736]
+position = Vector2(321.33334, 344)
+shape = SubResource("Shape_ground")
+
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds" unique_id=374363691]
+position = Vector2(-10, 180)
+shape = SubResource("Shape_wall")
+
+[node name="WallRight" type="CollisionShape2D" parent="Bounds" unique_id=2132564276]
+position = Vector2(612, 177.33333)
+shape = SubResource("Shape_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=861117084]
+position = Vector2(80, 330)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=869407803]
+
+[node name="Markers" type="Node2D" parent="." unique_id=1025984338]
+
+[node name="NPCs" type="Node2D" parent="." unique_id=1222499152]
+
+[node name="Objects" type="Node2D" parent="." unique_id=1736304666]
+
+[node name="Collectibles" type="Node2D" parent="." unique_id=731597169]
+
+[node name="Exits" type="Node2D" parent="." unique_id=1360910013]
+
+[node name="Foreground" type="Node2D" parent="." unique_id=1888527167]
+z_index = 50
+texture_filter = 1
+
+[node name="Tien_canh" type="Sprite2D" parent="Foreground" unique_id=816073588]
+texture = ExtResource("L11")
+centered = false

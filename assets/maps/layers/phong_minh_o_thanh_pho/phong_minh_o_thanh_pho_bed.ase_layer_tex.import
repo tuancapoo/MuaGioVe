@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://ccpxo4xyvp5sx"
+path="res://.godot/imported/phong_minh_o_thanh_pho_bed.ase_layer_tex-6d33209282ffd2bf106af8fb984a2ad5.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_bed.ase_layer_tex"
+dest_files=["res://.godot/imported/phong_minh_o_thanh_pho_bed.ase_layer_tex-6d33209282ffd2bf106af8fb984a2ad5.res"]
+
+[params]
+

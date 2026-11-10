@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://4yh53h3gce45"]
+
+[ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="Texture2D" uid="uid://b67ooi0i30fp7" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_01_Bau_troi.ase_layer_tex" id="L00"]
+[ext_resource type="Texture2D" uid="uid://dkvubv85x7ykq" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_02_May.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" uid="uid://cyixlh8ct2kbh" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_03_Building.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" uid="uid://cwnc3pq1a8lsf" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_04_Cay.ase_layer_tex" id="L03"]
+[ext_resource type="Texture2D" uid="uid://o3l6rvjtu6er" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_05_Hang_rao_va_cong.ase_layer_tex" id="L04"]
+[ext_resource type="Texture2D" uid="uid://batd4wu7sdyla" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_07_Building_tap_hoa.ase_layer_tex" id="L05"]
+[ext_resource type="Texture2D" uid="uid://cu54kcuvwg43p" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_Layer 1.ase_layer_tex" id="L06"]
+[ext_resource type="Texture2D" uid="uid://c8wt1do64die3" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_06_Mat_duong.ase_layer_tex" id="L07"]
+[ext_resource type="Texture2D" uid="uid://h0c8hhaa10nd" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_08_Cot_dien_va_day.ase_layer_tex" id="L08"]
+[ext_resource type="Texture2D" uid="uid://c00bmih4p00mh" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_09_Xe_banh_mi.ase_layer_tex" id="L09"]
+[ext_resource type="Texture2D" uid="uid://s4ume8llqyv4" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_10_Gio_banh_mi.ase_layer_tex" id="L10"]
+[ext_resource type="Texture2D" uid="uid://hlo08hbrk008" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_11_Xe_hu_tieu.ase_layer_tex" id="L11"]
+[ext_resource type="Texture2D" uid="uid://c07hcs4yy1nut" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_12_Ban_ghe_nhua_do.ase_layer_tex" id="L12"]
+[ext_resource type="Texture2D" uid="uid://cxn2j8arjkrf6" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_80_Tien_Canh_grab_bike.ase_layer_tex" id="L13"]
+[ext_resource type="Texture2D" uid="uid://jlwg8cvvjaqx" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_90_Tien_canh_bicycle.ase_layer_tex" id="L14"]
+[ext_resource type="Texture2D" uid="uid://bj85a6celkde5" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_99_Tien_canh_Ninja_Lead.ase_layer_tex" id="L15"]
+
+[sub_resource type="RectangleShape2D" id="Shape_ground"]
+size = Vector2(1998, 40)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(20, 504)
+
+[node name="PhoTruocTruong" type="Node2D" unique_id=534752622]
+script = ExtResource("1_map")
+map_id = "pho_truoc_truong"
+map_name = "Phố trước trường"
+map_size = Vector2i(1918, 384)
+
+[node name="Background" type="Node2D" parent="." unique_id=951888557]
+z_index = -10
+texture_filter = 1
+scale = Vector2(1.648069, 1.648069)
+
+[node name="01_Bau_troi" type="Parallax2D" parent="Background" unique_id=916749991]
+z_index = -2
+scroll_scale = Vector2(0.1, 1)
+repeat_size = Vector2(1164, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/01_Bau_troi" unique_id=61442653]
+texture = ExtResource("L00")
+centered = false
+
+[node name="02_May" type="Parallax2D" parent="Background" unique_id=4341949]
+z_index = -1
+repeat_size = Vector2(1918, 0)
+autoscroll = Vector2(-8, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/02_May" unique_id=1994892640]
+texture = ExtResource("L01")
+centered = false
+
+[node name="03_Building" type="Sprite2D" parent="Background" unique_id=1098799283]
+texture = ExtResource("L02")
+centered = false
+
+[node name="04_Cay" type="Sprite2D" parent="Background" unique_id=601626549]
+texture = ExtResource("L03")
+centered = false
+
+[node name="05_Hang_rao_va_cong" type="Sprite2D" parent="Background" unique_id=208224806]
+texture = ExtResource("L04")
+centered = false
+
+[node name="07_Building_tap_hoa" type="Sprite2D" parent="Background" unique_id=1655812044]
+texture = ExtResource("L05")
+centered = false
+
+[node name="Layer_1" type="Sprite2D" parent="Background" unique_id=1546843450]
+texture = ExtResource("L06")
+centered = false
+
+[node name="06_Mat_duong" type="Sprite2D" parent="Background" unique_id=1451574659]
+texture = ExtResource("L07")
+centered = false
+
+[node name="08_Cot_dien_va_day" type="Sprite2D" parent="Background" unique_id=771193077]
+texture = ExtResource("L08")
+centered = false
+
+[node name="09_Xe_banh_mi" type="Sprite2D" parent="Background" unique_id=914097362]
+texture = ExtResource("L09")
+centered = false
+
+[node name="10_Gio_banh_mi" type="Sprite2D" parent="Background" unique_id=1814592113]
+texture = ExtResource("L10")
+centered = false
+
+[node name="11_Xe_hu_tieu" type="Sprite2D" parent="Background" unique_id=1276325429]
+texture = ExtResource("L11")
+centered = false
+
+[node name="12_Ban_ghe_nhua_do" type="Sprite2D" parent="Background" unique_id=1354216050]
+texture = ExtResource("L12")
+centered = false
+
+[node name="Bounds" type="StaticBody2D" parent="." unique_id=1499411979]
+
+[node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=388216794]
+position = Vector2(952, 341)
+shape = SubResource("Shape_ground")
+
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds" unique_id=536162771]
+position = Vector2(-10, 192)
+shape = SubResource("Shape_wall")
+
+[node name="WallRight" type="CollisionShape2D" parent="Bounds" unique_id=1276338645]
+position = Vector2(1928, 192)
+shape = SubResource("Shape_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=803606517]
+position = Vector2(80, 343)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=2094610083]
+
+[node name="Markers" type="Node2D" parent="." unique_id=298696680]
+
+[node name="NPCs" type="Node2D" parent="." unique_id=245714388]
+
+[node name="Objects" type="Node2D" parent="." unique_id=315910543]
+
+[node name="Collectibles" type="Node2D" parent="." unique_id=642275352]
+
+[node name="Exits" type="Node2D" parent="." unique_id=1329652822]
+
+[node name="Foreground" type="Node2D" parent="." unique_id=186725333]
+z_index = 50
+texture_filter = 1
+scale = Vector2(1.648069, 1.648069)
+
+[node name="80_Tien_Canh_grab_bike" type="Parallax2D" parent="Foreground" unique_id=1477860811]
+repeat_size = Vector2(2328, 0)
+autoscroll = Vector2(-42, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Foreground/80_Tien_Canh_grab_bike" unique_id=293119745]
+texture = ExtResource("L13")
+centered = false
+
+[node name="90_Tien_canh_bicycle" type="Parallax2D" parent="Foreground" unique_id=81207113]
+repeat_size = Vector2(2328, 0)
+autoscroll = Vector2(-60, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Foreground/90_Tien_canh_bicycle" unique_id=856094098]
+texture = ExtResource("L14")
+centered = false
+
+[node name="99_Tien_canh_Ninja_Lead" type="Parallax2D" parent="Foreground" unique_id=1100029415]
+repeat_size = Vector2(2328, 0)
+autoscroll = Vector2(-84, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Foreground/99_Tien_canh_Ninja_Lead" unique_id=1858598722]
+texture = ExtResource("L15")
+centered = false

@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://c8ygri2h72r1r"
+path="res://.godot/imported/phong_minh_o_thanh_pho_door.ase_layer_tex-4fcb77a51ed55fc91c85ad7e88a39125.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/phong_minh_o_thanh_pho/phong_minh_o_thanh_pho_door.ase_layer_tex"
+dest_files=["res://.godot/imported/phong_minh_o_thanh_pho_door.ase_layer_tex-4fcb77a51ed55fc91c85ad7e88a39125.res"]
+
+[params]
+
