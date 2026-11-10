@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://du0nkosruuudt"]
+
+[ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="Texture2D" uid="uid://brnakkovafffn" path="res://assets/maps/layers/living_room/living_room_01_wall.ase_layer_tex" id="L00"]
+[ext_resource type="Texture2D" uid="uid://dcfm4wovaewl0" path="res://assets/maps/layers/living_room/living_room_02_ground.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" uid="uid://df43q34j1ktoa" path="res://assets/maps/layers/living_room/living_room_03_bedroom_door.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" uid="uid://dj1t1oal8in6m" path="res://assets/maps/layers/living_room/living_room_04_TV_CABINET.ase_layer_tex" id="L03"]
+[ext_resource type="Texture2D" uid="uid://cta4vo71ngke" path="res://assets/maps/layers/living_room/living_room_08_fore_gound_cabinet.ase_layer_tex" id="L04"]
+[ext_resource type="Texture2D" uid="uid://6jkcg2wyuyc" path="res://assets/maps/layers/living_room/living_room_09_foreground_char_table.ase_layer_tex" id="L05"]
+
+[sub_resource type="RectangleShape2D" id="Shape_ground"]
+size = Vector2(829, 40)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(20, 504)
+
+[node name="LivingRoom" type="Node2D" unique_id=1046088886]
+scale = Vector2(0.75, 0.75)
+script = ExtResource("1_map")
+map_id = "living_room"
+map_name = "Phòng khách"
+map_size = Vector2i(562, 288)
+
+[node name="Background" type="Node2D" parent="." unique_id=115823554]
+z_index = -10
+texture_filter = 1
+
+[node name="01_Wall" type="Sprite2D" parent="Background" unique_id=290909660]
+texture = ExtResource("L00")
+centered = false
+
+[node name="02_Ground" type="Sprite2D" parent="Background" unique_id=1463833522]
+texture = ExtResource("L01")
+centered = false
+
+[node name="03_BedroomDoor" type="Sprite2D" parent="Background" unique_id=1401595921]
+texture = ExtResource("L02")
+centered = false
+
+[node name="04_TV_Cabinet" type="Sprite2D" parent="Background" unique_id=1293575602]
+texture = ExtResource("L03")
+centered = false
+
+[node name="Bounds" type="StaticBody2D" parent="." unique_id=1395324865]
+
+[node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=1759042682]
+position = Vector2(370, 323)
+shape = SubResource("Shape_ground")
+
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds" unique_id=1854780413]
+position = Vector2(10.666668, 190.66667)
+shape = SubResource("Shape_wall")
+
+[node name="WallRight" type="CollisionShape2D" parent="Bounds" unique_id=301020738]
+position = Vector2(744, 189.33333)
+shape = SubResource("Shape_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=12434460]
+position = Vector2(80, 345)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=960253620]
+
+[node name="Markers" type="Node2D" parent="." unique_id=1049240408]
+
+[node name="NPCs" type="Node2D" parent="." unique_id=796496775]
+
+[node name="Objects" type="Node2D" parent="." unique_id=665314350]
+
+[node name="Collectibles" type="Node2D" parent="." unique_id=597905392]
+
+[node name="Exits" type="Node2D" parent="." unique_id=2072670411]
+
+[node name="Foreground" type="Node2D" parent="." unique_id=707103772]
+z_index = 50
+texture_filter = 1
+
+[node name="08_ForegroundCabinet" type="Sprite2D" parent="Foreground" unique_id=170847336]
+texture = ExtResource("L04")
+centered = false
+
+[node name="09_ForegroundCharTable" type="Sprite2D" parent="Foreground" unique_id=623596316]
+texture = ExtResource("L05")
+centered = false

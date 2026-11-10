@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://cta4vo71ngke"
+path="res://.godot/imported/living_room_08_fore_gound_cabinet.ase_layer_tex-968141e038165a75f613f88f0209fbf7.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/living_room/living_room_08_fore_gound_cabinet.ase_layer_tex"
+dest_files=["res://.godot/imported/living_room_08_fore_gound_cabinet.ase_layer_tex-968141e038165a75f613f88f0209fbf7.res"]
+
+[params]
+

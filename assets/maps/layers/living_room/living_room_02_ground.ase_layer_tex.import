@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://dcfm4wovaewl0"
+path="res://.godot/imported/living_room_02_ground.ase_layer_tex-9441ac0337f45cc4f817a3ce0399557a.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/living_room/living_room_02_ground.ase_layer_tex"
+dest_files=["res://.godot/imported/living_room_02_ground.ase_layer_tex-9441ac0337f45cc4f817a3ce0399557a.res"]
+
+[params]
+

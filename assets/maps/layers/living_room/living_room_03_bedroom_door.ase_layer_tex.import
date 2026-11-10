@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture-split-layer"
+type="PortableCompressedTexture2D"
+uid="uid://df43q34j1ktoa"
+path="res://.godot/imported/living_room_03_bedroom_door.ase_layer_tex-b85a20d38f8f9226868727c7c3a60ec7.res"
+
+[deps]
+
+source_file="res://assets/maps/layers/living_room/living_room_03_bedroom_door.ase_layer_tex"
+dest_files=["res://.godot/imported/living_room_03_bedroom_door.ase_layer_tex-b85a20d38f8f9226868727c7c3a60ec7.res"]
+
+[params]
+

@@ -1,19 +1,19 @@
 [gd_scene format=3 uid="uid://83kx84rliqbx"]
 
 [ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
-[ext_resource type="Texture2D" uid="uid://cvdkjshxjrygh" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_01_Bau_troi.ase_layer_tex" id="L01"]
-[ext_resource type="Texture2D" uid="uid://cqmr0xnbexthp" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_02_May.ase_layer_tex" id="L02"]
-[ext_resource type="Texture2D" uid="uid://dv4guem31jw55" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_03_Nui.ase_layer_tex" id="L03"]
-[ext_resource type="Texture2D" uid="uid://cr5qrcm5q07md" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_04_Canh_dong_xa.ase_layer_tex" id="L04"]
-[ext_resource type="Texture2D" uid="uid://c3qv1yyqkjfgn" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_04_Loi_dat_ra_cong.ase_layer_tex" id="L04_PATH"]
-[ext_resource type="Texture2D" uid="uid://d3vla5x21w5h1" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_05_Nha_lang_tre_chuoi.ase_layer_tex" id="L05"]
-[ext_resource type="Texture2D" uid="uid://bt3saaw3jv4ug" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_06_cong.ase_layer_tex" id="L06"]
-[ext_resource type="Texture2D" uid="uid://bv2jay6e133uj" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_07_Duong_di.ase_layer_tex" id="L07_PATH"]
-[ext_resource type="Texture2D" uid="uid://dlc7fj5x57r7c" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_08_Co_tien_canh.ase_layer_tex" id="L08"]
-[ext_resource type="Texture2D" uid="uid://c24xiu2jvr3bn" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_09_Cau_thang_da.ase_layer_tex" id="L09"]
-[ext_resource type="Texture2D" uid="uid://chcpfvn3wk802" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_91_Bui_cay_tien_canh.ase_layer_tex" id="L91"]
-[ext_resource type="Texture2D" uid="uid://by0houf7qqrap" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_92_Cay_tan_rong_tien_canh.ase_layer_tex" id="L92"]
-[ext_resource type="Texture2D" uid="uid://b1c6xrcbxtwqr" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_93_Cay_than_manh_tien_canh.ase_layer_tex" id="L93"]
+[ext_resource type="Texture2D" uid="uid://bwwvai2pe4dc7" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_01_Bau_troi.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" uid="uid://bonnmhs54c8et" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_02_May.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" uid="uid://cdipewu5rhulj" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_03_Nui.ase_layer_tex" id="L03"]
+[ext_resource type="Texture2D" uid="uid://dhcfi312apvdd" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_04_Canh_dong_xa.ase_layer_tex" id="L04"]
+[ext_resource type="Texture2D" uid="uid://dwlkbeudd6mlp" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_04_Loi_dat_ra_cong.ase_layer_tex" id="L04_PATH"]
+[ext_resource type="Texture2D" uid="uid://c1frswnvucwdq" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_05_Nha_lang_tre_chuoi.ase_layer_tex" id="L05"]
+[ext_resource type="Texture2D" uid="uid://burl5xjdkxgrk" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_06_cong.ase_layer_tex" id="L06"]
+[ext_resource type="Texture2D" uid="uid://3qwnriaqodum" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_07_Duong_di.ase_layer_tex" id="L07_PATH"]
+[ext_resource type="Texture2D" uid="uid://dhavjcr47p0jd" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_08_Co_tien_canh.ase_layer_tex" id="L08"]
+[ext_resource type="Texture2D" uid="uid://bvfqfw0riayxv" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_09_Cau_thang_da.ase_layer_tex" id="L09"]
+[ext_resource type="Texture2D" uid="uid://6qktwtsqn2jp" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_91_Bui_cay_tien_canh.ase_layer_tex" id="L91"]
+[ext_resource type="Texture2D" uid="uid://km4dvw483fkv" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_92_Cay_tan_rong_tien_canh.ase_layer_tex" id="L92"]
+[ext_resource type="Texture2D" uid="uid://u3w6xmtrudk5" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_93_Cay_than_manh_tien_canh.ase_layer_tex" id="L93"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(4608, 40)
@@ -72,10 +72,6 @@ centered = false
 texture = ExtResource("L07_PATH")
 centered = false
 
-[node name="09_Cau_thang_da" type="Sprite2D" parent="Background" unique_id=867199656]
-texture = ExtResource("L09")
-centered = false
-
 [node name="Bounds" type="StaticBody2D" parent="." unique_id=1930848972]
 
 [node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=1223114364]
@@ -98,6 +94,11 @@ position = Vector2(160, 320)
 [node name="Objects" type="Node2D" parent="." unique_id=701000574]
 
 [node name="Collectibles" type="Node2D" parent="." unique_id=803744164]
+
+[node name="09_Cau_thang_da" type="Sprite2D" parent="." unique_id=867199656]
+z_index = 60
+texture = ExtResource("L09")
+centered = false
 
 [node name="Foreground" type="Node2D" parent="." unique_id=758567952]
 z_index = 50
