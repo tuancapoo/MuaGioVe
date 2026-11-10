@@ -10,7 +10,7 @@ Mô tả đầy đủ **12 hệ thống cốt lõi**: mục đích, thành phầ
 | # | Hệ thống | Trạng thái | Phụ trách |
 |---|---|---|---|
 | 1 | [Player & Camera](#1-player--camera) | ✅ | Trí |
-| 2 | [World & Chuyển map](#2-world--chuyển-map) | 🟡 | Trí |
+| 2 | [World & Chuyển map](#2-world--chuyển-map) | ✅ đổi map, cửa, mép map | Trí |
 | 3 | [World State – trạng thái thế giới](#3-world-state--trạng-thái-thế-giới) | 🟡 | Trí |
 | 4 | [Lưu & Tải game](#4-lưu--tải-game) | ⬜ | Trí |
 | 5 | [Tương tác](#5-tương-tác) | 🟡 | Trí |
@@ -74,10 +74,10 @@ player.get_speech_anchor()         # điểm đuôi khung thoại
 |---|---|---|
 | `world/areas/map_base.gd` (`GameMap`) | Lớp cơ sở mọi map: `map_id`, `map_size`, đặt Player, giới hạn camera | ✅ |
 | `world/areas/<map_id>/<map_id>.tscn` | Từng map (`garden/garden.tscn`, `village/village.tscn`…) | 🟡 Vườn rau |
-| `core/autoload/scene_manager.gd` (`SceneManager`) | Đổi map, fade, đặt Player / Na | ⬜ |
-| `world/transitions/map_exit.tscn` | Vùng ở mép map, đi vào là chuyển | ⬜ |
-| `world/transitions/door.tscn` | Cửa / cổng, bấm E mới chuyển | ⬜ |
-| `ui/transition/fade.tscn` | Lớp đen mờ dần | ⬜ |
+| `core/autoload/scene_manager.gd` (`SceneManager`) | Đổi map, fade, đặt Player (Na: chưa) | ✅ |
+| `world/transitions/map_exit.gd` | Vùng ở mép map, đi vào (đúng hướng) là chuyển | ✅ |
+| `world/transitions/door.gd` | Cửa / cổng / cầu thang, bấm E mới chuyển | ✅ |
+| (trong `SceneManager`) | Lớp đen mờ dần 0,25 s | ✅ |
 
 **Cấu trúc một map**
 ```text
@@ -114,6 +114,27 @@ player.get_speech_anchor()         # điểm đuôi khung thoại
 | `condition` | biểu thức, rỗng = luôn đi được. Vd `"has_flag('ch1.village_unlocked')"` |
 | `locked_dialogue` + `locked_cue` | câu Minh nói khi chưa đi được (MapExit đẩy Minh lùi lại) |
 | `prompt_text` (Door) | "Vào nhà", "Ra vườn" |
+
+**Sơ đồ nối map hiện tại** (mỗi lối đi hai chiều; spawn đích tên `from_<map nguồn>`)
+
+| Map | Lối đi |
+|---|---|
+| `living_room` | cửa phòng ngủ (E) → `phong_ngu_minh` · mép trái → `yard` |
+| `phong_ngu_minh` | mép trái → `living_room` |
+| `yard` | cửa nhà "Vào nhà" (E) → `living_room` · khe hàng rào "Ra ngõ" (E) → `nha_minh_va_an` · mép trái → `garden` |
+| `garden` | mép phải → `yard` |
+| `nha_minh_va_an` | cửa nhà bên phải "Vào sân" (E) → `yard` · cổng làng "Ra đồng" (E) → `field` · mép phải → `goc_cay_da` |
+| `goc_cay_da` | mép trái → `nha_minh_va_an` |
+| `field` | cổng làng "Vào xóm" (E) → `nha_minh_va_an` · cầu thang "Xuống bờ mương" (E) → `bo_muong_chan_de` · mép phải → `bo_de_hoang_hon` · mép trái → `cong_truong_thpt` |
+| `bo_de_hoang_hon` | mép trái → `field` |
+| `bo_muong_chan_de` | cầu thang "Lên đồng" (E) → `field` |
+| `cong_truong_thpt` | mép phải → `field` · mép trái → `pho_truoc_truong` · cổng "Vào trường" (E) → `lop_hoc` |
+| `pho_truoc_truong` | mép phải → `cong_truong_thpt` |
+| `lop_hoc` | cửa "Ra cổng trường" (E) → `cong_truong_thpt` |
+
+Map riêng cho minigame / sự kiện (không nối): `phong_minh_o_thanh_pho`, `ruong_sau_nha_na`.
+
+**Thêm một lối đi bằng tay:** trong `Exits/` thêm `Area2D` gắn `world/transitions/map_exit.gd` (mép) hoặc `door.gd` (cửa) + `CollisionShape2D`; điền `target_map`, `target_spawn`, (`direction` cho mép, `prompt_text` cho cửa); ở map đích thêm `Marker2D` tên đúng `target_spawn` trong `Spawns/`, đặt ở CHÂN. Vùng mép phải nằm sát tường, chỗ xuất hiện cách mép ≥ 110 px để không bị đẩy ngược lại.
 
 **Parallax:** layer trôi dùng node `Parallax2D` (`scroll_scale`, `repeat_size`, `autoscroll`), chỉnh trong Inspector, không viết script.
 

@@ -10,12 +10,20 @@
 [ext_resource type="Texture2D" uid="uid://cldek1cfr0yts" path="res://assets/maps/layers/phong_ngu_minh/phong_ngu_minh_07_Ghe_huong_vao_cua_so.ase_layer_tex" id="L06"]
 [ext_resource type="Texture2D" uid="uid://cgdndxafne5rv" path="res://assets/maps/layers/phong_ngu_minh/phong_ngu_minh_08_Lich_de_ban.ase_layer_tex" id="L07"]
 [ext_resource type="Texture2D" uid="uid://c4mq671qmil7i" path="res://assets/maps/layers/phong_ngu_minh/phong_ngu_minh_90_Tien_canh_khung_cua.ase_layer_tex" id="L08"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(829, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 504)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(64.0, 320.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(85.3, 160.0)
 
 [node name="PhongNguMinh" type="Node2D" unique_id=1854252159]
 scale = Vector2(0.75, 0.75)
@@ -98,3 +106,16 @@ position = Vector2(1.333333, 220)
 scale = Vector2(1.0022252, 0.39583337)
 texture = ExtResource("L08")
 centered = false
+
+[node name="To_living_room" type="Area2D" parent="Exits"]
+position = Vector2(32.0, 205.3)
+script = ExtResource("T_exit")
+target_map = "living_room"
+target_spawn = "from_phong_ngu_minh"
+direction = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_living_room"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_living_room" type="Marker2D" parent="Spawns"]
+position = Vector2(146.7, 365.3)

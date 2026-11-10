@@ -17,12 +17,20 @@
 [ext_resource type="Texture2D" uid="uid://cxn2j8arjkrf6" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_80_Tien_Canh_grab_bike.ase_layer_tex" id="L13"]
 [ext_resource type="Texture2D" uid="uid://jlwg8cvvjaqx" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_90_Tien_canh_bicycle.ase_layer_tex" id="L14"]
 [ext_resource type="Texture2D" uid="uid://bj85a6celkde5" path="res://assets/maps/layers/pho_truoc_truong/pho_truoc_truong_99_Tien_canh_Ninja_Lead.ase_layer_tex" id="L15"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1998, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 504)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(48.0, 240.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(64.0, 120.0)
 
 [node name="PhoTruocTruong" type="Node2D" unique_id=534752622]
 script = ExtResource("1_map")
@@ -159,3 +167,16 @@ repeat_times = 3
 [node name="Sprite2D" type="Sprite2D" parent="Foreground/99_Tien_canh_Ninja_Lead" unique_id=1858598722]
 texture = ExtResource("L15")
 centered = false
+
+[node name="To_cong_truong_thpt" type="Area2D" parent="Exits"]
+position = Vector2(1894.0, 201.0)
+script = ExtResource("T_exit")
+target_map = "cong_truong_thpt"
+target_spawn = "from_pho_truoc_truong"
+direction = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_cong_truong_thpt"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_cong_truong_thpt" type="Marker2D" parent="Spawns"]
+position = Vector2(1808.0, 321.0)

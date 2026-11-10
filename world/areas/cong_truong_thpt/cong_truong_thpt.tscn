@@ -10,12 +10,20 @@
 [ext_resource type="Texture2D" uid="uid://dximul76okqnf" path="res://assets/maps/layers/cong_truong_thpt/cong_truong_thpt_80_Tien_Canh_grab_bike.ase_layer_tex" id="L06"]
 [ext_resource type="Texture2D" uid="uid://78gchn2260vc" path="res://assets/maps/layers/cong_truong_thpt/cong_truong_thpt_90_Tien_canh_bicycle.ase_layer_tex" id="L07"]
 [ext_resource type="Texture2D" uid="uid://bu74yqbgqw85k" path="res://assets/maps/layers/cong_truong_thpt/cong_truong_thpt_99_Tien_canh_Ninja_Lead.ase_layer_tex" id="L08"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1039, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 504)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(48.0, 240.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(64.0, 120.0)
 
 [node name="CongTruongThpt" type="Node2D" unique_id=1999369634]
 script = ExtResource("1_map")
@@ -124,3 +132,43 @@ repeat_times = 3
 [node name="Sprite2D" type="Sprite2D" parent="Foreground/99_Tien_canh_Ninja_Lead" unique_id=428511286]
 texture = ExtResource("L08")
 centered = false
+
+[node name="To_field" type="Area2D" parent="Exits"]
+position = Vector2(935.0, 200.0)
+script = ExtResource("T_exit")
+target_map = "field"
+target_spawn = "from_cong_truong_thpt"
+direction = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_field"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_field" type="Marker2D" parent="Spawns"]
+position = Vector2(849.0, 320.0)
+
+[node name="To_pho_truoc_truong" type="Area2D" parent="Exits"]
+position = Vector2(24.0, 200.0)
+script = ExtResource("T_exit")
+target_map = "pho_truoc_truong"
+target_spawn = "from_cong_truong_thpt"
+direction = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_pho_truoc_truong"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_pho_truoc_truong" type="Marker2D" parent="Spawns"]
+position = Vector2(110.0, 320.0)
+
+[node name="Door_lop_hoc" type="Area2D" parent="Exits"]
+position = Vector2(479.6, 260.0)
+script = ExtResource("T_door")
+prompt_text = "Vào trường"
+prompt_offset = Vector2(0, -84.0)
+target_map = "lop_hoc"
+target_spawn = "from_cong_truong_thpt"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_lop_hoc"]
+shape = SubResource("T_door_shape")
+
+[node name="from_lop_hoc" type="Marker2D" parent="Spawns"]
+position = Vector2(479.6, 320.0)

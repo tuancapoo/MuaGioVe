@@ -14,12 +14,20 @@
 [ext_resource type="Texture2D" uid="uid://6qktwtsqn2jp" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_91_Bui_cay_tien_canh.ase_layer_tex" id="L91"]
 [ext_resource type="Texture2D" uid="uid://km4dvw483fkv" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_92_Cay_tan_rong_tien_canh.ase_layer_tex" id="L92"]
 [ext_resource type="Texture2D" uid="uid://u3w6xmtrudk5" path="res://assets/maps/layers/lang_que_loop/lang_que_loop_93_Cay_than_manh_tien_canh.ase_layer_tex" id="L93"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(4608, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 500)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(48.0, 240.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(64.0, 120.0)
 
 [node name="Field" type="Node2D" unique_id=1273733710]
 script = ExtResource("1_map")
@@ -119,3 +127,61 @@ centered = false
 [node name="93_Cay_than_manh_tien_canh" type="Sprite2D" parent="Foreground" unique_id=747049703]
 texture = ExtResource("L93")
 centered = false
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Exits" type="Node2D" parent="."]
+
+[node name="Door_nha_minh_va_an" type="Area2D" parent="Exits"]
+position = Vector2(2084.0, 254.0)
+script = ExtResource("T_door")
+prompt_text = "Vào xóm"
+prompt_offset = Vector2(0, -84.0)
+target_map = "nha_minh_va_an"
+target_spawn = "from_field"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_nha_minh_va_an"]
+shape = SubResource("T_door_shape")
+
+[node name="from_nha_minh_va_an" type="Marker2D" parent="Spawns"]
+position = Vector2(2084.0, 314.0)
+
+[node name="Door_bo_muong_chan_de" type="Area2D" parent="Exits"]
+position = Vector2(3060.0, 254.0)
+script = ExtResource("T_door")
+prompt_text = "Xuống bờ mương"
+prompt_offset = Vector2(0, -84.0)
+target_map = "bo_muong_chan_de"
+target_spawn = "from_field"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_bo_muong_chan_de"]
+shape = SubResource("T_door_shape")
+
+[node name="from_bo_muong_chan_de" type="Marker2D" parent="Spawns"]
+position = Vector2(3060.0, 314.0)
+
+[node name="To_bo_de_hoang_hon" type="Area2D" parent="Exits"]
+position = Vector2(4584.0, 194.0)
+script = ExtResource("T_exit")
+target_map = "bo_de_hoang_hon"
+target_spawn = "from_field"
+direction = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_bo_de_hoang_hon"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_bo_de_hoang_hon" type="Marker2D" parent="Spawns"]
+position = Vector2(4498.0, 314.0)
+
+[node name="To_cong_truong_thpt" type="Area2D" parent="Exits"]
+position = Vector2(24.0, 194.0)
+script = ExtResource("T_exit")
+target_map = "cong_truong_thpt"
+target_spawn = "from_field"
+direction = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_cong_truong_thpt"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_cong_truong_thpt" type="Marker2D" parent="Spawns"]
+position = Vector2(110.0, 314.0)

@@ -13,12 +13,20 @@
 [ext_resource type="Texture2D" path="res://assets/maps/layers/goc_cay_da/goc_cay_da_10_Tan_la_da.ase_layer_tex" id="L09"]
 [ext_resource type="Texture2D" path="res://assets/maps/layers/goc_cay_da/goc_cay_da_11_Co_va_la_tien_canh.ase_layer_tex" id="L10"]
 [ext_resource type="Texture2D" path="res://assets/maps/layers/goc_cay_da/goc_cay_da_90_Tien_canh_truoc_duong.ase_layer_tex" id="L11"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1040, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 504)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(48.0, 240.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(64.0, 120.0)
 
 [node name="GocCayDa" type="Node2D"]
 script = ExtResource("1_map")
@@ -126,3 +134,16 @@ texture_filter = 1
 [node name="90_Tien_canh_truoc_duong" type="Sprite2D" parent="Foreground"]
 texture = ExtResource("L11")
 centered = false
+
+[node name="To_nha_minh_va_an" type="Area2D" parent="Exits"]
+position = Vector2(24.0, 210.0)
+script = ExtResource("T_exit")
+target_map = "nha_minh_va_an"
+target_spawn = "from_goc_cay_da"
+direction = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_nha_minh_va_an"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_nha_minh_va_an" type="Marker2D" parent="Spawns"]
+position = Vector2(110.0, 330.0)

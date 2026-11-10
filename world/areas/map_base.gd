@@ -15,11 +15,16 @@ extends Node2D
 @onready var player_spawn: Marker2D = $PlayerSpawn
 
 
-## Đặt Player vào map: dịch tới PlayerSpawn và giới hạn camera trong khung map.
-func place_player(player: Player) -> void:
+## Đặt Player vào map: dịch tới chỗ xuất hiện và giới hạn camera trong khung map.
+## spawn = tên Marker2D trong "Spawns/" (vd "from_garden"); rỗng / không có → PlayerSpawn.
+func place_player(player: Player, spawn: String = "") -> void:
 	GameState.current_map = map_id
+	var marker := get_spawn(spawn)
 	# Origin của Player ở giữa thân; chân cách origin ~56 px (theo CollisionShape).
-	player.global_position = player_spawn.global_position + Vector2(0, -56)
+	player.global_position = marker.global_position + Vector2(0, -56)
+	player.velocity = Vector2.ZERO
+	# Xuất hiện ở nửa phải map → quay mặt sang trái (nhìn vào trong map).
+	player.anim.flip_h = marker.global_position.x > global_position.x + map_size.x * 0.5
 	var cam := player.camera
 	_fit_camera_zoom(cam)
 	cam.limit_left = int(global_position.x)
@@ -39,3 +44,13 @@ func _fit_camera_zoom(cam: Camera2D) -> void:
 	var view := cam.get_viewport_rect().size
 	zoom = maxf(zoom, maxf(view.y / map_size.y, view.x / map_size.x))
 	cam.zoom = Vector2(zoom, zoom)
+
+
+## Tìm chỗ xuất hiện theo tên; không có thì dùng PlayerSpawn.
+func get_spawn(spawn: String) -> Marker2D:
+	if not spawn.is_empty():
+		var m := get_node_or_null("Spawns/" + spawn) as Marker2D
+		if m:
+			return m
+		push_warning("GameMap '%s': không có Spawns/%s, dùng PlayerSpawn" % [map_id, spawn])
+	return player_spawn

@@ -25,12 +25,20 @@
 [ext_resource type="Texture2D" path="res://assets/maps/layers/nha_minh_va_an/nha_minh_va_an_Mai_cong.ase_layer_tex" id="L21"]
 [ext_resource type="Texture2D" path="res://assets/maps/layers/nha_minh_va_an/nha_minh_va_an_Co_va_hoa_chan_cong.ase_layer_tex" id="L22"]
 [ext_resource type="Texture2D" path="res://assets/maps/layers/nha_minh_va_an/nha_minh_va_an_90_Tien_canh_truoc_duong.ase_layer_tex" id="L23"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1736, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 504)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(48.0, 240.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(64.0, 120.0)
 
 [node name="NhaMinhVaAn" type="Node2D"]
 script = ExtResource("1_map")
@@ -181,3 +189,44 @@ centered = false
 [node name="90_Tien_canh_truoc_duong" type="Sprite2D" parent="Foreground"]
 texture = ExtResource("L23")
 centered = false
+
+[node name="Door_yard" type="Area2D" parent="Exits"]
+position = Vector2(1372.0, 254.0)
+script = ExtResource("T_door")
+prompt_text = "Vào sân"
+prompt_offset = Vector2(0, -84.0)
+target_map = "yard"
+target_spawn = "from_nha_minh_va_an"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_yard"]
+shape = SubResource("T_door_shape")
+
+[node name="from_yard" type="Marker2D" parent="Spawns"]
+position = Vector2(1372.0, 314.0)
+
+[node name="Door_field" type="Area2D" parent="Exits"]
+position = Vector2(210.0, 254.0)
+script = ExtResource("T_door")
+prompt_text = "Ra đồng"
+prompt_offset = Vector2(0, -84.0)
+target_map = "field"
+target_spawn = "from_nha_minh_va_an"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_field"]
+shape = SubResource("T_door_shape")
+
+[node name="from_field" type="Marker2D" parent="Spawns"]
+position = Vector2(210.0, 314.0)
+
+[node name="To_goc_cay_da" type="Area2D" parent="Exits"]
+position = Vector2(1632.0, 194.0)
+script = ExtResource("T_exit")
+target_map = "goc_cay_da"
+target_spawn = "from_nha_minh_va_an"
+direction = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_goc_cay_da"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_goc_cay_da" type="Marker2D" parent="Spawns"]
+position = Vector2(1546.0, 314.0)

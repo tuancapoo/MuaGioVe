@@ -4,12 +4,20 @@
 [ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_01_all.ase_layer_tex" id="L00"]
 [ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_02_path.ase_layer_tex" id="L01"]
 [ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_98_foreground.ase_layer_tex" id="L02"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1104, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 504)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(48.0, 240.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(64.0, 120.0)
 
 [node name="Yard" type="Node2D"]
 script = ExtResource("1_map")
@@ -65,3 +73,44 @@ texture_filter = 1
 [node name="98_foreground" type="Sprite2D" parent="Foreground"]
 texture = ExtResource("L02")
 centered = false
+
+[node name="Door_living_room" type="Area2D" parent="Exits"]
+position = Vector2(528.0, 253.0)
+script = ExtResource("T_door")
+prompt_text = "Vào nhà"
+prompt_offset = Vector2(0, -84.0)
+target_map = "living_room"
+target_spawn = "from_yard"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_living_room"]
+shape = SubResource("T_door_shape")
+
+[node name="from_living_room" type="Marker2D" parent="Spawns"]
+position = Vector2(528.0, 313.0)
+
+[node name="Door_nha_minh_va_an" type="Area2D" parent="Exits"]
+position = Vector2(255.0, 253.0)
+script = ExtResource("T_door")
+prompt_text = "Ra ngõ"
+prompt_offset = Vector2(0, -84.0)
+target_map = "nha_minh_va_an"
+target_spawn = "from_yard"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_nha_minh_va_an"]
+shape = SubResource("T_door_shape")
+
+[node name="from_nha_minh_va_an" type="Marker2D" parent="Spawns"]
+position = Vector2(255.0, 313.0)
+
+[node name="To_garden" type="Area2D" parent="Exits"]
+position = Vector2(24.0, 193.0)
+script = ExtResource("T_exit")
+target_map = "garden"
+target_spawn = "from_yard"
+direction = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_garden"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_garden" type="Marker2D" parent="Spawns"]
+position = Vector2(110.0, 313.0)

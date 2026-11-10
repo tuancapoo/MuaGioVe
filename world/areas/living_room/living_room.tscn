@@ -7,12 +7,20 @@
 [ext_resource type="Texture2D" uid="uid://dj1t1oal8in6m" path="res://assets/maps/layers/living_room/living_room_04_TV_CABINET.ase_layer_tex" id="L03"]
 [ext_resource type="Texture2D" uid="uid://cta4vo71ngke" path="res://assets/maps/layers/living_room/living_room_08_fore_gound_cabinet.ase_layer_tex" id="L04"]
 [ext_resource type="Texture2D" uid="uid://6jkcg2wyuyc" path="res://assets/maps/layers/living_room/living_room_09_foreground_char_table.ase_layer_tex" id="L05"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(829, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 504)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(64.0, 320.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(85.3, 160.0)
 
 [node name="LivingRoom" type="Node2D" unique_id=1046088886]
 scale = Vector2(0.75, 0.75)
@@ -81,3 +89,30 @@ centered = false
 [node name="09_ForegroundCharTable" type="Sprite2D" parent="Foreground" unique_id=623596316]
 texture = ExtResource("L05")
 centered = false
+
+[node name="Door_phong_ngu_minh" type="Area2D" parent="Exits"]
+position = Vector2(730.0, 223.0)
+script = ExtResource("T_door")
+prompt_text = "Vào phòng ngủ"
+prompt_offset = Vector2(0, -112.0)
+target_map = "phong_ngu_minh"
+target_spawn = "from_living_room"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_phong_ngu_minh"]
+shape = SubResource("T_door_shape")
+
+[node name="from_phong_ngu_minh" type="Marker2D" parent="Spawns"]
+position = Vector2(730.0, 303.0)
+
+[node name="To_yard" type="Area2D" parent="Exits"]
+position = Vector2(52.7, 143.0)
+script = ExtResource("T_exit")
+target_map = "yard"
+target_spawn = "from_living_room"
+direction = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_yard"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_yard" type="Marker2D" parent="Spawns"]
+position = Vector2(167.3, 303.0)

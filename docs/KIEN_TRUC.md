@@ -98,7 +98,7 @@ res://
 ├── world/                         # không gian người chơi đi lại
 │   ├── areas/                     # map_base.gd + mỗi map một thư mục: garden/, village/, canal/…
 │   │   └── test/                  # map thử nghiệm cho giai đoạn Core
-│   ├── transitions/               # map_exit.tscn (mép map), door.tscn (cửa)
+│   ├── transitions/               # map_exit.gd (mép map), door.gd (cửa / cổng / cầu thang)
 │   └── objects/                   # vật thể trong map: inspect/, use_item/, pipe/, bed/…
 │
 ├── ui/                            # màn hình giao diện (không gồm hộp thoại)
@@ -224,7 +224,7 @@ check("chapter == 1 and is_quest_done('fix_pipe')")
 | `EventBus` | `core/autoload/event_bus.gd` | ✅ | Signal sự kiện dùng chung |
 | `GameState` | `core/autoload/game_state.gd` | ✅ | Toàn bộ trạng thái |
 | `DialogueManager` | `addons/dialogue_manager/` | ✅ | Chạy file `.dialogue` (addon) |
-| `SceneManager` | `core/autoload/scene_manager.gd` | ⬜ | Đổi map có fade, đặt Player ở marker |
+| `SceneManager` | `core/autoload/scene_manager.gd` | ✅ | Đổi map có fade, đặt Player ở marker |
 | `SaveManager` | `core/autoload/save_manager.gd` | ⬜ | Lưu / tải `GameState` ↔ `user://save.json` |
 | `InventoryManager` | `gameplay/inventory/inventory_manager.gd` | ⬜ | Thêm / bớt / kiểm tra vật phẩm (ghi vào GameState) |
 | `QuestManager` | `narrative/quest/quest_manager.gd` | ⬜ | Đọc `QuestData`, theo dõi bước, hoàn thành |

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 EventBus="*res://core/autoload/event_bus.gd"
 GameState="*res://core/autoload/game_state.gd"
+SceneManager="*res://core/autoload/scene_manager.gd"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 
 [dialogue_manager]

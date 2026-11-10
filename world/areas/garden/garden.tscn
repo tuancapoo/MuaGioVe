@@ -13,12 +13,20 @@
 [ext_resource type="Texture2D" uid="uid://3mc2di87gxvv" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_09_Qua_xoai_vang.ase_layer_tex" id="L09"]
 [ext_resource type="Texture2D" uid="uid://7s4jwhruu0v4" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_10_Duong_di.ase_layer_tex" id="L10"]
 [ext_resource type="Texture2D" uid="uid://bqq6c7gv8f0fq" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_11_Co_tien_canh.ase_layer_tex" id="L11"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(720, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 500)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(48.0, 240.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(64.0, 120.0)
 
 [node name="Garden" type="Node2D" unique_id=394981013]
 script = ExtResource("1_map")
@@ -119,3 +127,20 @@ repeat_times = 3
 [node name="Sprite2D" type="Sprite2D" parent="Foreground/11_Co_tien_canh" unique_id=113272337]
 texture = ExtResource("L11")
 centered = false
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Exits" type="Node2D" parent="."]
+
+[node name="To_yard" type="Area2D" parent="Exits"]
+position = Vector2(616.0, 200.0)
+script = ExtResource("T_exit")
+target_map = "yard"
+target_spawn = "from_garden"
+direction = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_yard"]
+shape = SubResource("T_edge_shape")
+
+[node name="from_yard" type="Marker2D" parent="Spawns"]
+position = Vector2(530.0, 320.0)

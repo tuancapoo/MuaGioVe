@@ -13,12 +13,20 @@
 [ext_resource type="Texture2D" uid="uid://b4smxye86ydev" path="res://assets/maps/layers/bo_muong_chan_de/bo_muong_chan_de_10_Bong_va_song_nuoc.ase_layer_tex" id="L09"]
 [ext_resource type="Texture2D" uid="uid://bekf00fx3p25a" path="res://assets/maps/layers/bo_muong_chan_de/bo_muong_chan_de_11_Reu_tren_tuong.ase_layer_tex" id="L10"]
 [ext_resource type="Texture2D" uid="uid://dyysw3xjgsyo6" path="res://assets/maps/layers/bo_muong_chan_de/bo_muong_chan_de_12_Co_tien_canh.ase_layer_tex" id="L11"]
+[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1232, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 504)
+
+[sub_resource type="RectangleShape2D" id="T_edge_shape"]
+size = Vector2(48.0, 240.0)
+
+[sub_resource type="RectangleShape2D" id="T_door_shape"]
+size = Vector2(64.0, 120.0)
 
 [node name="BoMuongChanDe" type="Node2D" unique_id=82865678]
 script = ExtResource("1_map")
@@ -126,3 +134,17 @@ texture_filter = 1
 [node name="12_Co_tien_canh" type="Sprite2D" parent="Foreground" unique_id=742516991]
 texture = ExtResource("L11")
 centered = false
+
+[node name="Door_field" type="Area2D" parent="Exits"]
+position = Vector2(576.0, 220.0)
+script = ExtResource("T_door")
+prompt_text = "Lên đồng"
+prompt_offset = Vector2(0, -84.0)
+target_map = "field"
+target_spawn = "from_bo_muong_chan_de"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_field"]
+shape = SubResource("T_door_shape")
+
+[node name="from_field" type="Marker2D" parent="Spawns"]
+position = Vector2(576.0, 280.0)
