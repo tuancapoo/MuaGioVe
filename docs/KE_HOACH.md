@@ -54,9 +54,9 @@ Mỗi người **làm chính một nhóm hệ thống** và **một quest / mini
 
 | Người | Vai trò | Hệ thống ([HE_THONG.md](HE_THONG.md)) | Quest / Minigame | Sở hữu thư mục |
 |---|---|---|---|---|
-| **Trí** | World & State | · 3 World State · 4 Lưu & Tải · 5 Tương tác | Minigame **Câu cá** (`fishing`) | `core/`, `world/`, `gameplay/player/`, `gameplay/interaction/`, `gameplay/minigame/fishing/`, `project.godot` |
+| **Trí** | World & State | · 3 World State · 4 Lưu & Tải · 5 Tương tác; dựng và nối map | Minigame **Câu cá** (`fishing`) | `core/`, `world/`, `gameplay/player/`, `gameplay/interaction/`, `gameplay/minigame/fishing/`, `project.godot` |
 | **Uyên** | Narrative | 6 NPC & Hội thoại · 7 Nhiệm vụ & Chương · 8 Cutscene; toàn bộ hội thoại, danh sách cờ | Quest **Sửa vòi nước** (`fix_pipe`) | `narrative/`, `data/dialogues/`, `data/quests/`, `data/chapters/`, `data/npcs/` |
-| **Tuấn** | Gameplay & UI | 9 Túi đồ & Vật phẩm · 10 Khung Minigame · 11 Bé Na · 12 Giao diện & Âm thanh | Minigame **Trộm dưa** (`melon_stealth`) | `gameplay/inventory/`, `gameplay/minigame/` (khung + `melon_stealth/`), `gameplay/companion/`, `ui/`, `data/items/` |
+| **Tuấn** | Gameplay & UI |1 Player & Camera · 2 World & Chuyển map  9 Túi đồ & Vật phẩm · 10 Khung Minigame · 11 Bé Na · 12 Giao diện & Âm thanh | Minigame **Trộm dưa** (`melon_stealth`) | `gameplay/inventory/`, `gameplay/minigame/` (khung + `melon_stealth/`), `gameplay/companion/`, `ui/`, `data/items/` |
 
 - "Sở hữu" = chịu trách nhiệm chính và review. Người khác vẫn được sửa nhưng phải báo trước.
 - File chung (`project.godot`, `core/autoload/game_state.gd`, `core/autoload/event_bus.gd`, `core/main/main.tscn`): **Trí giữ**. Cần thêm autoload, signal, hàm trong GameState thì báo Trí.
