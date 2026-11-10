@@ -1,0 +1,13 @@
+# Hội thoại của An (bạn đồng hành). Tạm thời — Uyên viết lại theo cốt truyện.
+# An chỉ đi theo khi cờ npc.an.following = true:
+#   bật:  do npc_set("an", "following", true)
+#   tắt:  do npc_set("an", "following", false)
+
+~ start
+if npc_talks("an") <= 1:
+	An: Đi đâu cũng cho mình theo với nha!
+else:
+	% An: Bên kia có gì vui không Minh?
+	% An: Đi chậm thôi, chờ mình với!
+	% An: Hồi nãy mình thấy có con chuồn chuồn bự lắm.
+=> END

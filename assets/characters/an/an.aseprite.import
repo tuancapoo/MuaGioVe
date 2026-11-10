@@ -1,14 +1,19 @@
 [remap]
 
-importer="aseprite_wizard.plugin.noop"
-type="PackedDataContainer"
+importer="aseprite_wizard.plugin.spriteframes"
+type="SpriteFrames"
 uid="uid://brlocv08ojjag"
-path="res://.godot/imported/an.aseprite-1137cf17deac447492f4fae33752c3de.res"
 
 [deps]
 
 source_file="res://assets/characters/an/an.aseprite"
-dest_files=["res://.godot/imported/an.aseprite-1137cf17deac447492f4fae33752c3de.res"]
 
 [params]
 
+layer/exclude_layers_pattern="lua:[0-9]+:"
+layer/only_visible_layers=false
+sheet/sheet_type="packed"
+sheet/sheet_columns=12
+sheet/frame_padding=0
+sheet/scale=1
+animation/round_fps=true

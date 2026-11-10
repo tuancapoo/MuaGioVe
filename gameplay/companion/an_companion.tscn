@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://narrative/npc/npc.tscn" id="1_npc"]
+[ext_resource type="Resource" path="res://data/npcs/an.tres" id="2_data"]
+[ext_resource type="Script" path="res://gameplay/companion/follower.gd" id="3_follow"]
+
+[node name="An" instance=ExtResource("1_npc")]
+data = ExtResource("2_data")
+appear_condition = "npc_get('an', 'following', false)"
+face_player = false
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+position = Vector2(0, -55)
+
+[node name="Follower" type="Node" parent="."]
+script = ExtResource("3_follow")
