@@ -1,0 +1,121 @@
+[gd_scene format=3 uid="uid://g11wg48wiqxw"]
+
+[ext_resource type="Script" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="PackedScene" path="res://narrative/npc/characters/ong_noi/ong_noi.tscn" id="4_ongnoi"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_01_Bau_troi.ase_layer_tex" id="L01"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_02_May.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_03_Cay_hau_canh.ase_layer_tex" id="L03"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_04_Hang_rao_phia_sau.ase_layer_tex" id="L04"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_05_Dat_vuon.ase_layer_tex" id="L05"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_06_Dat_luong_rau.ase_layer_tex" id="L06"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_07_Rau_moi_nhu.ase_layer_tex" id="L07"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_08_Cay_xoai.ase_layer_tex" id="L08"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_09_Qua_xoai_vang.ase_layer_tex" id="L09"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_10_Duong_di.ase_layer_tex" id="L10"]
+[ext_resource type="Texture2D" path="res://assets/maps/layers/vuon_rau_giua_hai_nha/vuon_rau_giua_hai_nha_11_Co_tien_canh.ase_layer_tex" id="L11"]
+
+[sub_resource type="RectangleShape2D" id="Shape_ground"]
+size = Vector2(720, 40)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(20, 500)
+
+[node name="Garden" type="Node2D" unique_id=394981013]
+script = ExtResource("1_map")
+map_id = "garden"
+map_name = "Vườn rau giữa hai nhà"
+map_size = Vector2i(640, 384)
+
+[node name="Background" type="Node2D" parent="." unique_id=1794295577]
+z_index = -10
+texture_filter = 1
+
+[node name="01_Bau_troi" type="Sprite2D" parent="Background" unique_id=286088215]
+texture = ExtResource("L01")
+centered = false
+
+[node name="02_May" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.85, 1)
+repeat_size = Vector2(640, 0)
+repeat_times = 3
+autoscroll = Vector2(-10, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/02_May"]
+texture = ExtResource("L02")
+centered = false
+
+[node name="03_Cay_hau_canh" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.95, 1)
+repeat_size = Vector2(640, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/03_Cay_hau_canh"]
+texture = ExtResource("L03")
+centered = false
+
+[node name="04_Hang_rao_phia_sau" type="Sprite2D" parent="Background" unique_id=1314455769]
+texture = ExtResource("L04")
+centered = false
+
+[node name="05_Dat_vuon" type="Sprite2D" parent="Background" unique_id=1769078917]
+texture = ExtResource("L05")
+centered = false
+
+[node name="06_Dat_luong_rau" type="Sprite2D" parent="Background" unique_id=923367394]
+texture = ExtResource("L06")
+centered = false
+
+[node name="07_Rau_moi_nhu" type="Sprite2D" parent="Background" unique_id=1101122332]
+texture = ExtResource("L07")
+centered = false
+
+[node name="08_Cay_xoai" type="Sprite2D" parent="Background" unique_id=968171112]
+texture = ExtResource("L08")
+centered = false
+
+[node name="09_Qua_xoai_vang" type="Sprite2D" parent="Background" unique_id=1218192368]
+texture = ExtResource("L09")
+centered = false
+
+[node name="10_Duong_di" type="Sprite2D" parent="Background" unique_id=856634264]
+texture = ExtResource("L10")
+centered = false
+
+[node name="Bounds" type="StaticBody2D" parent="." unique_id=1109192113]
+
+[node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=1014669775]
+position = Vector2(320, 340)
+shape = SubResource("Shape_ground")
+
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds" unique_id=369077113]
+position = Vector2(-10, 192)
+shape = SubResource("Shape_wall")
+
+[node name="WallRight" type="CollisionShape2D" parent="Bounds" unique_id=339695341]
+position = Vector2(650, 192)
+shape = SubResource("Shape_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1993761855]
+position = Vector2(80, 320)
+
+[node name="NPCs" type="Node2D" parent="." unique_id=1248460060]
+
+[node name="OngNoi" parent="NPCs" unique_id=918571588 instance=ExtResource("4_ongnoi")]
+position = Vector2(470, 320)
+
+[node name="Objects" type="Node2D" parent="." unique_id=211126820]
+
+[node name="Collectibles" type="Node2D" parent="." unique_id=545948885]
+
+[node name="Foreground" type="Node2D" parent="." unique_id=1265901256]
+z_index = 50
+texture_filter = 1
+
+[node name="11_Co_tien_canh" type="Parallax2D" parent="Foreground"]
+scroll_scale = Vector2(1.05, 1)
+repeat_size = Vector2(640, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Foreground/11_Co_tien_canh"]
+texture = ExtResource("L11")
+centered = false

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="NpcData" format=3]
+
+[ext_resource type="Script" path="res://narrative/npc/npc_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://assets/characters/ong_noi/ong_noi_idle.aseprite" id="2_frames"]
+[ext_resource type="Resource" path="res://data/dialogues/ong_noi.dialogue" id="3_dialogue"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"ong_noi"
+display_name = "Ông Nội"
+dialogue_color = Color(0.96, 0.7, 0.42, 1)
+sprite_frames = ExtResource("2_frames")
+dialogue = ExtResource("3_dialogue")

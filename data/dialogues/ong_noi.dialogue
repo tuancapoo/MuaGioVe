@@ -1,0 +1,60 @@
+# Hội thoại của Ông Nội.
+# Cue "start" chọn đoạn phù hợp theo tiến trình / địa điểm / buổi trong ngày.
+# Thứ tự if/elif = độ ưu tiên: điều kiện đứng trước được xét trước.
+# Biến & hàm lấy từ autoload GameState (đã bật shortcut nên không cần ghi "GameState.").
+
+~ start
+if is_quest_new("fix_pipe") and current_map == "garden":
+	=> intro_pipe
+elif is_quest_active("fix_pipe"):
+	=> pipe_waiting
+elif is_quest_done("fix_pipe") and not has_flag("thanked_pipe"):
+	=> pipe_done
+elif current_map == "house" and time == "evening":
+	=> evening_house
+elif chapter >= 2:
+	=> chapter2_idle
+elif time == "noon":
+	=> noon_idle
+else:
+	=> idle
+
+~ intro_pipe
+Ông Nội: Minh dậy rồi đó hả con? Ra vườn phụ ông chút nghen.
+Ông Nội: Cái vòi nước ngoài vườn rau lại rỉ nữa rồi...
+- Dạ, con phải làm gì ông?
+	Ông Nội: Con kiếm giùm ông cái đầu nối, miếng cao su với cái kẹp nha.
+- (Gật đầu, không nói gì)
+	Ông Nội: Ừ, không sao. Ông chỉ cho con nè.
+	Ông Nội: Kiếm giùm ông cái đầu nối, miếng cao su với cái kẹp nha.
+do start_quest("fix_pipe")
+Minh: (Ông nói chuyện hiền ghê... không giống mấy người ở trường cũ.)
+Ông Nội: Mấy món đó chắc rớt đâu quanh vườn thôi, từ từ mà kiếm con.
+=> END
+
+~ pipe_waiting
+Ông Nội: Kiếm được {{get_flag("pipe_parts", 0)}}/3 món rồi hả? Coi kỹ gần mấy luống rau đó con.
+=> END
+
+~ pipe_done
+Ông Nội: Giỏi quá! Vườn có nước lại rồi, rau tươi rói luôn.
+Ông Nội: Nè, ông cho con mấy hạt này. Người ta gọi là Hạt Gió đó.
+do add_wind_seeds(3)
+do set_flag("thanked_pipe")
+=> END
+
+~ evening_house
+Ông Nội: Tối rồi, vô rửa tay ăn cơm con.
+=> END
+
+~ chapter2_idle
+Ông Nội: Bữa nay đi một vòng làng chơi đi con, ghé bà Sáu với chú Mười nữa.
+=> END
+
+~ noon_idle
+Ông Nội: Trưa nắng quá, vô nhà nghỉ chút đi con.
+=> END
+
+~ idle
+Ông Nội: Ừ, ông đây.
+=> END

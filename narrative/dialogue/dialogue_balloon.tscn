@@ -1,0 +1,147 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://narrative/dialogue/dialogue_balloon.gd" id="1_balloon"]
+[ext_resource type="Texture2D" path="res://assets/ui/dialogue_box.aseprite" id="2_box"]
+[ext_resource type="FontFile" path="res://assets/fonts/vt323_regular.ttf" id="3_font"]
+[ext_resource type="Shader" path="res://narrative/dialogue/dialogue_frame_tint.gdshader" id="4_tint"]
+[ext_resource type="PackedScene" path="res://addons/dialogue_manager/nodes/dialogue_label/dialogue_label.tscn" id="5_label"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/nodes/responses_menu/dialogue_responses_menu.gd" id="6_responses"]
+
+[sub_resource type="ShaderMaterial" id="Mat_tint"]
+shader = ExtResource("4_tint")
+shader_parameter/border_color = Color(0.51, 0.49, 0.72, 1)
+
+[sub_resource type="AtlasTexture" id="Atlas_tail"]
+atlas = ExtResource("2_box")
+region = Rect2(272, 104, 26, 11)
+
+[sub_resource type="AtlasTexture" id="Atlas_arrow"]
+atlas = ExtResource("2_box")
+region = Rect2(483, 86, 10, 6)
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="Theme" id="Theme_dialogue"]
+default_font = ExtResource("3_font")
+default_font_size = 44
+Button/colors/font_color = Color(0.62, 0.6, 0.66, 1)
+Button/colors/font_focus_color = Color(1, 0.95, 0.75, 1)
+Button/colors/font_hover_color = Color(1, 0.95, 0.75, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/styles/focus = SubResource("Style_empty")
+Button/styles/hover = SubResource("Style_empty")
+Button/styles/normal = SubResource("Style_empty")
+Button/styles/pressed = SubResource("Style_empty")
+Label/colors/font_color = Color(0.72, 0.7, 0.95, 1)
+RichTextLabel/colors/default_color = Color(1, 1, 1, 1)
+RichTextLabel/constants/line_separation = -4
+
+[node name="DialogueBalloon" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_balloon")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_dialogue")
+
+[node name="Tail" type="TextureRect" parent="Root"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+offset_right = 78.0
+offset_bottom = 33.0
+mouse_filter = 2
+texture = SubResource("Atlas_tail")
+expand_mode = 1
+
+[node name="Panel" type="Control" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1365.0
+offset_bottom = 237.0
+focus_mode = 2
+
+[node name="Frame" type="NinePatchRect" parent="Root/Panel"]
+unique_name_in_owner = true
+texture_filter = 1
+material = SubResource("Mat_tint")
+layout_mode = 0
+offset_right = 455.0
+offset_bottom = 79.0
+scale = Vector2(3, 3)
+mouse_filter = 2
+texture = ExtResource("2_box")
+region_rect = Rect2(58, 25, 455, 79)
+patch_margin_left = 20
+patch_margin_top = 12
+patch_margin_right = 32
+patch_margin_bottom = 20
+
+[node name="ArrowCover" type="ColorRect" parent="Root/Panel"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 36.0
+offset_bottom = 24.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Arrow" type="TextureRect" parent="Root/Panel"]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 18.0
+mouse_filter = 2
+texture = SubResource("Atlas_arrow")
+expand_mode = 1
+
+[node name="Content" type="MarginContainer" parent="Root/Panel"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1365.0
+offset_bottom = 237.0
+mouse_filter = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 96
+theme_override_constants/margin_bottom = 48
+
+[node name="VBox" type="VBoxContainer" parent="Root/Panel/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="NameLabel" type="Label" parent="Root/Panel/Content/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Tên nhân vật"
+
+[node name="DialogueLabel" parent="Root/Panel/Content/VBox" instance=ExtResource("5_label")]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+text = "Lời thoại..."
+seconds_per_step = 0.03
+
+[node name="ResponsesMenu" type="VBoxContainer" parent="Root/Panel/Content/VBox" node_paths=PackedStringArray("response_template")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("6_responses")
+response_template = NodePath("ResponseTemplate")
+
+[node name="ResponseTemplate" type="Button" parent="Root/Panel/Content/VBox/ResponsesMenu"]
+layout_mode = 2
+text = "Câu trả lời"
+alignment = 0
+
+[connection signal="gui_input" from="Root/Panel" to="." method="_on_panel_gui_input"]
+[connection signal="response_selected" from="Root/Panel/Content/VBox/ResponsesMenu" to="." method="_on_responses_menu_response_selected"]

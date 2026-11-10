@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://narrative/npc/npc.tscn" id="1_npc"]
+[ext_resource type="Resource" path="res://data/npcs/ong_noi.tres" id="2_data"]
+
+[node name="OngNoi" instance=ExtResource("1_npc")]
+data = ExtResource("2_data")
