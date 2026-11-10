@@ -19,7 +19,7 @@ Mô tả đầy đủ **12 hệ thống cốt lõi**: mục đích, thành phầ
 | 8 | [Cutscene](#8-cutscene) | ⬜ | Uyên |
 | 9 | [Túi đồ & Vật phẩm](#9-túi-đồ--vật-phẩm) | ⬜ | Tuấn |
 | 10 | [Khung Minigame](#10-khung-minigame) | ⬜ | Tuấn |
-| 11 | [Bạn đồng hành – Bé Na](#11-bạn-đồng-hành--bé-na) | ⬜ | Tuấn |
+| 11 | [Bạn đồng hành – Bé Na](#11-bạn-đồng-hành--bé-na) | 🟡 An đi theo (chưa có lịch, "Nhờ Na") | Tuấn |
 | 12 | [Giao diện & Âm thanh](#12-giao-diện--âm-thanh) | 🟡 có hộp thoại | Tuấn |
 
 Cách đọc mỗi mục:
@@ -544,6 +544,16 @@ MinigameSpot (E) hoặc .dialogue: do MinigameManager.start("fishing", {"target"
 ---
 
 ## 11. Bạn đồng hành – Bé Na
+
+> **Đã làm (bản đầu):** nhân vật **An** (`assets/characters/an/an.aseprite`) đi theo Minh.
+> - Bật / tắt bằng cờ **`npc.an.following`**: trong `.dialogue` viết `do npc_set("an", "following", true)` / `false`. Bản debug: phím **F2** bật / tắt nhanh.
+> - Scene `gameplay/companion/an_companion.tscn` (kế thừa `npc.tscn`, `appear_condition = "npc_get('an', 'following', false)"`) + component `gameplay/companion/follower.gd`; dữ liệu `data/npcs/an.tres`, thoại tạm `data/dialogues/an.dialogue`.
+> - `Main` tạo An làm con của `World` nên đổi map vẫn còn; sau mỗi lần đổi map An đứng ngay sau lưng Minh.
+> - Đi sau lưng ~40 px, chạy khi Minh chạy hoặc bị bỏ xa > 110 px, dịch chuyển ngầm khi xa > 280 px, đứng yên khi Minh bị khoá, không ra ngoài map.
+> - Vùng tương tác của An đang tắt (không hiện dấu hỏi suốt lúc đi theo).
+>
+> Các mục bên dưới là thiết kế đầy đủ (tên "Na" theo GDD).
+
 
 **Mục đích:** Na đi cùng Minh, làm thế giới bớt cô đơn, giúp trong minigame.
 

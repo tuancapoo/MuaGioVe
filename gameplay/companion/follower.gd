@@ -29,7 +29,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var player := _player()
+	var player: Player = _player()
 	if player == null or not body.visible:
 		return
 	body.global_position.y = player.global_position.y + player_feet_offset
@@ -40,10 +40,10 @@ func _physics_process(delta: float) -> void:
 		snap_behind()
 		return
 
-	var moving := absf(dx) > 4.0 and player.can_move
+	var moving: bool = absf(dx) > 4.0 and player.can_move
 	if moving:
-		var player_running := absf(player.velocity.x) > walk_speed + 1.0
-		var speed := run_speed if (player_running or absf(dx) > run_distance) else walk_speed
+		var player_running: bool = absf(player.velocity.x) > walk_speed + 1.0
+		var speed: float = run_speed if (player_running or absf(dx) > run_distance) else walk_speed
 		body.global_position.x = move_toward(body.global_position.x, target_x, speed * delta)
 		sprite.flip_h = dx < 0.0
 		_play(&"Run" if speed == run_speed else &"Walk")
@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 
 ## Đặt ngay sau lưng Minh, quay cùng hướng.
 func snap_behind() -> void:
-	var player := _player()
+	var player: Player = _player()
 	if player == null:
 		return
 	body.global_position = Vector2(_target_x(player), player.global_position.y + player_feet_offset)
@@ -62,18 +62,25 @@ func snap_behind() -> void:
 	_play(&"Idle")
 
 
-func _target_x(player: Node2D) -> float:
+func _target_x(player: Player) -> float:
 	var facing := -1.0 if player.anim.flip_h else 1.0
 	var x := player.global_position.x - facing * follow_distance
 	# Không ra ngoài map
-	var map = get_tree().current_scene.get("map_node")
+	var map = _current_map()
 	if map:
 		x = clampf(x, map.global_position.x + 20.0, map.global_position.x + map.map_size.x - 20.0)
 	return x
 
 
-func _player() -> Node2D:
-	return get_tree().get_first_node_in_group("player") as Node2D
+## Map đang chơi: An là con của Main/World, Main giữ map_node.
+func _current_map() -> Node:
+	var world := body.get_parent()
+	var main := world.get_parent() if world else null
+	return main.get("map_node") if main else null
+
+
+func _player() -> Player:
+	return get_tree().get_first_node_in_group("player") as Player
 
 
 func _play(anim_name: StringName) -> void:

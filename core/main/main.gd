@@ -18,6 +18,7 @@ func _ready() -> void:
 	if companion_scene:
 		companion = companion_scene.instantiate()
 		world.add_child(companion)
+	GameState.npc_set("an", "following", true)
 	load_map(start_map)
 
 

@@ -4,6 +4,9 @@
 [ext_resource type="Resource" path="res://data/npcs/an.tres" id="2_data"]
 [ext_resource type="Script" path="res://gameplay/companion/follower.gd" id="3_follow"]
 
+; Bạn đồng hành An. Tắt vùng tương tác (Interactable/CollisionShape2D.disabled) để không hiện
+; dấu hỏi trên đầu An suốt lúc đi theo — bật lại nếu muốn bấm E nói chuyện với An.
+
 [node name="An" instance=ExtResource("1_npc")]
 data = ExtResource("2_data")
 appear_condition = "npc_get('an', 'following', false)"
@@ -14,3 +17,6 @@ position = Vector2(0, -55)
 
 [node name="Follower" type="Node" parent="."]
 script = ExtResource("3_follow")
+
+[node name="CollisionShape2D" parent="Interactable" index="0"]
+disabled = true
