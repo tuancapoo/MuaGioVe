@@ -1,9 +1,9 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://world/areas/map_base.gd" id="1_map"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_01_all.ase_layer_tex" id="L00"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_02_path.ase_layer_tex" id="L01"]
-[ext_resource type="Texture2D" path="res://assets/maps/layers/yard/yard_98_foreground.ase_layer_tex" id="L02"]
+[ext_resource type="Texture2D" path="res://assets/maps/yard/01_all.png" id="L00"]
+[ext_resource type="Texture2D" path="res://assets/maps/yard/02_path.png" id="L01"]
+[ext_resource type="Texture2D" path="res://assets/maps/yard/98_foreground.png" id="L02"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 

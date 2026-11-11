@@ -36,7 +36,7 @@ Cách đọc mỗi mục:
 
 | File | Vai trò |
 |---|---|
-| `gameplay/player/player.tscn` | `CharacterBody2D` + `AnimatedSprite2D` (Idle/Walk/Run từ `minh_regular.aseprite`) + `CollisionShape2D` + `InteractionArea` + `Camera2D` + `InteractionPrompt` |
+| `gameplay/player/player.tscn` | `CharacterBody2D` + `AnimatedSprite2D` (Idle/Walk/Run: `assets/characters/minh/minh_regular_frames.tres`) + `CollisionShape2D` + `InteractionArea` + `Camera2D` + `InteractionPrompt` |
 | `gameplay/player/player.gd` | Di chuyển, animation, chọn vật tương tác, khoá điều khiển |
 | `data/npcs/minh.tres` | Tên + màu khung thoại của Minh |
 
@@ -139,9 +139,9 @@ Map riêng cho minigame / sự kiện (không nối): `phong_minh_o_thanh_pho`, 
 **Parallax:** layer trôi dùng node `Parallax2D` (`scroll_scale`, `repeat_size`, `autoscroll`), chỉnh trong Inspector, không viết script.
 
 **Dùng thế nào (dựng một map)**
-1. Vẽ map trong Aseprite, layer đặt tên `NN_Ten_layer`, lưu ở `assets/maps/<map_id>.aseprite`.
-2. Import *Texture (Split By Layer)*, `output/layers_resources_folder = res://assets/maps/layers/<map_id>`, `exclude_layers_pattern = "lua:[0-9]+:"`.
-3. Tạo scene mới **kế thừa cấu trúc như trên**, kéo texture layer vào `Background` / `Foreground`.
+1. Vẽ map trong Aseprite, layer đặt tên `NN_Ten_layer`, lưu ở `art_source/maps/<map_id>.aseprite`.
+2. Chạy `python tools/export_art.py art_source/maps/<map_id>.aseprite` → mỗi layer thành `assets/maps/<map_id>/<layer>.png`.
+3. Tạo scene mới **theo cấu trúc như trên**, kéo PNG vào `Background` / `Foreground` (`centered` tắt, vị trí `(0, 0)`).
 4. Thêm `Bounds`, `Spawns`, `Exits`. Đặt `map_id` trùng tên thư mục.
 
 **Xong khi:** đi qua lại giữa 2 map bằng mép map và cửa, đúng chỗ xuất hiện, có fade, cửa có điều kiện chặn đúng, camera không lộ ra ngoài map.
@@ -309,7 +309,7 @@ SaveManager.new_game()         # xoá GameState về mặc định, vào chươn
 | `narrative/npc/npc.tscn` / `npc.gd` | NPC dùng chung: gán `data` + `appear_condition`; tự đếm `npc.<id>.talks`; quay mặt về Minh | ✅ |
 | `narrative/npc/characters/<id>/<id>.tscn` | Instance NPC đã gán `data` | ✅ Ông Nội |
 | `addons/dialogue_manager/` | Chạy file `.dialogue`: điều kiện, lựa chọn, lệnh `do` | ✅ |
-| `narrative/dialogue/dialogue_balloon.tscn` | Khung `dialogue_box.aseprite`, tên + lời, chữ chạy, đuôi chỉ người nói, viền đổi màu, mũi tên ▼ | ✅ |
+| `narrative/dialogue/dialogue_balloon.tscn` | Khung `assets/ui/dialogue_box.png`, tên + lời, chữ chạy, đuôi chỉ người nói, viền đổi màu, mũi tên ▼ | ✅ |
 | `data/dialogues/<id>.dialogue` | Lời thoại | 🟡 Ông Nội |
 
 **Quy ước file `.dialogue`**
@@ -336,8 +336,8 @@ Minh: (câu nội tâm để trong ngoặc)
 - Nhớ đoạn đã nghe: `do npc_set("ong_noi", "heard_intro", true)`.
 
 **Thêm một NPC mới (không code)**
-1. Aseprite: `assets/characters/<id>/<id>_idle.aseprite`, tag `Idle` (import *SpriteFrames*).
-2. `data/npcs/<id>.tres` (New Resource → NpcData): tên, màu, sprite, file hội thoại.
+1. Aseprite: `art_source/characters/<id>/<id>_idle.aseprite`, tag `Idle` → `python tools/export_art.py` → được `assets/characters/<id>/<id>_idle_frames.tres`.
+2. `data/npcs/<id>.tres` (New Resource → NpcData): tên, màu, sprite (`…_frames.tres`), file hội thoại.
 3. `data/dialogues/<id>.dialogue` có cue `start`.
 4. Chuột phải `narrative/npc/npc.tscn` → *New Inherited Scene* → gán `data` → lưu `narrative/npc/characters/<id>/<id>.tscn`.
 5. Kéo vào `NPCs` của map, đặt `appear_condition` (hoặc lịch – hệ thống 3).
@@ -545,7 +545,7 @@ MinigameSpot (E) hoặc .dialogue: do MinigameManager.start("fishing", {"target"
 
 ## 11. Bạn đồng hành – Bé Na
 
-> **Đã làm (bản đầu):** nhân vật **An** (`assets/characters/an/an.aseprite`) đi theo Minh.
+> **Đã làm (bản đầu):** nhân vật **An** (`art_source/characters/an/an.aseprite` → `assets/characters/an/an_frames.tres`) đi theo Minh.
 > - Bật / tắt bằng cờ **`npc.an.following`**: trong `.dialogue` viết `do npc_set("an", "following", true)` / `false`. Bản debug: phím **F2** bật / tắt nhanh.
 > - Scene `gameplay/companion/an_companion.tscn` (kế thừa `npc.tscn`, `appear_condition = "npc_get('an', 'following', false)"`) + component `gameplay/companion/follower.gd`; dữ liệu `data/npcs/an.tres`, thoại tạm `data/dialogues/an.dialogue`.
 > - `Main` tạo An làm con của `World` nên đổi map vẫn còn; sau mỗi lần đổi map An đứng ngay sau lưng Minh.

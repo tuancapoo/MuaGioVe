@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://du0nkosruuudt"]
 
 [ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
-[ext_resource type="Texture2D" uid="uid://brnakkovafffn" path="res://assets/maps/layers/living_room/living_room_01_wall.ase_layer_tex" id="L00"]
-[ext_resource type="Texture2D" uid="uid://dcfm4wovaewl0" path="res://assets/maps/layers/living_room/living_room_02_ground.ase_layer_tex" id="L01"]
-[ext_resource type="Texture2D" uid="uid://df43q34j1ktoa" path="res://assets/maps/layers/living_room/living_room_03_bedroom_door.ase_layer_tex" id="L02"]
-[ext_resource type="Texture2D" uid="uid://dj1t1oal8in6m" path="res://assets/maps/layers/living_room/living_room_04_TV_CABINET.ase_layer_tex" id="L03"]
-[ext_resource type="Texture2D" uid="uid://cta4vo71ngke" path="res://assets/maps/layers/living_room/living_room_08_fore_gound_cabinet.ase_layer_tex" id="L04"]
-[ext_resource type="Texture2D" uid="uid://6jkcg2wyuyc" path="res://assets/maps/layers/living_room/living_room_09_foreground_char_table.ase_layer_tex" id="L05"]
+[ext_resource type="Texture2D" path="res://assets/maps/living_room/01_wall.png" id="L00"]
+[ext_resource type="Texture2D" path="res://assets/maps/living_room/02_ground.png" id="L01"]
+[ext_resource type="Texture2D" path="res://assets/maps/living_room/03_bedroom_door.png" id="L02"]
+[ext_resource type="Texture2D" path="res://assets/maps/living_room/04_TV_CABINET.png" id="L03"]
+[ext_resource type="Texture2D" path="res://assets/maps/living_room/08_fore_gound_cabinet.png" id="L04"]
+[ext_resource type="Texture2D" path="res://assets/maps/living_room/09_foreground_char_table.png" id="L05"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 

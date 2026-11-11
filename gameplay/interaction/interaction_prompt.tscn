@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://gameplay/interaction/interaction_prompt.gd" id="1_prompt"]
-[ext_resource type="Texture2D" path="res://assets/ui/question.aseprite" id="2_question"]
+[ext_resource type="Texture2D" path="res://assets/ui/question.png" id="2_question"]
 
 [node name="InteractionPrompt" type="Node2D"]
 z_index = 100
