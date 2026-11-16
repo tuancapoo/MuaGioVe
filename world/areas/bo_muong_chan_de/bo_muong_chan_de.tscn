@@ -15,6 +15,27 @@
 [ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/12_Co_tien_canh.png" id="L11"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="Shader" path="res://world/effects/water.gdshader" id="W_shader"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/lake_wavelet.mp3" id="A_amb"]
+
+[sub_resource type="ShaderMaterial" id="W_surface"]
+shader = ExtResource("W_shader")
+shader_parameter/fps = 6.0
+shader_parameter/water_top = 303.0
+shader_parameter/col_wave = 1.0
+shader_parameter/wave_length = 18.0
+shader_parameter/wave_speed = 2.0
+
+[sub_resource type="ShaderMaterial" id="W_ripples"]
+shader = ExtResource("W_shader")
+shader_parameter/fps = 8.0
+shader_parameter/water_top = 303.0
+shader_parameter/flow_speed = -6.0
+shader_parameter/row_wave = 1.0
+shader_parameter/wave_speed = 3.0
+shader_parameter/sparkle = 0.3
+shader_parameter/sparkle_block = 6.0
+shader_parameter/sparkle_rate = 2.5
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1232, 40)
@@ -33,6 +54,7 @@ script = ExtResource("1_map")
 map_id = "bo_muong_chan_de"
 map_name = "Bờ mương chân đê"
 map_size = Vector2i(1152, 384)
+ambience = ExtResource("A_amb")
 
 [node name="Background" type="Node2D" parent="." unique_id=442734121]
 z_index = -10
@@ -87,10 +109,12 @@ texture = ExtResource("L07")
 centered = false
 
 [node name="09_Mat_nuoc_muong" type="Sprite2D" parent="Background" unique_id=616124074]
+material = SubResource("W_surface")
 texture = ExtResource("L08")
 centered = false
 
 [node name="10_Bong_va_song_nuoc" type="Sprite2D" parent="Background" unique_id=572935492]
+material = SubResource("W_ripples")
 texture = ExtResource("L09")
 centered = false
 

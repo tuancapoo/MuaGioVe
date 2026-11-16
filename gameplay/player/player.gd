@@ -13,6 +13,18 @@ signal interactable_changed(target: Node)
 @export var acceleration: float = 1500.0
 @export var friction: float = 2000.0
 
+@export_group("Tiếng bước chân")
+## Tiếng mặc định (map đổi lại qua footstep_surface → set_footstep_surface)
+@export var walk_sound: AudioStream = preload("res://assets/audio/sfx/footsteps/stone_walk.mp3")
+@export var run_sound: AudioStream = preload("res://assets/audio/sfx/footsteps/stone_run.mp3")
+@export_range(-40.0, 12.0, 0.5, "suffix:dB") var footstep_volume_db: float = -12.0
+## Bỏ qua đoạn đầu file (giây) nếu file có khoảng lặng ở đầu
+@export var walk_sound_offset: float = 0.0
+@export var run_sound_offset: float = 0.0
+## Bus âm thanh (dùng "SFX" nếu đã tạo bus này, không thì "Master")
+@export var footstep_bus: StringName = &"SFX"
+@export_group("")
+
 ## Tên + màu khung thoại của Minh (res://data/npcs/minh.tres).
 @export var npc_data: NpcData = preload("res://data/npcs/minh.tres")
 
@@ -25,6 +37,8 @@ var dialogue_color: Color:
 var can_move: bool = true
 
 var _nearby: Array[Node] = []
+var _footsteps: AudioStreamPlayer
+const FOOTSTEP_PATH := "res://assets/audio/sfx/footsteps/%s_%s.mp3"
 var _current_target: Node = null
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
@@ -41,6 +55,7 @@ func _ready() -> void:
 	interaction_area.area_exited.connect(_on_area_exited)
 	interaction_area.body_entered.connect(_on_area_entered)
 	interaction_area.body_exited.connect(_on_area_exited)
+	_setup_footsteps()
 
 
 func _physics_process(delta: float) -> void:
@@ -59,6 +74,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	_update_animation(direction, is_running)
+	_update_footsteps(direction != 0.0 and is_on_floor() and absf(velocity.x) > 10.0, is_running)
 	_update_interact_target()
 
 
@@ -81,6 +97,54 @@ func _update_animation(direction: float, is_running: bool) -> void:
 func _play(anim_name: StringName) -> void:
 	if anim.animation != anim_name:
 		anim.play(anim_name)
+
+
+# --- Tiếng bước chân ----------------------------------------------------------
+
+func _setup_footsteps() -> void:
+	_footsteps = AudioStreamPlayer.new()
+	_footsteps.name = "Footsteps"
+	_footsteps.volume_db = footstep_volume_db
+	_footsteps.bus = footstep_bus if AudioServer.get_bus_index(footstep_bus) != -1 else &"Master"
+	add_child(_footsteps)
+	_make_loop(walk_sound)
+	_make_loop(run_sound)
+
+
+## Map gọi khi Minh vào map: "dirt" / "grass" / "stone" / "tile".
+## Thiếu file của mặt nào thì giữ tiếng đang dùng.
+func set_footstep_surface(surface: String) -> void:
+	var walk := FOOTSTEP_PATH % [surface, "walk"]
+	var run := FOOTSTEP_PATH % [surface, "run"]
+	if ResourceLoader.exists(walk):
+		walk_sound = _make_loop(load(walk))
+	if ResourceLoader.exists(run):
+		run_sound = _make_loop(load(run))
+	if _footsteps and _footsteps.playing:
+		_footsteps.stop() # frame sau _update_footsteps phát lại đúng tiếng mới
+
+
+func _make_loop(s: AudioStream) -> AudioStream:
+	if s is AudioStreamMP3 or s is AudioStreamOggVorbis:
+		s.loop = true # phát lặp liên tục khi còn đi / chạy
+	elif s is AudioStreamWAV:
+		s.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	return s
+
+
+## Đang đi → tiếng đi; đang chạy → tiếng chạy; đứng yên / bị khoá → tắt.
+func _update_footsteps(moving: bool, running: bool) -> void:
+	if not moving:
+		if _footsteps.playing:
+			_footsteps.stop()
+		return
+	var stream := run_sound if running else walk_sound
+	if stream == null:
+		_footsteps.stop()
+		return
+	if _footsteps.stream != stream or not _footsteps.playing:
+		_footsteps.stream = stream
+		_footsteps.play(run_sound_offset if running else walk_sound_offset)
 
 
 ## Điểm đuôi khung thoại chỉ vào khi Minh nói (trên đầu).

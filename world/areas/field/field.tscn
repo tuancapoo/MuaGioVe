@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" path="res://assets/maps/lang_que_loop/93_Cay_than_manh_tien_canh.png" id="L93"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/summer_field.mp3" id="A_amb"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(4608, 40)
@@ -32,6 +33,7 @@ size = Vector2(64.0, 120.0)
 [node name="Field" type="Node2D" unique_id=1273733710]
 script = ExtResource("1_map")
 map_name = "Làng quê"
+ambience = ExtResource("A_amb")
 
 [node name="Background" type="Node2D" parent="." unique_id=1224648000]
 z_index = -10

@@ -58,3 +58,8 @@ do set_flag("thanked_pipe")
 ~ idle
 Ông Nội: Ừ, ông đây.
 => END
+
+# Minh đưa cái kẹp cho ông (chọn món "Cái kẹp" trên thanh chọn khi đứng cạnh ông)
+~ give_pipe_clamp
+Ông Nội: Ồ, cái kẹp đây rồi! Con giữ giùm ông, lát mình sửa vòi.
+=> END

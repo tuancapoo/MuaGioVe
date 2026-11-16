@@ -7,6 +7,13 @@ extends Node2D
 ## Chỉ hiện / đi theo khi cờ npc.an.following = true.
 @export var companion_scene: PackedScene = preload("res://gameplay/companion/an_companion.tscn")
 
+## Giao diện tạo sẵn khi vào game (không đặt trong main.tscn để tránh sửa chung 1 scene)
+const UI_SCRIPTS := [
+	preload("res://ui/action_wheel/action_wheel.gd"),   # vòng chọn Xem / Nhặt / Dùng đồ
+	preload("res://ui/inventory/inventory_panel.gd"),   # Túi đồ (Tab)
+	preload("res://ui/hud/toast.gd"),                   # thông báo góc màn hình
+]
+
 @onready var world: Node2D = $World
 @onready var player: Player = $Player
 
@@ -15,6 +22,10 @@ var companion: Node2D
 
 
 func _ready() -> void:
+	for script in UI_SCRIPTS:
+		var ui: Node = script.new()
+		ui.name = script.resource_path.get_file().get_basename().to_pascal_case()
+		add_child(ui)
 	if companion_scene:
 		companion = companion_scene.instantiate()
 		world.add_child(companion)

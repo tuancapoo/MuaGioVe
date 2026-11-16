@@ -1,18 +1,57 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://8n1nwpxmut32"]
 
-[ext_resource type="Script" path="res://world/areas/map_base.gd" id="1_map"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/01_Bau_troi.png" id="L00"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/02_May.png" id="L01"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/03_Mat_troi.png" id="L02"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/04_Mat_nuoc.png" id="L03"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/05_Bo_xa.png" id="L04"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/06_Anh_phan_chieu.png" id="L05"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/07_Bo_de_co.png" id="L06"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/08_Duong_mon.png" id="L07"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/09_Co_tien_canh.png" id="L08"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_de_hoang_hon/90_Tien_canh_truoc_duong.png" id="L09"]
-[ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
-[ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="AudioStream" uid="uid://jyen8jp3w3gc" path="res://assets/audio/ambience/soft_wind.mp3" id="A_amb"]
+[ext_resource type="Shader" uid="uid://b5hcic0i07sss" path="res://world/effects/grass_wind.gdshader" id="G_shader"]
+[ext_resource type="Texture2D" uid="uid://xvyf5munfjik" path="res://assets/maps/bo_de_hoang_hon/01_Bau_troi.png" id="L00"]
+[ext_resource type="Texture2D" uid="uid://bhd034if1vbmk" path="res://assets/maps/bo_de_hoang_hon/02_May.png" id="L01"]
+[ext_resource type="Texture2D" uid="uid://deyamhipd8hga" path="res://assets/maps/bo_de_hoang_hon/03_Mat_troi.png" id="L02"]
+[ext_resource type="Texture2D" uid="uid://cfc4rpc263gyb" path="res://assets/maps/bo_de_hoang_hon/04_Mat_nuoc.png" id="L03"]
+[ext_resource type="Texture2D" uid="uid://bmbaylktyxdjs" path="res://assets/maps/bo_de_hoang_hon/05_Bo_xa.png" id="L04"]
+[ext_resource type="Texture2D" uid="uid://dlkgy2ae616jo" path="res://assets/maps/bo_de_hoang_hon/06_Anh_phan_chieu.png" id="L05"]
+[ext_resource type="Texture2D" uid="uid://bnbvcakoc3n7s" path="res://assets/maps/bo_de_hoang_hon/07_Bo_de_co.png" id="L06"]
+[ext_resource type="Texture2D" uid="uid://cpm03k5spewi1" path="res://assets/maps/bo_de_hoang_hon/08_Duong_mon.png" id="L07"]
+[ext_resource type="Texture2D" uid="uid://cql5todtdm76p" path="res://assets/maps/bo_de_hoang_hon/09_Co_tien_canh.png" id="L08"]
+[ext_resource type="Texture2D" uid="uid://cq4wgersk313w" path="res://assets/maps/bo_de_hoang_hon/90_Tien_canh_truoc_duong.png" id="L09"]
+[ext_resource type="Script" uid="uid://dqygk1gs7fmjq" path="res://world/transitions/map_exit.gd" id="T_exit"]
+[ext_resource type="Shader" uid="uid://d36163wfy83f4" path="res://world/effects/water.gdshader" id="W_shader"]
+
+[sub_resource type="ShaderMaterial" id="W_lake"]
+shader = ExtResource("W_shader")
+shader_parameter/fps = 6.0
+shader_parameter/water_top = 181.0
+shader_parameter/flow_speed = -3.0
+shader_parameter/row_wave = 1.0
+shader_parameter/col_wave = 0.0
+shader_parameter/wave_length = 14.0
+shader_parameter/wave_speed = 2.0
+shader_parameter/sparkle = 0.0
+shader_parameter/sparkle_block = 6.0
+shader_parameter/sparkle_rate = 3.0
+
+[sub_resource type="ShaderMaterial" id="W_reflect"]
+shader = ExtResource("W_shader")
+shader_parameter/fps = 8.0
+shader_parameter/water_top = 182.0
+shader_parameter/flow_speed = 0.0
+shader_parameter/row_wave = 2.0
+shader_parameter/col_wave = 0.0
+shader_parameter/wave_length = 14.0
+shader_parameter/wave_speed = 3.0
+shader_parameter/sparkle = 0.25
+shader_parameter/sparkle_block = 4.0
+shader_parameter/sparkle_rate = 3.0
+
+[sub_resource type="ShaderMaterial" id="G_dyke"]
+shader = ExtResource("G_shader")
+shader_parameter/fps = 8.0
+shader_parameter/grass_top = 0.0
+shader_parameter/sway = 1.0
+shader_parameter/sway_length = 48.0
+shader_parameter/sway_speed = 1.6
+shader_parameter/gust = 1.0
+shader_parameter/gust_width = 260.0
+shader_parameter/gust_speed = 70.0
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1232, 40)
@@ -21,117 +60,130 @@ size = Vector2(1232, 40)
 size = Vector2(20, 504)
 
 [sub_resource type="RectangleShape2D" id="T_edge_shape"]
-size = Vector2(48.0, 240.0)
+size = Vector2(48, 240)
 
-[sub_resource type="RectangleShape2D" id="T_door_shape"]
-size = Vector2(64.0, 120.0)
+[sub_resource type="ShaderMaterial" id="G_front"]
+shader = ExtResource("G_shader")
+shader_parameter/fps = 8.0
+shader_parameter/grass_top = 0.0
+shader_parameter/sway = 1.0
+shader_parameter/sway_length = 48.0
+shader_parameter/sway_speed = 1.6
+shader_parameter/gust = 2.0
+shader_parameter/gust_width = 260.0
+shader_parameter/gust_speed = 70.0
 
-[node name="BoDeHoangHon" type="Node2D"]
+[node name="BoDeHoangHon" type="Node2D" unique_id=1599895899]
 script = ExtResource("1_map")
 map_id = "bo_de_hoang_hon"
 map_name = "Bờ đê hoàng hôn"
 map_size = Vector2i(1152, 384)
+ambience = ExtResource("A_amb")
 
-[node name="Background" type="Node2D" parent="."]
+[node name="Background" type="Node2D" parent="." unique_id=1776218140]
 z_index = -10
 texture_filter = 1
 
-[node name="01_Bau_troi" type="Parallax2D" parent="Background"]
+[node name="01_Bau_troi" type="Parallax2D" parent="Background" unique_id=356815346]
 scroll_scale = Vector2(0.1, 1)
 repeat_size = Vector2(1152, 0)
 repeat_times = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/01_Bau_troi"]
+[node name="Sprite2D" type="Sprite2D" parent="Background/01_Bau_troi" unique_id=1365435838]
 texture = ExtResource("L00")
 centered = false
 
-[node name="02_May" type="Parallax2D" parent="Background"]
+[node name="02_May" type="Parallax2D" parent="Background" unique_id=143961146]
 scroll_scale = Vector2(0.2, 1)
 repeat_size = Vector2(1152, 0)
-repeat_times = 3
 autoscroll = Vector2(-8, 0)
+repeat_times = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/02_May"]
+[node name="Sprite2D" type="Sprite2D" parent="Background/02_May" unique_id=925181364]
 texture = ExtResource("L01")
 centered = false
 
-[node name="03_Mat_troi" type="Parallax2D" parent="Background"]
+[node name="03_Mat_troi" type="Parallax2D" parent="Background" unique_id=898423887]
 scroll_scale = Vector2(0.15, 1)
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/03_Mat_troi"]
+[node name="Sprite2D" type="Sprite2D" parent="Background/03_Mat_troi" unique_id=1356949081]
 texture = ExtResource("L02")
 centered = false
 
-[node name="04_Mat_nuoc" type="Sprite2D" parent="Background"]
+[node name="04_Mat_nuoc" type="Sprite2D" parent="Background" unique_id=1241557775]
+material = SubResource("W_lake")
 texture = ExtResource("L03")
 centered = false
 
-[node name="05_Bo_xa" type="Sprite2D" parent="Background"]
+[node name="05_Bo_xa" type="Sprite2D" parent="Background" unique_id=1782477750]
 texture = ExtResource("L04")
 centered = false
 
-[node name="06_Anh_phan_chieu" type="Sprite2D" parent="Background"]
+[node name="06_Anh_phan_chieu" type="Sprite2D" parent="Background" unique_id=1293224139]
+material = SubResource("W_reflect")
 texture = ExtResource("L05")
 centered = false
 
-[node name="07_Bo_de_co" type="Sprite2D" parent="Background"]
+[node name="07_Bo_de_co" type="Sprite2D" parent="Background" unique_id=1020691926]
+material = SubResource("G_dyke")
 texture = ExtResource("L06")
 centered = false
 
-[node name="08_Duong_mon" type="Sprite2D" parent="Background"]
+[node name="08_Duong_mon" type="Sprite2D" parent="Background" unique_id=557511894]
 texture = ExtResource("L07")
 centered = false
 
-[node name="Bounds" type="StaticBody2D" parent="."]
+[node name="Bounds" type="StaticBody2D" parent="." unique_id=903856220]
 
-[node name="Ground" type="CollisionShape2D" parent="Bounds"]
-position = Vector2(576.0, 336)
+[node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=88744961]
+position = Vector2(576, 336)
 shape = SubResource("Shape_ground")
 
-[node name="WallLeft" type="CollisionShape2D" parent="Bounds"]
-position = Vector2(-10, 192.0)
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds" unique_id=73198045]
+position = Vector2(-10, 192)
 shape = SubResource("Shape_wall")
 
-[node name="WallRight" type="CollisionShape2D" parent="Bounds"]
-position = Vector2(1162, 192.0)
+[node name="WallRight" type="CollisionShape2D" parent="Bounds" unique_id=1324432939]
+position = Vector2(1162, 192)
 shape = SubResource("Shape_wall")
 
-[node name="PlayerSpawn" type="Marker2D" parent="."]
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=2102366841]
 position = Vector2(80, 316)
 
-[node name="Spawns" type="Node2D" parent="."]
+[node name="Spawns" type="Node2D" parent="." unique_id=1369508682]
 
-[node name="Markers" type="Node2D" parent="."]
+[node name="from_field" type="Marker2D" parent="Spawns" unique_id=1619764048]
+position = Vector2(110, 316)
 
-[node name="NPCs" type="Node2D" parent="."]
+[node name="Markers" type="Node2D" parent="." unique_id=1781598636]
 
-[node name="Objects" type="Node2D" parent="."]
+[node name="NPCs" type="Node2D" parent="." unique_id=1372872119]
 
-[node name="Collectibles" type="Node2D" parent="."]
+[node name="Objects" type="Node2D" parent="." unique_id=1239892026]
 
-[node name="Exits" type="Node2D" parent="."]
+[node name="Collectibles" type="Node2D" parent="." unique_id=1535522919]
 
-[node name="Foreground" type="Node2D" parent="."]
-z_index = 50
-texture_filter = 1
+[node name="Exits" type="Node2D" parent="." unique_id=1957668039]
 
-[node name="09_Co_tien_canh" type="Sprite2D" parent="Foreground"]
-texture = ExtResource("L08")
-centered = false
-
-[node name="90_Tien_canh_truoc_duong" type="Sprite2D" parent="Foreground"]
-texture = ExtResource("L09")
-centered = false
-
-[node name="To_field" type="Area2D" parent="Exits"]
-position = Vector2(24.0, 196.0)
+[node name="To_field" type="Area2D" parent="Exits" unique_id=1395740857]
+position = Vector2(24, 196)
 script = ExtResource("T_exit")
 target_map = "field"
 target_spawn = "from_bo_de_hoang_hon"
 direction = -1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_field"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/To_field" unique_id=1872043281]
 shape = SubResource("T_edge_shape")
 
-[node name="from_field" type="Marker2D" parent="Spawns"]
-position = Vector2(110.0, 316.0)
+[node name="Foreground" type="Node2D" parent="." unique_id=1688147292]
+z_index = 50
+texture_filter = 1
+
+[node name="09_Co_tien_canh" type="Sprite2D" parent="Foreground" unique_id=1738072075]
+material = SubResource("G_front")
+texture = ExtResource("L08")
+centered = false
+
+[node name="90_Tien_canh_truoc_duong" type="Sprite2D" parent="Foreground" unique_id=874028396]
+texture = ExtResource("L09")
+centered = false

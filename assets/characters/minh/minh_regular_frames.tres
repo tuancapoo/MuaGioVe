@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://c1esgisde53qm"]
 
-[ext_resource type="Texture2D" path="res://assets/characters/minh/minh_regular.png" id="1_sheet"]
+[ext_resource type="Texture2D" uid="uid://dc8f0sc6is7j2" path="res://assets/characters/minh/minh_regular.png" id="1_sheet"]
 
 [sub_resource type="AtlasTexture" id="f0"]
 atlas = ExtResource("1_sheet")
@@ -34,6 +34,34 @@ region = Rect2(768, 0, 128, 128)
 atlas = ExtResource("1_sheet")
 region = Rect2(896, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="f16"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2048, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f17"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2176, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f18"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2304, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f19"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2432, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f20"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2560, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f21"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2688, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f22"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2816, 0, 128, 128)
+
 [sub_resource type="AtlasTexture" id="f8"]
 atlas = ExtResource("1_sheet")
 region = Rect2(1024, 0, 128, 128)
@@ -66,34 +94,6 @@ region = Rect2(1792, 0, 128, 128)
 atlas = ExtResource("1_sheet")
 region = Rect2(1920, 0, 128, 128)
 
-[sub_resource type="AtlasTexture" id="f16"]
-atlas = ExtResource("1_sheet")
-region = Rect2(2048, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="f17"]
-atlas = ExtResource("1_sheet")
-region = Rect2(2176, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="f18"]
-atlas = ExtResource("1_sheet")
-region = Rect2(2304, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="f19"]
-atlas = ExtResource("1_sheet")
-region = Rect2(2432, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="f20"]
-atlas = ExtResource("1_sheet")
-region = Rect2(2560, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="f21"]
-atlas = ExtResource("1_sheet")
-region = Rect2(2688, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="f22"]
-atlas = ExtResource("1_sheet")
-region = Rect2(2816, 0, 128, 128)
-
 [resource]
 animations = [{
 "frames": [{
@@ -121,8 +121,34 @@ animations = [{
 "duration": 2.4,
 "texture": SubResource("f7")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 2.4,
+"texture": SubResource("f16")
+}, {
+"duration": 2.4,
+"texture": SubResource("f17")
+}, {
+"duration": 2.4,
+"texture": SubResource("f18")
+}, {
+"duration": 2.4,
+"texture": SubResource("f19")
+}, {
+"duration": 2.4,
+"texture": SubResource("f20")
+}, {
+"duration": 2.4,
+"texture": SubResource("f21")
+}, {
+"duration": 2.4,
+"texture": SubResource("f22")
+}],
+"loop": 1,
+"name": &"Run",
 "speed": 10.0
 }, {
 "frames": [{
@@ -150,33 +176,7 @@ animations = [{
 "duration": 2.4,
 "texture": SubResource("f15")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Walk",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 2.4,
-"texture": SubResource("f16")
-}, {
-"duration": 2.4,
-"texture": SubResource("f17")
-}, {
-"duration": 2.4,
-"texture": SubResource("f18")
-}, {
-"duration": 2.4,
-"texture": SubResource("f19")
-}, {
-"duration": 2.4,
-"texture": SubResource("f20")
-}, {
-"duration": 2.4,
-"texture": SubResource("f21")
-}, {
-"duration": 2.4,
-"texture": SubResource("f22")
-}],
-"loop": true,
-"name": &"Run",
 "speed": 10.0
 }]

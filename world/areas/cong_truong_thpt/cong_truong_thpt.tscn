@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" path="res://assets/maps/cong_truong_thpt/99_Tien_canh_Ninja_Lead.png" id="L08"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/street_traffic.mp3" id="A_amb"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1039, 40)
@@ -30,6 +31,8 @@ script = ExtResource("1_map")
 map_id = "cong_truong_thpt"
 map_name = "Cổng trường THPT"
 map_size = Vector2i(959, 384)
+ambience = ExtResource("A_amb")
+ambience_volume_db = -12.0
 
 [node name="Background" type="Node2D" parent="." unique_id=1709381866]
 z_index = -10

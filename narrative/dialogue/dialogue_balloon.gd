@@ -22,6 +22,9 @@ const ARROW_REGION := Rect2(483, 86, 10, 6)
 const ARROW_FROM_RIGHT := 30.0
 const ARROW_FROM_BOTTOM := 18.0
 const SCREEN_MARGIN := 24.0
+## Bề rộng khung: co theo độ dài câu, trong khoảng này (px màn hình)
+const MIN_WIDTH := 420.0
+const MAX_WIDTH := 1100.0
 
 @export var dialogue_resource: DialogueResource
 @export var start_from_cue: String = ""
@@ -30,6 +33,20 @@ const SCREEN_MARGIN := 24.0
 @export var default_color: Color = Color(0.51, 0.49, 0.72)
 ## Màu cho nhân vật không có mặt trong scene (vd. "Bố" gọi điện).
 @export var speaker_colors: Dictionary = {}
+
+@export_group("Tiếng gõ chữ")
+## Mỗi chữ hiện ra phát ngẫu nhiên 1 tiếng trong danh sách (khoảng trắng thì im)
+@export var type_sounds: Array[AudioStream] = [
+	preload("res://assets/audio/sfx/typing/key_01.wav"),
+	preload("res://assets/audio/sfx/typing/key_02.wav"),
+	preload("res://assets/audio/sfx/typing/key_03.wav"),
+	preload("res://assets/audio/sfx/typing/key_04.wav"),
+]
+@export_range(-40.0, 12.0, 0.5, "suffix:dB") var type_volume_db: float = -14.0
+## Cao độ dao động ngẫu nhiên ± giá trị này để nghe tự nhiên
+@export_range(0.0, 0.3, 0.01) var type_pitch_jitter: float = 0.08
+@export var type_sound_bus: StringName = &"SFX"
+@export_group("")
 
 var temporary_game_states: Array = []
 var is_waiting_for_input := false
@@ -47,6 +64,9 @@ var dialogue_line: DialogueLine:
 		return dialogue_line
 
 var _speaker: Node2D = null
+var _box_width := MAX_WIDTH
+var _type_players: Array[AudioStreamPlayer] = []
+var _type_next_player := 0
 var _mutation_cooldown := Timer.new()
 var _arrow_time := 0.0
 
@@ -72,6 +92,7 @@ func _ready() -> void:
 	add_child(_mutation_cooldown)
 	# Khung & đuôi dùng chung một material để đổi màu cùng lúc.
 	tail.material = frame.material
+	_setup_type_sound()
 
 
 func _unhandled_input(_event: InputEvent) -> void:
@@ -117,6 +138,7 @@ func apply_dialogue_line() -> void:
 	dialogue_label.dialogue_line = dialogue_line
 	responses_menu.hide()
 	responses_menu.responses = dialogue_line.responses
+	_box_width = _fit_width()
 
 	panel.show()
 	panel.focus_mode = Control.FOCUS_ALL
@@ -179,10 +201,10 @@ func _apply_color(color: Color) -> void:
 
 func _layout() -> void:
 	var view := get_viewport().get_visible_rect().size
-	var width := minf(FRAME_REGION.size.x * PIXEL, view.x - SCREEN_MARGIN * 2)
-	var min_height := FRAME_REGION.size.y * PIXEL
+	var width := minf(_box_width, view.x - SCREEN_MARGIN * 2)
 	content.size.x = width
-	var height := maxf(min_height, content.get_combined_minimum_size().y)
+	content.size.y = 0.0
+	var height := content.get_combined_minimum_size().y
 	panel.size = Vector2(width, height)
 	content.size = panel.size
 	frame.size = panel.size / PIXEL
@@ -207,6 +229,43 @@ func _layout() -> void:
 		# Không có người nói trong scene (dẫn truyện) → khung ở giữa dưới màn hình.
 		panel.position = Vector2((view.x - width) * 0.5, view.y - height - SCREEN_MARGIN * 2)
 		tail.visible = false
+
+
+## Bề rộng vừa câu thoại (1 dòng nếu ngắn), không quá MAX_WIDTH.
+func _fit_width() -> float:
+	var font := dialogue_label.get_theme_font(&"normal_font")
+	var size := dialogue_label.get_theme_font_size(&"normal_font_size")
+	var plain := RegEx.create_from_string("\\[[^\\]]*\\]").sub(dialogue_line.text, "", true)
+	var text_w := font.get_string_size(plain, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+	if name_label.visible:
+		text_w = maxf(text_w, name_label.get_theme_font(&"font").get_string_size(name_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x)
+	for r in dialogue_line.responses:
+		text_w = maxf(text_w, font.get_string_size(r.text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x)
+	var pad := float(content.get_theme_constant(&"margin_left") + content.get_theme_constant(&"margin_right"))
+	return clampf(ceilf(text_w + pad + 4.0), MIN_WIDTH, MAX_WIDTH)
+
+
+# --- Tiếng gõ chữ ------------------------------------------------------------------
+
+func _setup_type_sound() -> void:
+	var bus := type_sound_bus if AudioServer.get_bus_index(type_sound_bus) != -1 else &"Master"
+	for i in 4: # vài player xoay vòng để tiếng trước không bị cắt cụt
+		var p := AudioStreamPlayer.new()
+		p.volume_db = type_volume_db
+		p.bus = bus
+		add_child(p)
+		_type_players.append(p)
+	dialogue_label.spoke.connect(_on_letter_spoke)
+
+
+func _on_letter_spoke(letter: String, _index: int, _speed: float) -> void:
+	if type_sounds.is_empty() or letter.strip_edges().is_empty():
+		return
+	var p := _type_players[_type_next_player]
+	_type_next_player = (_type_next_player + 1) % _type_players.size()
+	p.stream = type_sounds.pick_random()
+	p.pitch_scale = 1.0 + randf_range(-type_pitch_jitter, type_pitch_jitter)
+	p.play()
 
 
 func _arrow_base_y() -> float:

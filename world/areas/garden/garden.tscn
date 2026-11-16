@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" path="res://assets/maps/vuon_rau_giua_hai_nha/11_Co_tien_canh.png" id="L11"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="PackedScene" path="res://world/objects/world_object.tscn" id="W_obj"]
+[ext_resource type="Texture2D" path="res://assets/items/pipe_clamp.png" id="W_clamp"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(720, 40)
@@ -27,6 +29,9 @@ size = Vector2(48.0, 240.0)
 
 [sub_resource type="RectangleShape2D" id="T_door_shape"]
 size = Vector2(64.0, 120.0)
+
+[sub_resource type="RectangleShape2D" id="W_tree_shape"]
+size = Vector2(70, 110)
 
 [node name="Garden" type="Node2D" unique_id=394981013]
 script = ExtResource("1_map")
@@ -144,3 +149,26 @@ shape = SubResource("T_edge_shape")
 
 [node name="from_yard" type="Marker2D" parent="Spawns"]
 position = Vector2(530.0, 320.0)
+
+[node name="DemoClamp" parent="Collectibles" instance=ExtResource("W_obj")]
+position = Vector2(150, 320)
+object_id = "garden_demo_clamp"
+examine_text = "Một cái kẹp sắt cũ nằm lẫn trong cỏ."
+take_item = &"pipe_clamp"
+take_text = "(Cầm theo, biết đâu ông cần.)"
+
+[node name="Sprite2D" parent="Collectibles/DemoClamp" index="0"]
+texture = ExtResource("W_clamp")
+
+[node name="DemoMangoTree" parent="Objects" instance=ExtResource("W_obj")]
+position = Vector2(300, 320)
+object_id = "garden_mango_tree"
+examine_text = "Cây xoài của ông. Trái nào cũng vàng ươm.
+(Chắc ông trồng lâu lắm rồi...)"
+
+[node name="Interactable" parent="Objects/DemoMangoTree" index="1"]
+prompt_offset = Vector2(0, -130)
+
+[node name="CollisionShape2D" parent="Objects/DemoMangoTree/Interactable" index="0"]
+position = Vector2(0, -55)
+shape = SubResource("W_tree_shape")

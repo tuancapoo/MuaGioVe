@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" path="res://assets/maps/phong_minh_o_thanh_pho/item.png" id="L09"]
 [ext_resource type="Texture2D" path="res://assets/maps/phong_minh_o_thanh_pho/chair.png" id="L10"]
 [ext_resource type="Texture2D" path="res://assets/maps/phong_minh_o_thanh_pho/Tien_canh.png" id="L11"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/room.mp3" id="A_amb"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(720, 40)
@@ -23,6 +24,7 @@ size = Vector2(20, 480)
 [node name="PhongMinhOThanhPho" type="Node2D" unique_id=380822700]
 scale = Vector2(0.75, 0.75)
 script = ExtResource("1_map")
+ambience = ExtResource("A_amb")
 map_id = "phong_minh_o_thanh_pho"
 map_name = "Phòng Minh ở thành phố"
 map_size = Vector2i(480, 270)

@@ -25,6 +25,8 @@ var flags: Dictionary = {}
 ## quest_id -> "active" | "done"
 var quests: Dictionary = {}
 var wind_seeds: int = 0
+## Túi đồ: item_id -> số lượng. Thông tin vật phẩm: ItemData.get_item(id)
+var inventory: Dictionary = {}
 
 
 # --- Thời gian ------------------------------------------------------------------
@@ -106,6 +108,42 @@ func complete_quest(id: String) -> void:
 	quest_changed.emit(id, "done")
 	EventBus.quest_changed.emit(id, "done")
 	changed.emit()
+
+
+# --- Túi đồ ----------------------------------------------------------------------------
+# Gọi được cả trong .dialogue:  if has_item("pipe_clamp")  /  do remove_item("pipe_clamp")
+
+func add_item(item_id: String, amount: int = 1, notify: bool = true) -> void:
+	# Xoá rồi thêm lại để món vừa nhận luôn nằm cuối (= mới nhất) trong Dictionary
+	var total := item_count(item_id) + amount
+	inventory.erase(item_id)
+	inventory[item_id] = total
+	EventBus.item_collected.emit(StringName(item_id))
+	if notify:
+		EventBus.toast_requested.emit("Đã nhận: %s" % ItemData.name_of(item_id))
+	changed.emit()
+
+func remove_item(item_id: String, amount: int = 1) -> bool:
+	if item_count(item_id) < amount:
+		return false
+	inventory[item_id] = item_count(item_id) - amount
+	if inventory[item_id] <= 0:
+		inventory.erase(item_id)
+	EventBus.item_removed.emit(StringName(item_id))
+	changed.emit()
+	return true
+
+func has_item(item_id: String, amount: int = 1) -> bool:
+	return item_count(item_id) >= amount
+
+func item_count(item_id: String) -> int:
+	return int(inventory.get(item_id, 0))
+
+## Danh sách id đang có, MỚI NHẤT trước (món vừa nhận / nhận thêm đứng đầu)
+func item_ids() -> Array:
+	var ids := inventory.keys()
+	ids.reverse()
+	return ids
 
 
 # --- Phần thưởng ---------------------------------------------------------------------

@@ -11,8 +11,35 @@ extends Node2D
 ## Zoom camera riêng cho map này. 0 = dùng zoom mặc định của Player,
 ## tự tăng thêm nếu map thấp / hẹp hơn khung nhìn (để không lộ vùng ngoài map).
 @export var camera_zoom: float = 0.0
+## Mặt đường của map → tiếng bước chân (assets/audio/sfx/footsteps/<mặt>_walk.mp3 / _run.mp3)
+@export_enum("dirt", "grass", "stone", "tile") var footstep_surface: String = "stone"
+## Âm thanh môi trường phát lặp lại khi ở map này (assets/audio/ambience/…). Trống = im lặng.
+@export var ambience: AudioStream
+@export_range(-60, 6) var ambience_volume_db: float = -8.0
+## Thời gian to dần khi vào map (giây)
+@export var ambience_fade_in: float = 1.5
+
+var _ambience_player: AudioStreamPlayer
 
 @onready var player_spawn: Marker2D = $PlayerSpawn
+
+
+func _ready() -> void:
+	_start_ambience()
+
+
+func _start_ambience() -> void:
+	if ambience == null:
+		return
+	if "loop" in ambience:
+		ambience.loop = true   # mp3 / ogg: phát lặp liên tục
+	_ambience_player = AudioStreamPlayer.new()
+	_ambience_player.name = "Ambience"
+	_ambience_player.stream = ambience
+	_ambience_player.volume_db = -60.0
+	add_child(_ambience_player)
+	_ambience_player.play()
+	create_tween().tween_property(_ambience_player, "volume_db", ambience_volume_db, ambience_fade_in)
 
 
 ## Đặt Player vào map: dịch tới chỗ xuất hiện và giới hạn camera trong khung map.
@@ -23,6 +50,7 @@ func place_player(player: Player, spawn: String = "") -> void:
 	# Origin của Player ở giữa thân; chân cách origin ~56 px (theo CollisionShape).
 	player.global_position = marker.global_position + Vector2(0, -56)
 	player.velocity = Vector2.ZERO
+	player.set_footstep_surface(footstep_surface)
 	# Xuất hiện ở nửa phải map → quay mặt sang trái (nhìn vào trong map).
 	player.anim.flip_h = marker.global_position.x > global_position.x + map_size.x * 0.5
 	var cam := player.camera

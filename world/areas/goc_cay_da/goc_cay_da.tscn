@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" path="res://assets/maps/goc_cay_da/90_Tien_canh_truoc_duong.png" id="L11"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/village.mp3" id="A_amb"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1040, 40)
@@ -30,6 +31,7 @@ size = Vector2(64.0, 120.0)
 
 [node name="GocCayDa" type="Node2D"]
 script = ExtResource("1_map")
+ambience = ExtResource("A_amb")
 map_id = "goc_cay_da"
 map_name = "Góc cây đa"
 map_size = Vector2i(960, 384)
