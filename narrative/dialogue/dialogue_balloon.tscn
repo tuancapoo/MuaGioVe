@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://narrative/dialogue/dialogue_balloon.gd" id="1_balloon"]
-[ext_resource type="Texture2D" path="res://assets/ui/dialogue_box.aseprite" id="2_box"]
+[ext_resource type="Texture2D" path="res://assets/ui/dialogue_box.png" id="2_box"]
 [ext_resource type="FontFile" path="res://assets/fonts/vt323_regular.ttf" id="3_font"]
 [ext_resource type="Shader" path="res://narrative/dialogue/dialogue_frame_tint.gdshader" id="4_tint"]
 [ext_resource type="PackedScene" path="res://addons/dialogue_manager/nodes/dialogue_label/dialogue_label.tscn" id="5_label"]

@@ -21,8 +21,9 @@ Khám phá map ─▶ Gặp NPC, soi đồ vật ─▶ Hội thoại, nhận vi
 ## Chạy dự án
 
 1. Cài **Godot 4.7.2+** (bản *Standard*, renderer *Compatibility*).
-2. Cài **Aseprite** và trỏ đường dẫn trong *Editor → Editor Settings → Aseprite → General → Command Path* (AsepriteWizard cần để import file `.aseprite`).
-3. Mở `project.godot`, đợi import xong, bấm **F5**.
+2. Mở `project.godot`, đợi import xong (lần đầu ~20 giây), bấm **F5**.
+
+**Không cần cài Aseprite** để chạy game: game chỉ dùng PNG đã xuất sẵn trong `assets/`.
 
 **Điều khiển:** A/D hoặc ←/→ đi · giữ Shift chạy · E tương tác / sang câu thoại · ↑/↓ chọn câu trả lời. Có hỗ trợ tay cầm (bố cục Xbox).
 
@@ -35,12 +36,37 @@ narrative/   NPC, hộp thoại, quest, chương, cutscene
 world/       các map (areas/), cửa và mép map (transitions/), vật thể trong map (objects/)
 ui/          HUD, Sổ, menu, cài đặt
 data/        NỘI DUNG: npcs/*.tres, dialogues/*.dialogue, quests/, items/, chapters/
-assets/      hình, âm thanh, font (.aseprite import qua AsepriteWizard)
-addons/      AsepriteWizard, Dialogue Manager
+assets/      hình, âm thanh, font mà GAME DÙNG (PNG, SpriteFrames đã xuất – không sửa tay)
+art_source/  file gốc .aseprite (Godot bỏ qua) – người vẽ sửa ở đây
+tools/       export_art.py: xuất art_source/ → assets/
+addons/      Dialogue Manager (AsepriteWizard đã tắt, không còn dùng)
 docs/        tài liệu kỹ thuật và kế hoạch
 ```
 
 Chi tiết từng thư mục, đặt file ở đâu và quy ước đặt tên: [docs/KIEN_TRUC.md](docs/KIEN_TRUC.md) mục 4–5.
+
+## Sửa art (người vẽ)
+
+Chỉ người vẽ cần **Aseprite** và **Python 3**.
+
+1. Sửa file gốc trong `art_source/` (map: `art_source/maps/<map>.aseprite`, nhân vật: `art_source/characters/<id>/…`, UI: `art_source/ui/…`).
+2. Xuất ra `assets/`:
+   ```bash
+   python tools/export_art.py                                  # tất cả (~4 phút)
+   python tools/export_art.py art_source/maps/yard.aseprite    # chỉ 1 file
+   ```
+   Aseprite không ở chỗ mặc định (bản Steam) thì đặt biến môi trường `ASEPRITE` trỏ tới `Aseprite.exe`.
+3. Mở Godot cho nó import PNG mới, chạy thử.
+4. Commit **cả** `art_source/` lẫn `assets/` (kể cả các file `.import`).
+
+| Sửa gì | Phải làm thêm |
+|---|---|
+| Vẽ lại / thêm frame / đổi màu | Không – scene tự nhận ảnh mới |
+| Thêm layer mới cho map | Kéo `assets/maps/<map>/<layer>.png` vào scene map |
+| Đổi tên / xoá layer, đổi tên tag animation | Sửa lại tham chiếu trong scene (script tự xoá PNG cũ) |
+| Thêm nhân vật mới | Tạo `art_source/characters/<id>/<ten>.aseprite` có tag `Idle` / `Walk` / `Run`, xuất → dùng `assets/characters/<id>/<ten>_frames.tres` |
+
+Tên layer nên viết `snake_case` không dấu; khoảng trắng sẽ được đổi thành `_` khi xuất.
 
 ## Quy tắc nhanh
 
@@ -60,7 +86,7 @@ Chi tiết từng thư mục, đặt file ở đâu và quy ước đặt tên: 
 
 ## Addon & asset bên thứ ba
 
-- [AsepriteWizard](https://github.com/viniciusgerevini/godot-aseprite-wizard) – MIT
+- [AsepriteWizard](https://github.com/viniciusgerevini/godot-aseprite-wizard) – MIT (còn trong `addons/` nhưng đã tắt)
 - [Dialogue Manager](https://github.com/nathanhoad/godot_dialogue_manager) 4.2.0 – MIT
 - Font [VT323](https://fonts.google.com/specimen/VT323) – SIL Open Font License (`assets/fonts/OFL.txt`)
 - `assets/_reference/` chỉ để tham khảo, Godot bỏ qua (`.gdignore`) — **không dùng trong bản phát hành**.

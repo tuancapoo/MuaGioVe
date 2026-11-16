@@ -2,7 +2,7 @@ class_name DialogueBalloon
 extends CanvasLayer
 ## Hộp thoại của Mùa Gió Về (dùng với Dialogue Manager).
 ##
-## Bố cục: khung (Dialogue Box.aseprite) nổi phía trên người đang nói, có đuôi chỉ vào
+## Bố cục: khung (assets/ui/dialogue_box.png, xuất từ art_source/ui/dialogue_box.aseprite) nổi phía trên người đang nói, có đuôi chỉ vào
 ## nhân vật; dòng trên là TÊN, bên dưới là LỜI THOẠI; mũi tên ▼ nhấp nháy khi chờ bấm.
 ## Màu viền + màu tên đổi theo nhân vật (lấy từ node nói chuyện, xem `_find_speaker`).
 ##

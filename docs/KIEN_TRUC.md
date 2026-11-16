@@ -112,15 +112,19 @@ res://
 │   ├── items/                     # <id>.tres (ItemData)
 │   └── chapters/                  # chapter_01.tres (ChapterData)
 │
-├── assets/                        # chỉ tài nguyên, không có code
-│   ├── characters/<id>/           # minh/, ong_noi/, an/ (.aseprite)
-│   ├── maps/                      # <map>.aseprite
-│   │   └── layers/<map>/          # texture tách layer do AsepriteWizard sinh ra – KHÔNG sửa tay
-│   ├── ui/  fonts/  objects/  environment/  effects/  tilesets/  palette/
+├── assets/                        # tài nguyên GAME DÙNG, không có code
+│   ├── characters/<id>/           # <ten>.png (spritesheet) + <ten>_frames.tres (SpriteFrames) – do tools xuất
+│   ├── maps/<map>/                # <layer>.png, mỗi layer 1 ảnh – do tools xuất, KHÔNG sửa tay
+│   ├── ui/                        # dialogue_box.png, question.png – do tools xuất
+│   ├── fonts/  objects/  environment/  effects/  tilesets/
 │   ├── audio/bgm/  audio/sfx/
 │   └── _reference/                # asset tham khảo; có .gdignore nên Godot bỏ qua
 │
-├── addons/                        # AsepriteWizard, dialogue_manager – không sửa
+├── art_source/                    # FILE GỐC .aseprite (có .gdignore) – chỉ người vẽ sửa
+│   ├── maps/<map>.aseprite   characters/<id>/<ten>.aseprite   ui/   palette/
+│
+├── tools/                         # export_art.py: art_source/ → assets/ (có .gdignore)
+├── addons/                        # dialogue_manager (AsepriteWizard còn nhưng đã tắt) – không sửa
 └── docs/                          # KIEN_TRUC.md, KE_HOACH.md
 ```
 
@@ -298,18 +302,20 @@ Cutscene.begin() / Cutscene.walk("Na", "fence") / Cutscene.fade_out(0.5) / Cutsc
 | Icon tương tác | `gameplay/interaction/` | Dấu hỏi nổi trên vật gần nhất |
 | NPC dùng chung | `narrative/npc/npc.tscn` | Gán `data` (NpcData) + `appear_condition`; tự đếm `npc.<id>.talks` |
 | `NpcData` | `narrative/npc/npc_data.gd` | `NpcData.find_by_name("Ông Nội")` cho nhân vật không có trong scene |
-| Hộp thoại | `narrative/dialogue/` | Khung `dialogue_box.aseprite`, đuôi chỉ người nói, đổi màu viền theo nhân vật |
+| Hộp thoại | `narrative/dialogue/` | Khung `assets/ui/dialogue_box.png`, đuôi chỉ người nói, đổi màu viền theo nhân vật |
 | `GameMap` | `world/areas/map_base.gd` | `map_id`, `map_size`, `PlayerSpawn`, giới hạn camera |
-| Map Vườn rau | `world/areas/garden/` | 11 layer AsepriteWizard; mây, cây hậu cảnh, cỏ tiền cảnh dùng `Parallax2D` |
+| Map Vườn rau | `world/areas/garden/` | 11 layer PNG; mây, cây hậu cảnh, cỏ tiền cảnh dùng `Parallax2D` |
 
 ---
 
-## 11. Asset & AsepriteWizard
+## 11. Asset: file gốc Aseprite → PNG
 
-- File `.aseprite` import thẳng bằng AsepriteWizard; sửa trong Aseprite → Godot tự import lại.
-- **Nhân vật:** importer *SpriteFrames*, cần tag `Idle` / `Walk` / `Run`.
-- **Map:** importer *Texture (Split By Layer)*, `output/layers_resources_folder = res://assets/maps/layers/<map>`; mỗi layer thành một texture.
-- **Plugin PixelLab trong Aseprite** in lỗi Lua lẫn vào kết quả dòng lệnh → mọi file import kiểu *Split By Layer* phải đặt `layer/exclude_layers_pattern = "lua:[0-9]+:"` (hoặc tắt plugin đó).
+- **Game chỉ dùng PNG / SpriteFrames trong `assets/`.** Không cần Aseprite hay plugin để mở và chạy project.
+- **File gốc** `.aseprite` nằm trong `art_source/` (Godot bỏ qua nhờ `.gdignore`). Người vẽ sửa xong chạy `python tools/export_art.py` rồi commit cả hai.
+- **Map:** mỗi layer → `assets/maps/<map>/<layer>.png` (cùng kích thước canvas, đặt `Sprite2D` ở `(0, 0)`, `centered = false`). Layer trùng tên được gộp thành 1 ảnh; layer trong nhóm lấy tên layer con.
+- **Nhân vật:** spritesheet ngang `assets/characters/<id>/<ten>.png` + `<ten>_frames.tres`; mỗi **tag** Aseprite thành một animation (đúng thời gian từng frame). File không có tag → một animation `Idle`.
+- **UI:** frame đầu → `assets/ui/<ten>.png`.
+- **Plugin PixelLab trong Aseprite** in lỗi Lua ra dòng lệnh; script đã tự lọc. Tắt plugin này giúp xuất nhanh hơn.
 - **Parallax:** dùng node `Parallax2D` (Inspector: `scroll_scale`, `repeat_size`, `autoscroll`), **không viết script parallax riêng cho từng map**.
 
 ---
