@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://gameplay/minigame/minigame_spot.gd" id="1_spot"]
+
+[sub_resource type="RectangleShape2D" id="Shape_spot"]
+size = Vector2(96, 96)
+
+[node name="MinigameSpot" type="Area2D"]
+script = ExtResource("1_spot")
+prompt_text = "Câu cá bên mương"
+prompt_offset = Vector2(0, -72)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -32)
+shape = SubResource("Shape_spot")
