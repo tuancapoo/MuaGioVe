@@ -88,10 +88,33 @@ func _physics_process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if can_move and event.is_action_pressed("interact") and _current_target != null:
+	if not can_move or _current_target == null:
+		return
+	if event.is_action_pressed("interact"):
 		get_viewport().set_input_as_handled()
 		EventBus.interacted.emit(_current_target)
 		_current_target.interact(self)
+		return
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		var world_click := get_viewport().get_canvas_transform().affine_inverse() * mb.position
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT and _is_click_on_target(_current_target, world_click):
+			get_viewport().set_input_as_handled()
+			EventBus.interacted.emit(_current_target)
+			_current_target.interact(self)
+
+
+func _is_click_on_target(target: Node, world_click: Vector2) -> bool:
+	if not (target is Node2D):
+		return false
+	var tpos := (target as Node2D).global_position
+	var on_object := absf(world_click.x - tpos.x) <= 64.0 and world_click.y >= tpos.y - 120.0 and world_click.y <= tpos.y + 40.0
+	if on_object:
+		return true
+	var prompt_off: Variant = target.get("prompt_offset")
+	if prompt_off is Vector2:
+		return world_click.distance_to(tpos + prompt_off) <= 44.0
+	return false
 
 
 func _update_animation(direction: float, is_running: bool) -> void:

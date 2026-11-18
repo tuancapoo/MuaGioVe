@@ -1,0 +1,593 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://gameplay/minigame/fishing/fishing.gd" id="1_fishing"]
+[ext_resource type="Script" path="res://gameplay/minigame/fishing/fishing_canvas.gd" id="2_canvas"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/01_Bau_troi.png" id="L01"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/02_May_va_suong_xa.png" id="L02"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/03_Nui_xa.png" id="L03"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/04_Cay_xa.png" id="L04"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/05_Bai_co.png" id="L05"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/06_Ke_da.png" id="L06"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/08_Loi_di_ven_muong.png" id="L08"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/09_Mat_nuoc_muong.png" id="L09"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/10_Bong_va_song_nuoc.png" id="L10"]
+[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/11_Reu_tren_tuong.png" id="L11"]
+[ext_resource type="Shader" path="res://world/effects/water.gdshader" id="W_shader"]
+[ext_resource type="SpriteFrames" uid="uid://c1esgisde53qm" path="res://assets/characters/minh/minh_regular_frames.tres" id="F_minh"]
+[ext_resource type="SpriteFrames" uid="uid://dy1oktv170xvw" path="res://assets/characters/an/an_frames.tres" id="F_na"]
+[ext_resource type="FontFile" path="res://assets/fonts/vt323_regular.ttf" id="Font_vt"]
+[ext_resource type="Texture2D" path="res://assets/items/fish.png" id="Tex_fish"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/lake_wavelet.mp3" id="A_amb"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/cast.wav" id="A_cast"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/nibble.wav" id="A_nibble"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/bite.wav" id="A_bite"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/catch.wav" id="A_catch"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/miss.wav" id="A_miss"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/na_help.wav" id="A_na"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/reel_tick.wav" id="A_reel"]
+
+[sub_resource type="ShaderMaterial" id="Mat_surface"]
+shader = ExtResource("W_shader")
+shader_parameter/fps = 6.0
+shader_parameter/water_top = 303.0
+shader_parameter/col_wave = 1.0
+shader_parameter/wave_length = 18.0
+shader_parameter/wave_speed = 2.0
+
+[sub_resource type="ShaderMaterial" id="Mat_ripples"]
+shader = ExtResource("W_shader")
+shader_parameter/fps = 8.0
+shader_parameter/water_top = 303.0
+shader_parameter/flow_speed = -6.0
+shader_parameter/row_wave = 1.0
+shader_parameter/wave_speed = 3.0
+shader_parameter/sparkle = 0.3
+shader_parameter/sparkle_block = 6.0
+shader_parameter/sparkle_rate = 2.5
+
+[sub_resource type="StyleBoxFlat" id="Box_dark"]
+bg_color = Color(0.07, 0.06, 0.1, 0.9)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.96, 0.78, 0.35, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="Box_btn"]
+bg_color = Color(0.15, 0.13, 0.21, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.96, 0.78, 0.35, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+
+[node name="FishingMinigame" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_fishing")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.14, 0.38, 0.56, 1)
+
+[node name="WorldViewport" type="Node2D" parent="."]
+texture_filter = 1
+scale = Vector2(3, 3)
+
+[node name="CanalScenery" type="Node2D" parent="WorldViewport"]
+position = Vector2(-220, -112)
+
+[node name="01_Bau_troi" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+texture = ExtResource("L01")
+centered = false
+
+[node name="02_May_va_suong_xa" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+texture = ExtResource("L02")
+centered = false
+
+[node name="03_Nui_xa" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+texture = ExtResource("L03")
+centered = false
+
+[node name="04_Cay_xa" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+texture = ExtResource("L04")
+centered = false
+
+[node name="05_Bai_co" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+texture = ExtResource("L05")
+centered = false
+
+[node name="06_Ke_da" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+texture = ExtResource("L06")
+centered = false
+
+[node name="08_Loi_di_ven_muong" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+texture = ExtResource("L08")
+centered = false
+
+[node name="09_Mat_nuoc_muong" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+material = SubResource("Mat_surface")
+texture = ExtResource("L09")
+centered = false
+
+[node name="10_Bong_va_song_nuoc" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+material = SubResource("Mat_ripples")
+texture = ExtResource("L10")
+centered = false
+
+[node name="11_Reu_tren_tuong" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+texture = ExtResource("L11")
+centered = false
+
+[node name="DeepWaterExtension" type="ColorRect" parent="WorldViewport/CanalScenery"]
+offset_top = 383.0
+offset_right = 1152.0
+offset_bottom = 480.0
+mouse_filter = 2
+color = Color(0.2, 0.549, 0.792, 1)
+
+[node name="NaSprite" type="AnimatedSprite2D" parent="WorldViewport"]
+texture_filter = 1
+position = Vector2(68, 130)
+sprite_frames = ExtResource("F_na")
+animation = &"Idle"
+
+[node name="MinhSprite" type="AnimatedSprite2D" parent="WorldViewport"]
+texture_filter = 1
+position = Vector2(114, 130)
+sprite_frames = ExtResource("F_minh")
+animation = &"Idle"
+
+[node name="FishingCanvas" type="Node2D" parent="WorldViewport"]
+script = ExtResource("2_canvas")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopLeftPanel" type="PanelContainer" parent="HUD"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 28.0
+offset_right = 520.0
+offset_bottom = 178.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Box_dark")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/TopLeftPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="TitleRow" type="HBoxContainer" parent="HUD/TopLeftPanel/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="FishIcon" type="TextureRect" parent="HUD/TopLeftPanel/VBox/TitleRow"]
+texture_filter = 1
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("Tex_fish")
+stretch_mode = 5
+
+[node name="FishCountLabel" type="Label" parent="HUD/TopLeftPanel/VBox/TitleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 46
+text = "Cá đã câu: 0 / 5"
+
+[node name="StageLabel" type="Label" parent="HUD/TopLeftPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.92, 0.96, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 32
+text = "Giai đoạn 1 · Cá gần (1.00s)"
+
+[node name="FlawlessLabel" type="Label" parent="HUD/TopLeftPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.88, 0.48, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 30
+text = "Hụt: 0/3 (Tinh tế)"
+
+[node name="TopRightBar" type="HBoxContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -830.0
+offset_top = 28.0
+offset_right = -32.0
+offset_bottom = 94.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="NaButton" type="Button" parent="HUD/TopRightBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("Box_btn")
+text = "[Space / X] Nhờ Na"
+
+[node name="GuideButton" type="Button" parent="HUD/TopRightBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("Box_btn")
+text = "[H] Hướng dẫn"
+
+[node name="RestartButton" type="Button" parent="HUD/TopRightBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("Box_btn")
+text = "[Giữ R] Làm lại"
+
+[node name="PauseButton" type="Button" parent="HUD/TopRightBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("Box_btn")
+text = "[Esc]"
+
+[node name="RestartBar" type="ProgressBar" parent="HUD"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -340.0
+offset_top = 104.0
+offset_right = -32.0
+offset_bottom = 128.0
+grow_horizontal = 0
+mouse_filter = 2
+show_percentage = false
+
+[node name="VisualAidBox" type="PanelContainer" parent="HUD"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -225.0
+offset_right = 280.0
+offset_bottom = -135.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Box_dark")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/VisualAidBox"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VisualAidLabel" type="Label" parent="HUD/VisualAidBox/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.98, 0.62, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 34
+text = "KÉO NGAY! [E / Click / A]"
+horizontal_alignment = 1
+
+[node name="VisualAidBar" type="ProgressBar" parent="HUD/VisualAidBox/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="FeedbackPanel" type="PanelContainer" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -560.0
+offset_top = -114.0
+offset_right = 560.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Box_dark")
+
+[node name="FeedbackLabel" type="Label" parent="HUD/FeedbackPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 36
+text = "Bé Na: Minh nhìn chỗ có gợn sóng rồi thả cần xuống nha!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="GuideOverlay" type="PanelContainer" parent="HUD"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -250.0
+offset_right = 460.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Box_dark")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/GuideOverlay"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Header" type="Label" parent="HUD/GuideOverlay/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.78, 0.35, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 54
+text = "Câu cá bên mương"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="HUD/GuideOverlay/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 34
+text = "1. Quan sát mặt nước, tìm chỗ có vài bong bóng sủi lên rồi thả phao vào vùng đó.
+2. Khi phao thụt xuống & hiện dấu '!' → bấm nhanh [Click / E / A] để móc cá.
+3. Thanh kéo cá: GIỮ [Click trái / E / W / A] để nâng thanh xanh, THẢ để hạ xuống; giữ cá trong thanh xanh tới khi đầy cột bên phải!
+
+• Di chuyển tâm thả: Chuột hoặc A/D/W/S (Analog trái tay cầm)
+• Mẹo: Bấm [Space / X] để Nhờ Na chỉ vị trí cá hoặc làm cá dịu lại lúc đang kéo (hồi 15s)."
+autowrap_mode = 2
+
+[node name="GuideStartButton" type="Button" parent="HUD/GuideOverlay/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("Box_btn")
+text = "Bắt đầu câu [E / Click / A]"
+
+[node name="PauseOverlay" type="PanelContainer" parent="HUD"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -190.0
+offset_right = 260.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Box_dark")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PauseOverlay"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Title" type="Label" parent="HUD/PauseOverlay/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.78, 0.35, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 50
+text = "Tạm dừng"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="HUD/PauseOverlay/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 38
+theme_override_styles/normal = SubResource("Box_btn")
+text = "Tiếp tục câu"
+
+[node name="PauseGuideButton" type="Button" parent="HUD/PauseOverlay/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 38
+theme_override_styles/normal = SubResource("Box_btn")
+text = "Xem hướng dẫn"
+
+[node name="PauseRestartButton" type="Button" parent="HUD/PauseOverlay/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 38
+theme_override_styles/normal = SubResource("Box_btn")
+text = "Chơi lại từ đầu"
+
+[node name="PauseExitButton" type="Button" parent="HUD/PauseOverlay/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 38
+theme_override_styles/normal = SubResource("Box_btn")
+text = "Rời bờ mương"
+
+[node name="WinOverlay" type="PanelContainer" parent="HUD"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -170.0
+offset_right = 360.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Box_dark")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/WinOverlay"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="WinTitle" type="Label" parent="HUD/WinOverlay/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.78, 0.35, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 54
+text = "Hoàn thành câu cá!"
+horizontal_alignment = 1
+
+[node name="WinSummaryLabel" type="Label" parent="HUD/WinOverlay/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 36
+text = "Đã câu đủ 5 con cá đồng cùng Bé Na!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="HUD/WinOverlay/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="WinFinishButton" type="Button" parent="HUD/WinOverlay/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("Box_btn")
+text = "Hoàn thành [E / A]"
+
+[node name="WinReplayButton" type="Button" parent="HUD/WinOverlay/VBox/Buttons"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_fonts/font = ExtResource("Font_vt")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("Box_btn")
+text = "Chơi lại"
+
+[node name="RestartFade" type="ColorRect" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="AmbiencePlayer" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_amb")
+volume_db = -10.0
+
+[node name="SfxCast" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_cast")
+volume_db = -6.0
+
+[node name="SfxNibble" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_nibble")
+volume_db = -8.0
+
+[node name="SfxBite" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_bite")
+volume_db = -4.0
+
+[node name="SfxCatch" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_catch")
+volume_db = -4.0
+
+[node name="SfxMiss" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_miss")
+volume_db = -6.0
+
+[node name="SfxNa" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_na")
+volume_db = -6.0
+
+[node name="SfxReelTick" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_reel")
+volume_db = -11.0
