@@ -16,8 +16,13 @@ signal interacted(player: Node)
 signal action_chosen(action: StringName, player: Node, item_id: StringName)
 
 ## Thứ tự trên thanh chọn
-const ACTION_ORDER: Array[StringName] = [&"examine", &"talk", &"take"]
-const ACTION_NAMES := {&"talk": "Nói chuyện", &"examine": "Xem", &"take": "Nhặt"}
+const ACTION_ORDER: Array[StringName] = [&"examine", &"talk", &"take", &"search"]
+const ACTION_NAMES := {
+	&"talk": "Nói chuyện",
+	&"examine": "Xem",
+	&"take": "Nhặt",
+	&"search": "Tìm kiếm"
+}
 
 ## Chữ hiện trong lời nhắc, ví dụ "Nói chuyện", "Nhặt", "Mở van".
 @export var prompt_text: String = "Tương tác"

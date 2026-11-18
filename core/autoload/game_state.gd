@@ -109,6 +109,45 @@ func complete_quest(id: String) -> void:
 	EventBus.quest_changed.emit(id, "done")
 	changed.emit()
 
+# --- Game Sửa ống nước ----------------------------------------------------------------------------
+func count_pipe_parts() -> int:
+	var count := 0
+	for item_id in ["pipe_clamp", "pipe_connector", "rubber_ring"]:
+		if has_item(item_id) or has_flag("pipe_delivered." + item_id):
+			count += 1
+	return count
+
+
+func all_pipe_parts_delivered() -> bool:
+	for item_id in ["pipe_clamp", "pipe_connector", "rubber_ring"]:
+		if not has_flag("pipe_delivered." + item_id):
+			return false
+	return true
+
+var pipe_minigame_pending: bool = false
+func request_pipe_minigame() -> void:
+	if pipe_minigame_pending:
+		return
+	if has_flag("ch1.pipe_fixed"):
+		return
+	if not all_pipe_parts_delivered():
+		return
+	pipe_minigame_pending = true
+	_launch_pending_pipe_minigame.call_deferred()
+
+
+func _launch_pending_pipe_minigame() -> void:
+	# Chờ hội thoại đóng, không đợi signal
+	# dialogue_ended của lần tương tác tiếp theo.
+	await get_tree().create_timer(0.3).timeout
+	if not pipe_minigame_pending:
+		return
+	pipe_minigame_pending = false
+	if has_flag("ch1.pipe_fixed"):
+		return
+	if MinigameManager.is_running():
+		return
+	MinigameManager.start("fix_pipe")
 
 # --- Túi đồ ----------------------------------------------------------------------------
 # Gọi được cả trong .dialogue:  if has_item("pipe_clamp")  /  do remove_item("pipe_clamp")

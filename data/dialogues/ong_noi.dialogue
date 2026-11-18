@@ -5,19 +5,23 @@
 
 ~ start
 if is_quest_new("fix_pipe") and current_map == "garden":
-	=> intro_pipe
+    => intro_pipe
+elif is_quest_done("fix_pipe"):
+    => pipe_done
+elif is_quest_active("fix_pipe") and has_flag("ch1.pipe_fixed"):
+    => pipe_done
+elif is_quest_active("fix_pipe") and GameState.all_pipe_parts_delivered():
+    => pipe_ready
 elif is_quest_active("fix_pipe"):
-	=> pipe_waiting
-elif is_quest_done("fix_pipe") and not has_flag("thanked_pipe"):
-	=> pipe_done
+    => pipe_waiting
 elif current_map == "house" and time == "evening":
-	=> evening_house
+    => evening_house
 elif chapter >= 2:
-	=> chapter2_idle
+    => chapter2_idle
 elif time == "noon":
-	=> noon_idle
+    => noon_idle
 else:
-	=> idle
+    => idle
 
 ~ intro_pipe
 Ông Nội: Minh dậy rồi đó hả con? Ra vườn phụ ông chút nghen.
@@ -33,13 +37,15 @@ Minh: (Ông nói chuyện hiền ghê... không giống mấy người ở trư�
 => END
 
 ~ pipe_waiting
-Ông Nội: Kiếm được {{get_flag("pipe_parts", 0)}}/3 món rồi hả? Coi kỹ gần mấy luống rau đó con.
+Ông Nội: Kiếm được {{GameState.count_pipe_parts()}}/3 món rồi hả? Con thử tìm gần mấy bụi cây xem sao.
 => END
 
+~ pipe_report
+=> pipe_done
+
 ~ pipe_done
-Ông Nội: Giỏi quá! Vườn có nước lại rồi, rau tươi rói luôn.
-Ông Nội: Nè, ông cho con mấy hạt này. Người ta gọi là Hạt Gió đó.
-do add_wind_seeds(3)
+Ông Nội: Giỏi lắm Minh! Ống nước đã được sửa xong rồi.
+Ông Nội: Có nước lại rồi. Ông cảm ơn con nhiều lắm!
 do set_flag("thanked_pipe")
 => END
 
@@ -60,6 +66,29 @@ do set_flag("thanked_pipe")
 => END
 
 # Minh đưa cái kẹp cho ông (chọn món "Cái kẹp" trên thanh chọn khi đứng cạnh ông)
+
 ~ give_pipe_clamp
-Ông Nội: Ồ, cái kẹp đây rồi! Con giữ giùm ông, lát mình sửa vòi.
+Ông Nội: Ồ, cái kẹp đây rồi!.
+Ông Nội: Con tinh mắt quá, ông tìm nó hoài mà không ra.
 => END
+
+~ give_pipe_connector
+Ông Nội: Đúng cái đầu nối ông đang cần đây rồi!
+Ông Nội: Cảm ơn con, để ông cất vào chỗ sửa vòi.
+=> END
+
+~ give_rubber_ring
+Ông Nội: À, vòng cao su đây rồi! Có nó thì vòi nước mới kín được.
+Ông Nội: Giỏi lắm Minh!
+=> END
+
+~ pipe_ready
+Ông Nội: À, đủ cả ba món rồi đó Minh!
+Ông Nội: Có cái kẹp, đầu nối với vòng cao su là sửa được vòi nước rồi.
+Ông Nội: Con sửa luôn giúp ông nha.
+Minh: Dạ.
+do GameState.request_pipe_minigame()
+=> END
+
+~ pipe_repaired
+=> pipe_done
