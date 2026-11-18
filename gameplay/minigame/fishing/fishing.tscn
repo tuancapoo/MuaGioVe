@@ -1,38 +1,43 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://vdj7sna558b1"]
 
-[ext_resource type="Script" path="res://gameplay/minigame/fishing/fishing.gd" id="1_fishing"]
-[ext_resource type="Script" path="res://gameplay/minigame/fishing/fishing_canvas.gd" id="2_canvas"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/01_Bau_troi.png" id="L01"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/02_May_va_suong_xa.png" id="L02"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/03_Nui_xa.png" id="L03"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/04_Cay_xa.png" id="L04"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/05_Bai_co.png" id="L05"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/06_Ke_da.png" id="L06"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/08_Loi_di_ven_muong.png" id="L08"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/09_Mat_nuoc_muong.png" id="L09"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/10_Bong_va_song_nuoc.png" id="L10"]
-[ext_resource type="Texture2D" path="res://assets/maps/bo_muong_chan_de/11_Reu_tren_tuong.png" id="L11"]
-[ext_resource type="Shader" path="res://world/effects/water.gdshader" id="W_shader"]
-[ext_resource type="SpriteFrames" uid="uid://c1esgisde53qm" path="res://assets/characters/minh/minh_regular_frames.tres" id="F_minh"]
-[ext_resource type="SpriteFrames" uid="uid://dy1oktv170xvw" path="res://assets/characters/an/an_frames.tres" id="F_na"]
-[ext_resource type="FontFile" path="res://assets/fonts/vt323_regular.ttf" id="Font_vt"]
-[ext_resource type="Texture2D" path="res://assets/items/fish.png" id="Tex_fish"]
-[ext_resource type="AudioStream" path="res://assets/audio/ambience/lake_wavelet.mp3" id="A_amb"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/cast.wav" id="A_cast"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/nibble.wav" id="A_nibble"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/bite.wav" id="A_bite"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/catch.wav" id="A_catch"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/miss.wav" id="A_miss"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/na_help.wav" id="A_na"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/reel_tick.wav" id="A_reel"]
+[ext_resource type="Script" uid="uid://ddjl84emvgroh" path="res://gameplay/minigame/fishing/fishing.gd" id="1_fishing"]
+[ext_resource type="Script" uid="uid://dxqjyitdxl00q" path="res://gameplay/minigame/fishing/fishing_canvas.gd" id="2_canvas"]
+[ext_resource type="AudioStream" uid="uid://3tek0ekiht4x" path="res://assets/audio/ambience/lake_wavelet.mp3" id="A_amb"]
+[ext_resource type="AudioStream" uid="uid://cmng6ivbw675g" path="res://assets/audio/sfx/fishing/bite.wav" id="A_bite"]
+[ext_resource type="AudioStream" uid="uid://drqd8uw8340kc" path="res://assets/audio/sfx/fishing/cast.wav" id="A_cast"]
+[ext_resource type="AudioStream" uid="uid://bka46wdrnsv8w" path="res://assets/audio/sfx/fishing/catch.wav" id="A_catch"]
+[ext_resource type="AudioStream" uid="uid://bc44k7txdlm53" path="res://assets/audio/sfx/fishing/miss.wav" id="A_miss"]
+[ext_resource type="AudioStream" uid="uid://bfry77lma0qbp" path="res://assets/audio/sfx/fishing/na_help.wav" id="A_na"]
+[ext_resource type="AudioStream" uid="uid://b0st3s4a51q7u" path="res://assets/audio/sfx/fishing/nibble.wav" id="A_nibble"]
+[ext_resource type="AudioStream" uid="uid://dnn4773ldiuyo" path="res://assets/audio/sfx/fishing/reel_tick.wav" id="A_reel"]
+[ext_resource type="FontFile" uid="uid://ctdtntr3m18tp" path="res://assets/fonts/vt323_regular.ttf" id="Font_vt"]
+[ext_resource type="SpriteFrames" uid="uid://dg07xk0x3bxok" path="res://assets/characters/minh/minh_regular_frames.tres" id="F_minh"]
+[ext_resource type="SpriteFrames" uid="uid://c6nm1y7worves" path="res://assets/characters/an/an_frames.tres" id="F_na"]
+[ext_resource type="Texture2D" uid="uid://dem4b0ir4km3u" path="res://assets/maps/bo_muong_chan_de/01_Bau_troi.png" id="L01"]
+[ext_resource type="Texture2D" uid="uid://bg6k73yie307h" path="res://assets/maps/bo_muong_chan_de/02_May_va_suong_xa.png" id="L02"]
+[ext_resource type="Texture2D" uid="uid://dbyse4p6vs2xq" path="res://assets/maps/bo_muong_chan_de/03_Nui_xa.png" id="L03"]
+[ext_resource type="Texture2D" uid="uid://cbk58kudscwka" path="res://assets/maps/bo_muong_chan_de/04_Cay_xa.png" id="L04"]
+[ext_resource type="Texture2D" uid="uid://07kytos7dwcv" path="res://assets/maps/bo_muong_chan_de/05_Bai_co.png" id="L05"]
+[ext_resource type="Texture2D" uid="uid://cc4uw6d6pieeq" path="res://assets/maps/bo_muong_chan_de/06_Ke_da.png" id="L06"]
+[ext_resource type="Texture2D" uid="uid://b8ierdn7nhrq7" path="res://assets/maps/bo_muong_chan_de/08_Loi_di_ven_muong.png" id="L08"]
+[ext_resource type="Texture2D" uid="uid://ciuyb7xh7rbje" path="res://assets/maps/bo_muong_chan_de/09_Mat_nuoc_muong.png" id="L09"]
+[ext_resource type="Texture2D" uid="uid://c4prxbxf80yd5" path="res://assets/maps/bo_muong_chan_de/10_Bong_va_song_nuoc.png" id="L10"]
+[ext_resource type="Texture2D" uid="uid://mv7gc6l0tys4" path="res://assets/maps/bo_muong_chan_de/11_Reu_tren_tuong.png" id="L11"]
+[ext_resource type="Texture2D" uid="uid://1hbx8ts1mvce" path="res://assets/items/fish.png" id="Tex_fish"]
+[ext_resource type="Shader" uid="uid://d36163wfy83f4" path="res://world/effects/water.gdshader" id="W_shader"]
 
 [sub_resource type="ShaderMaterial" id="Mat_surface"]
 shader = ExtResource("W_shader")
 shader_parameter/fps = 6.0
 shader_parameter/water_top = 303.0
+shader_parameter/flow_speed = 0.0
+shader_parameter/row_wave = 0.0
 shader_parameter/col_wave = 1.0
 shader_parameter/wave_length = 18.0
 shader_parameter/wave_speed = 2.0
+shader_parameter/sparkle = 0.0
+shader_parameter/sparkle_block = 6.0
+shader_parameter/sparkle_rate = 3.0
 
 [sub_resource type="ShaderMaterial" id="Mat_ripples"]
 shader = ExtResource("W_shader")
@@ -40,12 +45,18 @@ shader_parameter/fps = 8.0
 shader_parameter/water_top = 303.0
 shader_parameter/flow_speed = -6.0
 shader_parameter/row_wave = 1.0
+shader_parameter/col_wave = 0.0
+shader_parameter/wave_length = 14.0
 shader_parameter/wave_speed = 3.0
 shader_parameter/sparkle = 0.3
 shader_parameter/sparkle_block = 6.0
 shader_parameter/sparkle_rate = 2.5
 
 [sub_resource type="StyleBoxFlat" id="Box_dark"]
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
 bg_color = Color(0.07, 0.06, 0.1, 0.9)
 border_width_left = 3
 border_width_top = 3
@@ -56,12 +67,12 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-content_margin_left = 18.0
-content_margin_top = 12.0
-content_margin_right = 18.0
-content_margin_bottom = 12.0
 
 [sub_resource type="StyleBoxFlat" id="Box_btn"]
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
 bg_color = Color(0.15, 0.13, 0.21, 0.95)
 border_width_left = 3
 border_width_top = 3
@@ -72,12 +83,8 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-content_margin_left = 16.0
-content_margin_top = 8.0
-content_margin_right = 16.0
-content_margin_bottom = 8.0
 
-[node name="FishingMinigame" type="Control"]
+[node name="FishingMinigame" type="Control" unique_id=1227629667]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -87,7 +94,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_fishing")
 
-[node name="Backdrop" type="ColorRect" parent="."]
+[node name="Backdrop" type="ColorRect" parent="." unique_id=156484959]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -97,78 +104,78 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.14, 0.38, 0.56, 1)
 
-[node name="WorldViewport" type="Node2D" parent="."]
+[node name="WorldViewport" type="Node2D" parent="." unique_id=2106859970]
 texture_filter = 1
 scale = Vector2(3, 3)
 
-[node name="CanalScenery" type="Node2D" parent="WorldViewport"]
+[node name="CanalScenery" type="Node2D" parent="WorldViewport" unique_id=6458646]
 position = Vector2(-220, -112)
 
-[node name="01_Bau_troi" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="01_Bau_troi" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=1281945275]
 texture = ExtResource("L01")
 centered = false
 
-[node name="02_May_va_suong_xa" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="02_May_va_suong_xa" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=1975998548]
 texture = ExtResource("L02")
 centered = false
 
-[node name="03_Nui_xa" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="03_Nui_xa" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=1786934183]
 texture = ExtResource("L03")
 centered = false
 
-[node name="04_Cay_xa" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="04_Cay_xa" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=1564252522]
 texture = ExtResource("L04")
 centered = false
 
-[node name="05_Bai_co" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="05_Bai_co" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=1370701200]
 texture = ExtResource("L05")
 centered = false
 
-[node name="06_Ke_da" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="06_Ke_da" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=1187535385]
 texture = ExtResource("L06")
 centered = false
 
-[node name="08_Loi_di_ven_muong" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="08_Loi_di_ven_muong" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=1079429592]
 texture = ExtResource("L08")
 centered = false
 
-[node name="09_Mat_nuoc_muong" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="09_Mat_nuoc_muong" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=1902061298]
 material = SubResource("Mat_surface")
 texture = ExtResource("L09")
 centered = false
 
-[node name="10_Bong_va_song_nuoc" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="10_Bong_va_song_nuoc" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=658761314]
 material = SubResource("Mat_ripples")
 texture = ExtResource("L10")
 centered = false
 
-[node name="11_Reu_tren_tuong" type="Sprite2D" parent="WorldViewport/CanalScenery"]
+[node name="11_Reu_tren_tuong" type="Sprite2D" parent="WorldViewport/CanalScenery" unique_id=736638391]
 texture = ExtResource("L11")
 centered = false
 
-[node name="DeepWaterExtension" type="ColorRect" parent="WorldViewport/CanalScenery"]
+[node name="DeepWaterExtension" type="ColorRect" parent="WorldViewport/CanalScenery" unique_id=1803410630]
 offset_top = 383.0
 offset_right = 1152.0
 offset_bottom = 480.0
 mouse_filter = 2
 color = Color(0.2, 0.549, 0.792, 1)
 
-[node name="NaSprite" type="AnimatedSprite2D" parent="WorldViewport"]
+[node name="NaSprite" type="AnimatedSprite2D" parent="WorldViewport" unique_id=95141452]
 texture_filter = 1
 position = Vector2(68, 130)
 sprite_frames = ExtResource("F_na")
 animation = &"Idle"
 
-[node name="MinhSprite" type="AnimatedSprite2D" parent="WorldViewport"]
+[node name="MinhSprite" type="AnimatedSprite2D" parent="WorldViewport" unique_id=1366049636]
 texture_filter = 1
 position = Vector2(114, 130)
 sprite_frames = ExtResource("F_minh")
 animation = &"Idle"
 
-[node name="FishingCanvas" type="Node2D" parent="WorldViewport"]
+[node name="FishingCanvas" type="Node2D" parent="WorldViewport" unique_id=346566010]
 script = ExtResource("2_canvas")
 
-[node name="HUD" type="Control" parent="."]
+[node name="HUD" type="Control" parent="." unique_id=1091709335]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -177,7 +184,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TopLeftPanel" type="PanelContainer" parent="HUD"]
+[node name="TopLeftPanel" type="PanelContainer" parent="HUD" unique_id=1319270544]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 28.0
@@ -186,17 +193,17 @@ offset_bottom = 178.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Box_dark")
 
-[node name="VBox" type="VBoxContainer" parent="HUD/TopLeftPanel"]
+[node name="VBox" type="VBoxContainer" parent="HUD/TopLeftPanel" unique_id=734315778]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 6
 
-[node name="TitleRow" type="HBoxContainer" parent="HUD/TopLeftPanel/VBox"]
+[node name="TitleRow" type="HBoxContainer" parent="HUD/TopLeftPanel/VBox" unique_id=339602464]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 12
 
-[node name="FishIcon" type="TextureRect" parent="HUD/TopLeftPanel/VBox/TitleRow"]
+[node name="FishIcon" type="TextureRect" parent="HUD/TopLeftPanel/VBox/TitleRow" unique_id=557015455]
 texture_filter = 1
 custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
@@ -204,7 +211,7 @@ mouse_filter = 2
 texture = ExtResource("Tex_fish")
 stretch_mode = 5
 
-[node name="FishCountLabel" type="Label" parent="HUD/TopLeftPanel/VBox/TitleRow"]
+[node name="FishCountLabel" type="Label" parent="HUD/TopLeftPanel/VBox/TitleRow" unique_id=1214210800]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
@@ -212,7 +219,7 @@ theme_override_fonts/font = ExtResource("Font_vt")
 theme_override_font_sizes/font_size = 46
 text = "Cá đã câu: 0 / 5"
 
-[node name="StageLabel" type="Label" parent="HUD/TopLeftPanel/VBox"]
+[node name="StageLabel" type="Label" parent="HUD/TopLeftPanel/VBox" unique_id=1863287001]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.68, 0.92, 0.96, 1)
@@ -220,7 +227,7 @@ theme_override_fonts/font = ExtResource("Font_vt")
 theme_override_font_sizes/font_size = 32
 text = "Giai đoạn 1 · Cá gần (1.00s)"
 
-[node name="FlawlessLabel" type="Label" parent="HUD/TopLeftPanel/VBox"]
+[node name="FlawlessLabel" type="Label" parent="HUD/TopLeftPanel/VBox" unique_id=966893496]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.88, 0.48, 1)
@@ -228,7 +235,7 @@ theme_override_fonts/font = ExtResource("Font_vt")
 theme_override_font_sizes/font_size = 30
 text = "Hụt: 0/3 (Tinh tế)"
 
-[node name="TopRightBar" type="HBoxContainer" parent="HUD"]
+[node name="TopRightBar" type="HBoxContainer" parent="HUD" unique_id=948164064]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -242,7 +249,7 @@ mouse_filter = 2
 theme_override_constants/separation = 12
 alignment = 2
 
-[node name="NaButton" type="Button" parent="HUD/TopRightBar"]
+[node name="NaButton" type="Button" parent="HUD/TopRightBar" unique_id=1587518583]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -252,7 +259,7 @@ theme_override_font_sizes/font_size = 34
 theme_override_styles/normal = SubResource("Box_btn")
 text = "[Space / X] Nhờ Na"
 
-[node name="GuideButton" type="Button" parent="HUD/TopRightBar"]
+[node name="GuideButton" type="Button" parent="HUD/TopRightBar" unique_id=1519899676]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -262,7 +269,7 @@ theme_override_font_sizes/font_size = 34
 theme_override_styles/normal = SubResource("Box_btn")
 text = "[H] Hướng dẫn"
 
-[node name="RestartButton" type="Button" parent="HUD/TopRightBar"]
+[node name="RestartButton" type="Button" parent="HUD/TopRightBar" unique_id=612389829]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -272,7 +279,7 @@ theme_override_font_sizes/font_size = 34
 theme_override_styles/normal = SubResource("Box_btn")
 text = "[Giữ R] Làm lại"
 
-[node name="PauseButton" type="Button" parent="HUD/TopRightBar"]
+[node name="PauseButton" type="Button" parent="HUD/TopRightBar" unique_id=472898168]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -282,7 +289,7 @@ theme_override_font_sizes/font_size = 34
 theme_override_styles/normal = SubResource("Box_btn")
 text = "[Esc]"
 
-[node name="RestartBar" type="ProgressBar" parent="HUD"]
+[node name="RestartBar" type="ProgressBar" parent="HUD" unique_id=1991106706]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -297,7 +304,7 @@ grow_horizontal = 0
 mouse_filter = 2
 show_percentage = false
 
-[node name="VisualAidBox" type="PanelContainer" parent="HUD"]
+[node name="VisualAidBox" type="PanelContainer" parent="HUD" unique_id=88706450]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -315,11 +322,11 @@ grow_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Box_dark")
 
-[node name="VBox" type="VBoxContainer" parent="HUD/VisualAidBox"]
+[node name="VBox" type="VBoxContainer" parent="HUD/VisualAidBox" unique_id=358325237]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="VisualAidLabel" type="Label" parent="HUD/VisualAidBox/VBox"]
+[node name="VisualAidLabel" type="Label" parent="HUD/VisualAidBox/VBox" unique_id=804510761]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.42, 0.98, 0.62, 1)
@@ -328,7 +335,7 @@ theme_override_font_sizes/font_size = 34
 text = "KÉO NGAY! [E / Click / A]"
 horizontal_alignment = 1
 
-[node name="VisualAidBar" type="ProgressBar" parent="HUD/VisualAidBox/VBox"]
+[node name="VisualAidBar" type="ProgressBar" parent="HUD/VisualAidBox/VBox" unique_id=1193905925]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
@@ -336,7 +343,7 @@ mouse_filter = 2
 value = 100.0
 show_percentage = false
 
-[node name="FeedbackPanel" type="PanelContainer" parent="HUD"]
+[node name="FeedbackPanel" type="PanelContainer" parent="HUD" unique_id=1529123577]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
@@ -353,7 +360,7 @@ grow_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Box_dark")
 
-[node name="FeedbackLabel" type="Label" parent="HUD/FeedbackPanel"]
+[node name="FeedbackLabel" type="Label" parent="HUD/FeedbackPanel" unique_id=2141077088]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
@@ -364,7 +371,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="GuideOverlay" type="PanelContainer" parent="HUD"]
+[node name="GuideOverlay" type="PanelContainer" parent="HUD" unique_id=52693982]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -381,12 +388,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("Box_dark")
 
-[node name="VBox" type="VBoxContainer" parent="HUD/GuideOverlay"]
+[node name="VBox" type="VBoxContainer" parent="HUD/GuideOverlay" unique_id=1909923388]
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="Header" type="Label" parent="HUD/GuideOverlay/VBox"]
+[node name="Header" type="Label" parent="HUD/GuideOverlay/VBox" unique_id=921931268]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96, 0.78, 0.35, 1)
 theme_override_fonts/font = ExtResource("Font_vt")
@@ -394,7 +401,7 @@ theme_override_font_sizes/font_size = 54
 text = "Câu cá bên mương"
 horizontal_alignment = 1
 
-[node name="Body" type="Label" parent="HUD/GuideOverlay/VBox"]
+[node name="Body" type="Label" parent="HUD/GuideOverlay/VBox" unique_id=716423505]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
 theme_override_fonts/font = ExtResource("Font_vt")
@@ -407,7 +414,7 @@ text = "1. Quan sát mặt nước, tìm chỗ có vài bong bóng sủi lên r�
 • Mẹo: Bấm [Space / X] để Nhờ Na chỉ vị trí cá hoặc làm cá dịu lại lúc đang kéo (hồi 15s)."
 autowrap_mode = 2
 
-[node name="GuideStartButton" type="Button" parent="HUD/GuideOverlay/VBox"]
+[node name="GuideStartButton" type="Button" parent="HUD/GuideOverlay/VBox" unique_id=2024467497]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -417,7 +424,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("Box_btn")
 text = "Bắt đầu câu [E / Click / A]"
 
-[node name="PauseOverlay" type="PanelContainer" parent="HUD"]
+[node name="PauseOverlay" type="PanelContainer" parent="HUD" unique_id=1575634569]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -434,12 +441,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("Box_dark")
 
-[node name="VBox" type="VBoxContainer" parent="HUD/PauseOverlay"]
+[node name="VBox" type="VBoxContainer" parent="HUD/PauseOverlay" unique_id=26965420]
 layout_mode = 2
 theme_override_constants/separation = 14
 alignment = 1
 
-[node name="Title" type="Label" parent="HUD/PauseOverlay/VBox"]
+[node name="Title" type="Label" parent="HUD/PauseOverlay/VBox" unique_id=1158600238]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96, 0.78, 0.35, 1)
 theme_override_fonts/font = ExtResource("Font_vt")
@@ -447,7 +454,7 @@ theme_override_font_sizes/font_size = 50
 text = "Tạm dừng"
 horizontal_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="HUD/PauseOverlay/VBox"]
+[node name="ResumeButton" type="Button" parent="HUD/PauseOverlay/VBox" unique_id=457734372]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
@@ -456,7 +463,7 @@ theme_override_font_sizes/font_size = 38
 theme_override_styles/normal = SubResource("Box_btn")
 text = "Tiếp tục câu"
 
-[node name="PauseGuideButton" type="Button" parent="HUD/PauseOverlay/VBox"]
+[node name="PauseGuideButton" type="Button" parent="HUD/PauseOverlay/VBox" unique_id=508307425]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
@@ -465,7 +472,7 @@ theme_override_font_sizes/font_size = 38
 theme_override_styles/normal = SubResource("Box_btn")
 text = "Xem hướng dẫn"
 
-[node name="PauseRestartButton" type="Button" parent="HUD/PauseOverlay/VBox"]
+[node name="PauseRestartButton" type="Button" parent="HUD/PauseOverlay/VBox" unique_id=1342119841]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
@@ -474,7 +481,7 @@ theme_override_font_sizes/font_size = 38
 theme_override_styles/normal = SubResource("Box_btn")
 text = "Chơi lại từ đầu"
 
-[node name="PauseExitButton" type="Button" parent="HUD/PauseOverlay/VBox"]
+[node name="PauseExitButton" type="Button" parent="HUD/PauseOverlay/VBox" unique_id=1490662716]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
@@ -483,7 +490,7 @@ theme_override_font_sizes/font_size = 38
 theme_override_styles/normal = SubResource("Box_btn")
 text = "Rời bờ mương"
 
-[node name="WinOverlay" type="PanelContainer" parent="HUD"]
+[node name="WinOverlay" type="PanelContainer" parent="HUD" unique_id=976758658]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -500,12 +507,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("Box_dark")
 
-[node name="VBox" type="VBoxContainer" parent="HUD/WinOverlay"]
+[node name="VBox" type="VBoxContainer" parent="HUD/WinOverlay" unique_id=502269891]
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="WinTitle" type="Label" parent="HUD/WinOverlay/VBox"]
+[node name="WinTitle" type="Label" parent="HUD/WinOverlay/VBox" unique_id=879667123]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96, 0.78, 0.35, 1)
 theme_override_fonts/font = ExtResource("Font_vt")
@@ -513,7 +520,7 @@ theme_override_font_sizes/font_size = 54
 text = "Hoàn thành câu cá!"
 horizontal_alignment = 1
 
-[node name="WinSummaryLabel" type="Label" parent="HUD/WinOverlay/VBox"]
+[node name="WinSummaryLabel" type="Label" parent="HUD/WinOverlay/VBox" unique_id=1485646403]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
@@ -523,12 +530,12 @@ text = "Đã câu đủ 5 con cá đồng cùng Bé Na!"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Buttons" type="HBoxContainer" parent="HUD/WinOverlay/VBox"]
+[node name="Buttons" type="HBoxContainer" parent="HUD/WinOverlay/VBox" unique_id=1610326846]
 layout_mode = 2
 theme_override_constants/separation = 18
 alignment = 1
 
-[node name="WinFinishButton" type="Button" parent="HUD/WinOverlay/VBox/Buttons"]
+[node name="WinFinishButton" type="Button" parent="HUD/WinOverlay/VBox/Buttons" unique_id=956961741]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
@@ -537,7 +544,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("Box_btn")
 text = "Hoàn thành [E / A]"
 
-[node name="WinReplayButton" type="Button" parent="HUD/WinOverlay/VBox/Buttons"]
+[node name="WinReplayButton" type="Button" parent="HUD/WinOverlay/VBox/Buttons" unique_id=2049903569]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -547,7 +554,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("Box_btn")
 text = "Chơi lại"
 
-[node name="RestartFade" type="ColorRect" parent="HUD"]
+[node name="RestartFade" type="ColorRect" parent="HUD" unique_id=550672235]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -558,36 +565,36 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
-[node name="Audio" type="Node" parent="."]
+[node name="Audio" type="Node" parent="." unique_id=384431794]
 
-[node name="AmbiencePlayer" type="AudioStreamPlayer" parent="Audio"]
+[node name="AmbiencePlayer" type="AudioStreamPlayer" parent="Audio" unique_id=1790756076]
 stream = ExtResource("A_amb")
 volume_db = -10.0
 
-[node name="SfxCast" type="AudioStreamPlayer" parent="Audio"]
+[node name="SfxCast" type="AudioStreamPlayer" parent="Audio" unique_id=528724376]
 stream = ExtResource("A_cast")
 volume_db = -6.0
 
-[node name="SfxNibble" type="AudioStreamPlayer" parent="Audio"]
+[node name="SfxNibble" type="AudioStreamPlayer" parent="Audio" unique_id=131048485]
 stream = ExtResource("A_nibble")
 volume_db = -8.0
 
-[node name="SfxBite" type="AudioStreamPlayer" parent="Audio"]
+[node name="SfxBite" type="AudioStreamPlayer" parent="Audio" unique_id=947495890]
 stream = ExtResource("A_bite")
 volume_db = -4.0
 
-[node name="SfxCatch" type="AudioStreamPlayer" parent="Audio"]
+[node name="SfxCatch" type="AudioStreamPlayer" parent="Audio" unique_id=98931994]
 stream = ExtResource("A_catch")
 volume_db = -4.0
 
-[node name="SfxMiss" type="AudioStreamPlayer" parent="Audio"]
+[node name="SfxMiss" type="AudioStreamPlayer" parent="Audio" unique_id=1274600491]
 stream = ExtResource("A_miss")
 volume_db = -6.0
 
-[node name="SfxNa" type="AudioStreamPlayer" parent="Audio"]
+[node name="SfxNa" type="AudioStreamPlayer" parent="Audio" unique_id=1284575064]
 stream = ExtResource("A_na")
 volume_db = -6.0
 
-[node name="SfxReelTick" type="AudioStreamPlayer" parent="Audio"]
+[node name="SfxReelTick" type="AudioStreamPlayer" parent="Audio" unique_id=586767100]
 stream = ExtResource("A_reel")
 volume_db = -11.0

@@ -1,5 +1,5 @@
 extends CanvasLayer
-## Bảng Túi đồ: Tab (open_journal) mở / đóng. ←/→ chọn món, Esc / Tab đóng.
+## Bảng Túi đồ: phím I (action "open_inventory") hoặc Tab mở / đóng. ←/→ chọn món, Esc / I đóng.
 ## Ô bên trái: lưới đồ; bên dưới: tên + mô tả món đang chọn. Chỉ đọc GameState, không tự sửa túi đồ.
 
 const FONT := preload("res://assets/fonts/vt323_regular.ttf")
@@ -20,6 +20,7 @@ var _player: Node
 func _ready() -> void:
 	layer = 70
 	add_to_group(&"inventory_panel")
+	_ensure_inventory_action()
 	var root := Control.new()
 	root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -48,13 +49,23 @@ func _ready() -> void:
 	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_desc.custom_minimum_size = Vector2(COLS * (SLOT + 12), 0)
 	v.add_child(_desc)
-	v.add_child(_text("←/→ chọn · Tab / Esc đóng", 32, Color(0.55, 0.53, 0.6)))
+	v.add_child(_text("←/→ chọn · I / Esc đóng", 32, Color(0.55, 0.53, 0.6)))
 	hide()
 	GameState.changed.connect(func(): if visible: _rebuild())
 
 
+## Phím I mở túi đồ (tạo lúc chạy nếu project.godot chưa khai báo action "open_inventory").
+func _ensure_inventory_action() -> void:
+	if InputMap.has_action(&"open_inventory"):
+		return
+	InputMap.add_action(&"open_inventory")
+	var ev := InputEventKey.new()
+	ev.physical_keycode = KEY_I
+	InputMap.action_add_event(&"open_inventory", ev)
+
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"open_journal"):
+	if event.is_action_pressed(&"open_inventory") or event.is_action_pressed(&"open_journal"):
 		if visible:
 			close()
 		elif _can_open():

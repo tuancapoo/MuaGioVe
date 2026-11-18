@@ -41,7 +41,11 @@ func _physics_process(delta: float) -> void:
 		snap_behind()
 		return
 
-	var moving: bool = absf(dx) > 4.0 and player.can_move
+	# Minh đang ngồi (ghế, câu cá…) thì An vẫn đi vào đúng chỗ ngồi cạnh dù Minh bị khoá di chuyển
+	var seated: bool = player.pose == Player.POSE_SIT
+	var moving: bool = absf(dx) > 4.0 and (player.can_move or seated)
+	if not moving and seated and absf(dx) > 0.0:
+		body.global_position.x = target_x   # khớp đúng chỗ, không lệch vài px
 	if moving:
 		sprite.position.y = _sprite_base_y
 		var player_running: bool = absf(player.velocity.x) > walk_speed + 1.0

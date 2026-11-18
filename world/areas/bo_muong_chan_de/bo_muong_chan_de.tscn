@@ -154,6 +154,7 @@ position = Vector2(80, 290)
 position = Vector2(780, 280)
 minigame_id = "fishing"
 target_count = 5
+show_bench = true
 prompt_text = "Câu cá bên mương"
 prompt_offset = Vector2(0, -68)
 
@@ -192,4 +193,4 @@ position = Vector2(576.0, 280.0)
 position = Vector2(300, 280)
 
 [node name="ChoNgoi2" parent="Objects" instance=ExtResource("SEAT")]
-position = Vector2(860, 280)
+position = Vector2(1020, 280)
