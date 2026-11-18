@@ -2,7 +2,7 @@ extends Node2D
 ## Scene khởi chạy: nạp map hiện tại và đặt Minh vào đó.
 ## Đổi map trong game: SceneManager.change_map(map_id, spawn).
 
-@export var start_map: PackedScene = preload("res://world/areas/ruong_dua/ruong_dua.tscn")
+@export var start_map: PackedScene = preload("res://world/areas/bo_muong_chan_de/bo_muong_chan_de.tscn")
 ## Bạn đồng hành sống xuyên suốt khi đổi map (con của World, không thuộc map nào).
 ## Chỉ hiện / đi theo khi cờ npc.an.following = true.
 @export var companion_scene: PackedScene = preload("res://gameplay/companion/an_companion.tscn")

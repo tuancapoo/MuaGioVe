@@ -3,6 +3,8 @@ extends CharacterBody2D
 ## Nhân vật Minh — di chuyển ngang (side-scrolling), chạy, tương tác.
 ## Điều khiển theo GDD mục 2.4: A/D hoặc mũi tên, giữ Shift để chạy, E để tương tác.
 ## Giữ Ctrl để ngồi xuống núp (animation "sneak-Idle"); đang ngồi thì không đi được.
+## Bấm S / ↓ khi đứng yên: quay mặt ra màn hình ("front-view"). Đi là quay lại bình thường.
+## Tư thế cho cutscene / vật để ngồi: set_pose(Player.POSE_SIT) / set_pose(Player.POSE_FRONT) / set_pose(&"").
 
 ## Phát ra khi đối tượng có thể tương tác gần nhất thay đổi (null nếu không còn gì).
 ## UI dùng signal này để hiện/ẩn lời nhắc "[E]".
@@ -39,8 +41,17 @@ var can_move: bool = true
 ## Đang ngồi núp (giữ Ctrl). Minigame / người đi theo đọc biến này.
 var crouching: bool = false
 
-## Tên animation ngồi núp (tag trong file .aseprite) — nhận cả "sneak-Idle" lẫn "sneak-idle"
-const CROUCH_ANIMS: Array[StringName] = [&"sneak-Idle", &"sneak-idle"]
+## Tên animation ngồi núp (tag trong file .aseprite) — không phân biệt hoa thường
+const CROUCH_ANIM := &"sneak-idle"
+## Tư thế đứng yên đặc biệt (tag trong file .aseprite, không phân biệt hoa thường)
+const POSE_FRONT := &"front-view"
+const POSE_SIT := &"sit"
+
+## Tư thế hiện tại khi đứng yên (rỗng = bình thường). Người đi theo làm giống Minh.
+var pose: StringName = &""
+## Khi ngồi: hạ hình xuống bao nhiêu px (chỗ ngồi đặt, vd mép kè thả chân). Người đi theo dùng chung.
+var sit_drop: float = 0.0
+var _anim_base_y: float = 0.0
 
 var _nearby: Array[Node] = []
 var _footsteps: AudioStreamPlayer
@@ -63,6 +74,7 @@ func _ready() -> void:
 	interaction_area.body_exited.connect(_on_area_exited)
 	_setup_footsteps()
 	_ensure_crouch_action()
+	_anim_base_y = anim.position.y
 
 
 func _physics_process(delta: float) -> void:
@@ -72,6 +84,8 @@ func _physics_process(delta: float) -> void:
 	crouching = can_move and is_on_floor() and Input.is_action_pressed("crouch")
 	# Đang ngồi thì đứng yên tại chỗ
 	var direction := Input.get_axis("move_left", "move_right") if can_move and not crouching else 0.0
+	if direction != 0.0 or crouching:
+		pose = &""   # đi / ngồi núp là bỏ tư thế (đứng dậy)
 	var is_running := Input.is_action_pressed("run")
 	var target_speed := run_speed if is_running else walk_speed
 
@@ -88,6 +102,9 @@ func _physics_process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if can_move and event.is_action_pressed("move_down") and is_on_floor() and absf(velocity.x) < 10.0:
+		set_pose(&"" if pose == POSE_FRONT else POSE_FRONT)
+		return
 	if can_move and event.is_action_pressed("interact") and _current_target != null:
 		get_viewport().set_input_as_handled()
 		EventBus.interacted.emit(_current_target)
@@ -95,9 +112,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _update_animation(direction: float, is_running: bool) -> void:
-	var crouch_anim := crouch_anim_of(anim.sprite_frames)
+	var crouch_anim := anim_of(anim.sprite_frames, CROUCH_ANIM)
 	if crouching and crouch_anim != &"":
 		_play(crouch_anim)
+		return
+	var pose_anim := anim_of(anim.sprite_frames, pose)
+	var sitting := direction == 0.0 and pose == POSE_SIT and pose_anim != &""
+	anim.position.y = _anim_base_y + (sit_drop if sitting else 0.0)
+	if direction == 0.0 and pose_anim != &"":
+		_play(pose_anim)
 		return
 	if direction == 0.0:
 		_play("Idle")
@@ -112,12 +135,24 @@ func _play(anim_name: StringName) -> void:
 		anim.play(anim_name)
 
 
-## Animation ngồi núp có trong bộ frame này (rỗng nếu chưa vẽ). Dùng chung cho người đi theo.
-static func crouch_anim_of(frames: SpriteFrames) -> StringName:
-	if frames:
-		for n in CROUCH_ANIMS:
-			if frames.has_animation(n):
-				return n
+## Đặt tư thế khi đứng yên: POSE_FRONT, POSE_SIT hoặc &"" (bình thường).
+func set_pose(new_pose: StringName) -> void:
+	pose = new_pose
+	if new_pose != POSE_SIT:
+		sit_drop = 0.0
+
+
+## Tên animation trong bộ frame khớp `wanted` (không phân biệt hoa thường), rỗng nếu chưa vẽ.
+## Dùng chung cho người đi theo (vd An có "Sit", Minh có "sit").
+static func anim_of(frames: SpriteFrames, wanted: StringName) -> StringName:
+	if frames == null or wanted == &"":
+		return &""
+	if frames.has_animation(wanted):
+		return wanted
+	var w := String(wanted).to_lower()
+	for n in frames.get_animation_names():
+		if String(n).to_lower() == w:
+			return n
 	return &""
 
 

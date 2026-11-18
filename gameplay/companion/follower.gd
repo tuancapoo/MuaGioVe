@@ -21,6 +21,7 @@ extends Node
 
 @onready var body: Node2D = get_parent()
 @onready var sprite: AnimatedSprite2D = get_parent().get_node("AnimatedSprite2D")
+@onready var _sprite_base_y: float = sprite.position.y
 
 
 func _ready() -> void:
@@ -42,6 +43,7 @@ func _physics_process(delta: float) -> void:
 
 	var moving: bool = absf(dx) > 4.0 and player.can_move
 	if moving:
+		sprite.position.y = _sprite_base_y
 		var player_running: bool = absf(player.velocity.x) > walk_speed + 1.0
 		var speed: float = run_speed if (player_running or absf(dx) > run_distance) else walk_speed
 		body.global_position.x = move_toward(body.global_position.x, target_x, speed * delta)
@@ -49,9 +51,13 @@ func _physics_process(delta: float) -> void:
 		_play(&"Run" if speed == run_speed else &"Walk")
 	else:
 		sprite.flip_h = player.anim.flip_h
-		# Minh ngồi núp thì người đi theo cũng ngồi
-		var crouch_anim := Player.crouch_anim_of(sprite.sprite_frames)
-		_play(crouch_anim if player.crouching and crouch_anim != &"" else &"Idle")
+		# Minh ngồi núp / quay ra màn hình / ngồi thì người đi theo làm giống
+		var want: StringName = Player.CROUCH_ANIM if player.crouching else player.pose
+		var match_anim := Player.anim_of(sprite.sprite_frames, want)
+		_play(match_anim if match_anim != &"" else &"Idle")
+		# Ngồi mép kè… thì hạ hình xuống giống Minh
+		var drop: float = player.sit_drop if (want == Player.POSE_SIT and match_anim != &"") else 0.0
+		sprite.position.y = _sprite_base_y + drop
 
 
 ## Đặt ngay sau lưng Minh, quay cùng hướng.

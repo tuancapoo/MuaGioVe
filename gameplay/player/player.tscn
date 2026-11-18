@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://1facrwvw18pt" path="res://gameplay/player/player.gd" id="1_8afob"]
 [ext_resource type="PackedScene" path="res://gameplay/interaction/interaction_prompt.tscn" id="2_prompt"]
 [ext_resource type="Script" uid="uid://df4qqmqns5nuu" path="res://core/components/shadow.gd" id="3_shadow"]
-[ext_resource type="SpriteFrames" uid="uid://bxcsydk8nvv3g" path="res://assets/characters/minh/minh_regular_frames.tres" id="4_frames"]
+[ext_resource type="SpriteFrames" path="res://assets/characters/minh/minh_regular_frames.tres" id="4_frames"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a80cd"]
 size = Vector2(46, 113)
@@ -26,7 +26,7 @@ shape = SubResource("RectangleShape2D_a80cd")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1567119204]
 texture_filter = 1
 sprite_frames = ExtResource("4_frames")
-animation = &"Run"
+animation = &"Walk"
 
 [node name="InteractionArea" type="Area2D" parent="." unique_id=1203948571]
 collision_layer = 0

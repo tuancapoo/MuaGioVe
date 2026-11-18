@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://vgud856rvhsp"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://dg07xk0x3bxok"]
 
 [ext_resource type="Texture2D" uid="uid://dc8f0sc6is7j2" path="res://assets/characters/minh/minh_regular.png" id="1_sheet"]
 
@@ -94,6 +94,14 @@ region = Rect2(1792, 0, 128, 128)
 atlas = ExtResource("1_sheet")
 region = Rect2(1920, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="f24"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3072, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f25"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3200, 0, 128, 128)
+
 [sub_resource type="AtlasTexture" id="f23"]
 atlas = ExtResource("1_sheet")
 region = Rect2(2944, 0, 128, 128)
@@ -182,6 +190,22 @@ animations = [{
 }],
 "loop": 1,
 "name": &"Walk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 4.0,
+"texture": SubResource("f24")
+}],
+"loop": 1,
+"name": &"front-view",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 4.0,
+"texture": SubResource("f25")
+}],
+"loop": 1,
+"name": &"sit",
 "speed": 10.0
 }, {
 "frames": [{

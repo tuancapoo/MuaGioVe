@@ -40,6 +40,14 @@ func _on_interactable_changed(target: Node) -> void:
 
 
 func _process(_delta: float) -> void:
+	if _target == null:
+		return
+	if not is_instance_valid(_target):
+		_target = null
+		visible = false
+		return
+	# Đối tượng có thể tạm ẩn dấu hỏi (vd đang ngồi trên ghế)
+	visible = not bool(_target.get("hide_prompt"))
 	if visible:
 		_follow()
 

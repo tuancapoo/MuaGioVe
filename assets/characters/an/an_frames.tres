@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://bwlajp36wp8kr"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://c6nm1y7worves"]
 
 [ext_resource type="Texture2D" uid="uid://bkm71271sxny1" path="res://assets/characters/an/an.png" id="1_sheet"]
 
@@ -62,6 +62,10 @@ region = Rect2(2688, 0, 128, 128)
 atlas = ExtResource("1_sheet")
 region = Rect2(2816, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="f36"]
+atlas = ExtResource("1_sheet")
+region = Rect2(4608, 0, 128, 128)
+
 [sub_resource type="AtlasTexture" id="f8"]
 atlas = ExtResource("1_sheet")
 region = Rect2(1024, 0, 128, 128)
@@ -93,6 +97,10 @@ region = Rect2(1792, 0, 128, 128)
 [sub_resource type="AtlasTexture" id="f15"]
 atlas = ExtResource("1_sheet")
 region = Rect2(1920, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f35"]
+atlas = ExtResource("1_sheet")
+region = Rect2(4480, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="f24"]
 atlas = ExtResource("1_sheet")
@@ -200,6 +208,14 @@ animations = [{
 "speed": 10.0
 }, {
 "frames": [{
+"duration": 0.8,
+"texture": SubResource("f36")
+}],
+"loop": 1,
+"name": &"Sit",
+"speed": 10.0
+}, {
+"frames": [{
 "duration": 2.4,
 "texture": SubResource("f8")
 }, {
@@ -226,6 +242,14 @@ animations = [{
 }],
 "loop": 1,
 "name": &"Walk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 0.8,
+"texture": SubResource("f35")
+}],
+"loop": 1,
+"name": &"front-view",
 "speed": 10.0
 }, {
 "frames": [{

@@ -33,6 +33,9 @@ const ACTION_NAMES := {&"talk": "Nói chuyện", &"examine": "Xem", &"take": "Nh
 		enabled = value
 		set_deferred("monitorable", value)
 
+## Tạm ẩn dấu "?" trên đầu (vd đang ngồi trên ghế) — vẫn bấm E được.
+var hide_prompt: bool = false
+
 ## Cho phép đối tượng cha quyết định thêm (vd. "take" chỉ khi chưa nhặt). Trả true = được.
 var action_filter: Callable
 

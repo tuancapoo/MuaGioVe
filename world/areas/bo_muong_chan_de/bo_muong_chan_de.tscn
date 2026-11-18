@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 [ext_resource type="Shader" path="res://world/effects/water.gdshader" id="W_shader"]
 [ext_resource type="AudioStream" path="res://assets/audio/ambience/lake_wavelet.mp3" id="A_amb"]
+[ext_resource type="PackedScene" path="res://world/objects/seat.tscn" id="SEAT"]
 
 [sub_resource type="ShaderMaterial" id="W_surface"]
 shader = ExtResource("W_shader")
@@ -172,3 +173,9 @@ shape = SubResource("T_door_shape")
 
 [node name="from_field" type="Marker2D" parent="Spawns"]
 position = Vector2(576.0, 280.0)
+
+[node name="ChoNgoi1" parent="Objects" instance=ExtResource("SEAT")]
+position = Vector2(300, 280)
+
+[node name="ChoNgoi2" parent="Objects" instance=ExtResource("SEAT")]
+position = Vector2(860, 280)
