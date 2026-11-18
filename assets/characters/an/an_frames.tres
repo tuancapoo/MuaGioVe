@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://dy1oktv170xvw"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://bwlajp36wp8kr"]
 
 [ext_resource type="Texture2D" uid="uid://bkm71271sxny1" path="res://assets/characters/an/an.png" id="1_sheet"]
 
@@ -94,6 +94,54 @@ region = Rect2(1792, 0, 128, 128)
 atlas = ExtResource("1_sheet")
 region = Rect2(1920, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="f24"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3072, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f25"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3200, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f26"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3328, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f27"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3456, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f28"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3584, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f29"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3712, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f30"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3840, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f31"]
+atlas = ExtResource("1_sheet")
+region = Rect2(3968, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f32"]
+atlas = ExtResource("1_sheet")
+region = Rect2(4096, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f33"]
+atlas = ExtResource("1_sheet")
+region = Rect2(4224, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f34"]
+atlas = ExtResource("1_sheet")
+region = Rect2(4352, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f23"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2944, 0, 128, 128)
+
 [resource]
 animations = [{
 "frames": [{
@@ -178,5 +226,51 @@ animations = [{
 }],
 "loop": 1,
 "name": &"Walk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 0.8,
+"texture": SubResource("f24")
+}, {
+"duration": 0.8,
+"texture": SubResource("f25")
+}, {
+"duration": 0.8,
+"texture": SubResource("f26")
+}, {
+"duration": 0.8,
+"texture": SubResource("f27")
+}, {
+"duration": 0.8,
+"texture": SubResource("f28")
+}, {
+"duration": 0.8,
+"texture": SubResource("f29")
+}, {
+"duration": 0.8,
+"texture": SubResource("f30")
+}, {
+"duration": 0.8,
+"texture": SubResource("f31")
+}, {
+"duration": 0.8,
+"texture": SubResource("f32")
+}, {
+"duration": 0.8,
+"texture": SubResource("f33")
+}, {
+"duration": 0.8,
+"texture": SubResource("f34")
+}],
+"loop": 1,
+"name": &"sneak",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 0.8,
+"texture": SubResource("f23")
+}],
+"loop": 1,
+"name": &"sneak-Idle",
 "speed": 10.0
 }]

@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://c1esgisde53qm"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://vgud856rvhsp"]
 
 [ext_resource type="Texture2D" uid="uid://dc8f0sc6is7j2" path="res://assets/characters/minh/minh_regular.png" id="1_sheet"]
 
@@ -94,6 +94,10 @@ region = Rect2(1792, 0, 128, 128)
 atlas = ExtResource("1_sheet")
 region = Rect2(1920, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="f23"]
+atlas = ExtResource("1_sheet")
+region = Rect2(2944, 0, 128, 128)
+
 [resource]
 animations = [{
 "frames": [{
@@ -178,5 +182,13 @@ animations = [{
 }],
 "loop": 1,
 "name": &"Walk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 4.0,
+"texture": SubResource("f23")
+}],
+"loop": 1,
+"name": &"sneak-idle",
 "speed": 10.0
 }]

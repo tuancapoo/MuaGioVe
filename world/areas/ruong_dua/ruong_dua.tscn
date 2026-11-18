@@ -1,0 +1,266 @@
+[gd_scene format=3 uid="uid://ci04315uomt17"]
+
+[ext_resource type="Script" uid="uid://cxei43pvj3yc5" path="res://world/areas/map_base.gd" id="1_map"]
+[ext_resource type="AudioStream" uid="uid://c63fyyekpl4r6" path="res://assets/audio/ambience/cricket_night.mp3" id="A_amb"]
+[ext_resource type="Shader" uid="uid://b5hcic0i07sss" path="res://world/effects/grass_wind.gdshader" id="G_shader"]
+[ext_resource type="Texture2D" uid="uid://dgs17iyu2mf2x" path="res://assets/maps/ruong_dua/01_Bau_troi.png" id="L00"]
+[ext_resource type="Texture2D" uid="uid://bff4td5vnht5u" path="res://assets/maps/ruong_dua/02_May.png" id="L01"]
+[ext_resource type="Texture2D" uid="uid://dh8li25x8kh63" path="res://assets/maps/ruong_dua/03_Nui_xa.png" id="L02"]
+[ext_resource type="Texture2D" uid="uid://bklvjedia7if8" path="res://assets/maps/ruong_dua/04_Lang_xa.png" id="L03"]
+[ext_resource type="Texture2D" uid="uid://dunt806sunnw1" path="res://assets/maps/ruong_dua/05_Ruong_dua_xa.png" id="L04"]
+[ext_resource type="Texture2D" uid="uid://du2mvlk3gpu00" path="res://assets/maps/ruong_dua/06_Choi_canh.png" id="L05"]
+[ext_resource type="Texture2D" uid="uid://bgeuo6obqkdq3" path="res://assets/maps/ruong_dua/07_Luong_dua.png" id="L06"]
+[ext_resource type="Texture2D" uid="uid://b0meyin0wdltg" path="res://assets/maps/ruong_dua/08_Duong_dat.png" id="L07"]
+[ext_resource type="Texture2D" uid="uid://qjk0pl0k3ny6" path="res://assets/maps/ruong_dua/09_Luong_dua_gan.png" id="L08"]
+[ext_resource type="Texture2D" uid="uid://bodxu6dg0r82p" path="res://assets/maps/ruong_dua/90_Tien_canh.png" id="L09"]
+[ext_resource type="Texture2D" uid="uid://cq7ebjus1nevs" path="res://assets/maps/ruong_dua/10_Luong_dua_gan.png" id="L10"]
+[ext_resource type="Texture2D" uid="uid://tt87wjsgb2ey" path="res://assets/maps/ruong_dua/06_Nguoi_canh.png" id="L11"]
+[ext_resource type="Texture2D" uid="uid://b1ntgxj1cxlvg" path="res://assets/objects/bui_cay.png" id="O_buicay"]
+[ext_resource type="Texture2D" uid="uid://77028j6r28fp" path="res://assets/objects/bui_cay_2.png" id="O_buicay2"]
+[ext_resource type="Texture2D" uid="uid://bouayh8srn218" path="res://assets/objects/bui_rom.png" id="O_buirom"]
+[ext_resource type="PackedScene" path="res://gameplay/minigame/melon_stealth/melon.tscn" id="W_melon"]
+[ext_resource type="Script" path="res://gameplay/minigame/melon_stealth/melon_stealth.gd" id="S_stealth"]
+
+[sub_resource type="ShaderMaterial" id="G_beds"]
+shader = ExtResource("G_shader")
+shader_parameter/fps = 6.0
+shader_parameter/grass_top = 0.0
+shader_parameter/sway = 1.0
+shader_parameter/sway_length = 48.0
+shader_parameter/sway_speed = 1.6
+shader_parameter/gust = 1.0
+shader_parameter/gust_width = 260.0
+shader_parameter/gust_speed = 50.0
+
+[sub_resource type="RectangleShape2D" id="Shape_ground"]
+size = Vector2(2000, 40)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall"]
+size = Vector2(20, 504)
+
+[sub_resource type="ShaderMaterial" id="G_front"]
+shader = ExtResource("G_shader")
+shader_parameter/fps = 6.0
+shader_parameter/grass_top = 0.0
+shader_parameter/sway = 1.0
+shader_parameter/sway_length = 48.0
+shader_parameter/sway_speed = 1.6
+shader_parameter/gust = 2.0
+shader_parameter/gust_width = 260.0
+shader_parameter/gust_speed = 50.0
+
+[sub_resource type="Gradient" id="FF_blink"]
+offsets = PackedFloat32Array(0, 0.12, 0.3, 0.42, 0.55, 0.8, 1)
+colors = PackedColorArray(1, 0.894, 0.471, 0, 1, 0.894, 0.471, 1, 0.81, 1, 0.44, 0.15, 1, 0.894, 0.471, 1, 1, 0.894, 0.471, 1, 0.81, 1, 0.44, 0.2, 1, 0.894, 0.471, 0)
+
+[sub_resource type="GradientTexture1D" id="FF_blink_tex"]
+gradient = SubResource("FF_blink")
+
+[sub_resource type="ParticleProcessMaterial" id="FF_mat"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(960, 55, 1)
+direction = Vector3(1, -0.3, 0)
+spread = 180.0
+initial_velocity_min = 3.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
+color_ramp = SubResource("FF_blink_tex")
+turbulence_enabled = true
+turbulence_noise_strength = 2.0
+turbulence_noise_scale = 4.0
+turbulence_influence_min = 0.05
+turbulence_influence_max = 0.15
+
+[node name="RuongDua" type="Node2D" unique_id=1196425328]
+script = ExtResource("1_map")
+map_id = "ruong_dua"
+map_name = "Ruộng dưa"
+map_size = Vector2i(1920, 384)
+footstep_surface = "grass"
+ambience = ExtResource("A_amb")
+
+[node name="Background" type="Node2D" parent="." unique_id=1198815562]
+z_index = -10
+texture_filter = 1
+
+[node name="01_Bau_troi" type="Parallax2D" parent="Background" unique_id=115163693]
+scroll_scale = Vector2(0.1, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/01_Bau_troi" unique_id=1618625109]
+texture = ExtResource("L00")
+centered = false
+
+[node name="02_May" type="Parallax2D" parent="Background" unique_id=1837438772]
+scroll_scale = Vector2(0.2, 1)
+repeat_size = Vector2(1920, 0)
+autoscroll = Vector2(-5, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/02_May" unique_id=77837423]
+texture = ExtResource("L01")
+centered = false
+
+[node name="03_Nui_xa" type="Sprite2D" parent="Background" unique_id=1262061448]
+texture = ExtResource("L02")
+centered = false
+
+[node name="04_Lang_xa" type="Sprite2D" parent="Background" unique_id=624439141]
+texture = ExtResource("L03")
+centered = false
+
+[node name="05_Ruong_dua_xa" type="Sprite2D" parent="Background" unique_id=155128680]
+texture = ExtResource("L04")
+centered = false
+
+[node name="06_Nguoi_canh" type="Sprite2D" parent="Background" unique_id=881505244]
+texture = ExtResource("L11")
+centered = false
+
+[node name="06_Choi_canh" type="Sprite2D" parent="Background" unique_id=1642280399]
+texture = ExtResource("L05")
+centered = false
+
+[node name="07_Luong_dua" type="Sprite2D" parent="Background" unique_id=1193958840]
+material = SubResource("G_beds")
+texture = ExtResource("L06")
+centered = false
+
+[node name="08_Duong_dat" type="Sprite2D" parent="Background" unique_id=1470943808]
+texture = ExtResource("L07")
+centered = false
+
+[node name="Bounds" type="StaticBody2D" parent="." unique_id=247028657]
+
+[node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=1793034296]
+z_index = 2
+position = Vector2(957, 335)
+shape = SubResource("Shape_ground")
+
+[node name="WallLeft" type="CollisionShape2D" parent="Bounds" unique_id=35216115]
+position = Vector2(-10, 192)
+shape = SubResource("Shape_wall")
+
+[node name="WallRight" type="CollisionShape2D" parent="Bounds" unique_id=2070120884]
+position = Vector2(1930, 192)
+shape = SubResource("Shape_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1510553225]
+position = Vector2(80, 314)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=365125850]
+
+[node name="Markers" type="Node2D" parent="." unique_id=1859215296]
+
+[node name="NPCs" type="Node2D" parent="." unique_id=1937930785]
+
+[node name="Objects" type="Node2D" parent="." unique_id=134169696]
+
+[node name="BuiNup1" type="Sprite2D" parent="Objects" unique_id=1294812630]
+z_index = -1
+texture_filter = 1
+position = Vector2(416, 307.80273)
+scale = Vector2(2.540984, 3.2875571)
+texture = ExtResource("O_buirom")
+centered = false
+offset = Vector2(-30, -48)
+
+[node name="BuiNup2" type="Sprite2D" parent="Objects" unique_id=1571031687]
+z_index = -1
+texture_filter = 1
+position = Vector2(900, 318)
+scale = Vector2(3, 3)
+texture = ExtResource("O_buicay")
+centered = false
+offset = Vector2(-32, -54)
+
+[node name="BuiNup3" type="Sprite2D" parent="Objects" unique_id=904295368]
+z_index = -1
+texture_filter = 1
+position = Vector2(121, 307)
+scale = Vector2(3, 3)
+texture = ExtResource("O_buicay2")
+centered = false
+offset = Vector2(-45, -51)
+
+[node name="BuiNup4" type="Sprite2D" parent="Objects" unique_id=1340559934]
+z_index = -1
+texture_filter = 1
+position = Vector2(1347, 319)
+scale = Vector2(3, 4.2295084)
+texture = ExtResource("O_buirom")
+centered = false
+offset = Vector2(-30, -48)
+
+[node name="BuiNup5" type="Sprite2D" parent="Objects" unique_id=1840174075]
+z_index = -1
+texture_filter = 1
+position = Vector2(680, 321)
+scale = Vector2(3, 3)
+texture = ExtResource("O_buicay")
+centered = false
+offset = Vector2(-32, -54)
+
+[node name="Collectibles" type="Node2D" parent="." unique_id=2019431435]
+
+[node name="DuaHau1" parent="Collectibles" unique_id=2067986633 instance=ExtResource("W_melon")]
+z_index = 4
+scale = Vector2(1.2142848, 1.7149998)
+position = Vector2(131.00002, 308.585)
+object_id = "ruong_dua_melon_1"
+
+[node name="DuaHau2" parent="Collectibles" unique_id=705667116 instance=ExtResource("W_melon")]
+z_index = 4
+scale = Vector2(1.2142848, 1.7149998)
+position = Vector2(552, 307)
+object_id = "ruong_dua_melon_2"
+
+[node name="DuaHau3" parent="Collectibles" unique_id=2048787584 instance=ExtResource("W_melon")]
+z_index = 4
+scale = Vector2(1.2142848, 1.7149998)
+position = Vector2(1087, 308.99997)
+object_id = "ruong_dua_melon_3"
+
+[node name="DuaHau4" parent="Collectibles" unique_id=2139486119 instance=ExtResource("W_melon")]
+z_index = -1
+scale = Vector2(7.392856, 10.585751)
+position = Vector2(1612, 325)
+object_id = "ruong_dua_melon_4"
+
+[node name="Exits" type="Node2D" parent="." unique_id=2072481080]
+
+[node name="Foreground" type="Node2D" parent="." unique_id=1038416303]
+z_index = 50
+texture_filter = 1
+
+[node name="90_Tien_canh" type="Sprite2D" parent="Foreground" unique_id=2027644896]
+material = SubResource("G_front")
+texture = ExtResource("L09")
+centered = false
+
+[node name="DomDom" type="GPUParticles2D" parent="Foreground" unique_id=1507117976]
+position = Vector2(960, 315)
+amount = 40
+lifetime = 6.0
+preprocess = 6.0
+randomness = 0.6
+visibility_rect = Rect2(-1000, -120, 2000, 240)
+process_material = SubResource("FF_mat")
+
+[node name="09_Luong_dua_gan" type="Sprite2D" parent="Foreground" unique_id=869444478]
+material = SubResource("G_beds")
+texture = ExtResource("L08")
+centered = false
+
+[node name="10_Luong_dua_gan" type="Sprite2D" parent="Foreground" unique_id=1215339801]
+material = SubResource("G_beds")
+texture = ExtResource("L10")
+centered = false
+
+[node name="MelonStealth" type="Node2D" parent="."]
+script = ExtResource("S_stealth")
+extra_hide_spots = Array[NodePath]([NodePath("../Collectibles/DuaHau4")])

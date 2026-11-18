@@ -10,6 +10,7 @@ Quy tắc theo thư mục:
     art_source/characters/<id>/<ten>.aseprite -> assets/characters/<id>/<ten>.png     (spritesheet ngang)
                                                 + assets/characters/<id>/<ten>_frames.tres (SpriteFrames, mỗi tag 1 animation)
     art_source/ui/<ten>.aseprite              -> assets/ui/<ten>.png                  (frame đầu)
+    art_source/objects/<ten>.aseprite         -> assets/objects/<ten>.png             (frame đầu; đồ vật đặt trong map)
     art_source/palette/…                      -> không xuất
 
 Đường dẫn Aseprite: biến môi trường ASEPRITE, hoặc mặc định bản Steam.
@@ -122,10 +123,20 @@ def export_ui(src):
     print(f"  ui {name}")
 
 
+# ---------------------------------------------------------------- Vật thể (đồ vật đặt trong map)
+
+def export_object(src):
+    name = os.path.splitext(os.path.basename(src))[0]
+    out_dir = os.path.join(DST, "objects")
+    os.makedirs(out_dir, exist_ok=True)
+    ase("--all-layers", src, "--frame-range", "0,0", "--save-as", os.path.join(out_dir, name + ".png"))
+    print(f"  object {name}")
+
+
 def export(src):
     src = os.path.abspath(src)
     kind = os.path.relpath(src, SRC).replace("\\", "/").split("/")[0]
-    {"maps": export_map, "characters": export_character, "ui": export_ui}.get(kind, lambda s: None)(src)
+    {"maps": export_map, "characters": export_character, "ui": export_ui, "objects": export_object}.get(kind, lambda s: None)(src)
 
 
 def main():

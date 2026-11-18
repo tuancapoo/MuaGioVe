@@ -4,6 +4,7 @@ extends Node2D
 ## Điền trong Inspector, KHÔNG cần code:
 ##   - Examine Text     : câu Minh nói khi Xem (mỗi dòng 1 câu; "Tên: câu" để người khác nói)
 ##   - Take Item        : id vật phẩm nhặt được (data/items/<id>.tres) → có nút Nhặt
+##   - Take Presses     : > 0 thì phải bấm E liên tục (thanh lực) mới nhặt được; di chuyển là huỷ
 ##   - Accept Items     : { "id_vật_phẩm": "cờ_bật_khi_dùng" } → dùng đúng đồ thì bật cờ
 ## Gốc toạ độ đặt ở CHÂN vật (mặt đất).
 
@@ -22,6 +23,8 @@ extends Node2D
 @export var take_item: StringName = &""
 @export var take_amount: int = 1
 @export_multiline var take_text: String = ""
+## Số lần bấm E (nhanh) để đủ lực nhặt — vd quả dưa nặng. 0 = nhặt ngay.
+@export var take_presses: int = 0
 
 @export_group("Dùng đồ")
 ## item_id -> cờ bật khi dùng đúng đồ (vd {"pipe_clamp": "ch1.pipe_fixed"})
@@ -67,7 +70,7 @@ func _picked() -> bool:
 	return GameState.has_flag("picked." + object_id)
 
 
-func _on_action(action: StringName, _player: Node, item_id: StringName) -> void:
+func _on_action(action: StringName, player: Node, item_id: StringName) -> void:
 	match action:
 		&"examine":
 			if examine_dialogue:
@@ -75,6 +78,8 @@ func _on_action(action: StringName, _player: Node, item_id: StringName) -> void:
 			else:
 				say(examine_text)
 		&"take":
+			if take_presses > 0 and not await _pull(player):
+				return
 			GameState.set_flag("picked." + object_id)
 			GameState.add_item(take_item, take_amount)
 			if not take_text.strip_edges().is_empty():
@@ -89,6 +94,17 @@ func _on_action(action: StringName, _player: Node, item_id: StringName) -> void:
 				say(use_ok_text)
 			else:
 				say(use_wrong_text.replace("{item}", ItemData.name_of(item_id).to_lower()))
+
+
+## Kéo / bứt vật: hiện thanh "bấm E liên tục". Trả về true nếu đủ lực, false nếu huỷ.
+func _pull(player: Node) -> bool:
+	var bar := get_tree().get_first_node_in_group(&"mash_bar")
+	if bar == null or not (player is Node2D):
+		return true
+	if player is Player:
+		# Quay mặt về phía vật
+		player.anim.flip_h = global_position.x < player.global_position.x
+	return await bar.run(player, take_presses)
 
 
 ## Hiện vài câu thoại nhanh. Dòng không có "Tên: " thì coi là Minh nói.

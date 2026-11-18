@@ -49,7 +49,9 @@ func _physics_process(delta: float) -> void:
 		_play(&"Run" if speed == run_speed else &"Walk")
 	else:
 		sprite.flip_h = player.anim.flip_h
-		_play(&"Idle")
+		# Minh ngồi núp thì người đi theo cũng ngồi
+		var crouch_anim := Player.crouch_anim_of(sprite.sprite_frames)
+		_play(crouch_anim if player.crouching and crouch_anim != &"" else &"Idle")
 
 
 ## Đặt ngay sau lưng Minh, quay cùng hướng.

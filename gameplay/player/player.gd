@@ -2,6 +2,7 @@ class_name Player
 extends CharacterBody2D
 ## Nhân vật Minh — di chuyển ngang (side-scrolling), chạy, tương tác.
 ## Điều khiển theo GDD mục 2.4: A/D hoặc mũi tên, giữ Shift để chạy, E để tương tác.
+## Giữ Ctrl để ngồi xuống núp (animation "sneak-Idle"); đang ngồi thì không đi được.
 
 ## Phát ra khi đối tượng có thể tương tác gần nhất thay đổi (null nếu không còn gì).
 ## UI dùng signal này để hiện/ẩn lời nhắc "[E]".
@@ -35,6 +36,11 @@ var dialogue_color: Color:
 
 ## Tắt khi đang hội thoại, cutscene, minigame…
 var can_move: bool = true
+## Đang ngồi núp (giữ Ctrl). Minigame / người đi theo đọc biến này.
+var crouching: bool = false
+
+## Tên animation ngồi núp (tag trong file .aseprite) — nhận cả "sneak-Idle" lẫn "sneak-idle"
+const CROUCH_ANIMS: Array[StringName] = [&"sneak-Idle", &"sneak-idle"]
 
 var _nearby: Array[Node] = []
 var _footsteps: AudioStreamPlayer
@@ -56,13 +62,16 @@ func _ready() -> void:
 	interaction_area.body_entered.connect(_on_area_entered)
 	interaction_area.body_exited.connect(_on_area_exited)
 	_setup_footsteps()
+	_ensure_crouch_action()
 
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	var direction := Input.get_axis("move_left", "move_right") if can_move else 0.0
+	crouching = can_move and is_on_floor() and Input.is_action_pressed("crouch")
+	# Đang ngồi thì đứng yên tại chỗ
+	var direction := Input.get_axis("move_left", "move_right") if can_move and not crouching else 0.0
 	var is_running := Input.is_action_pressed("run")
 	var target_speed := run_speed if is_running else walk_speed
 
@@ -86,6 +95,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _update_animation(direction: float, is_running: bool) -> void:
+	var crouch_anim := crouch_anim_of(anim.sprite_frames)
+	if crouching and crouch_anim != &"":
+		_play(crouch_anim)
+		return
 	if direction == 0.0:
 		_play("Idle")
 	elif is_running:
@@ -97,6 +110,25 @@ func _update_animation(direction: float, is_running: bool) -> void:
 func _play(anim_name: StringName) -> void:
 	if anim.animation != anim_name:
 		anim.play(anim_name)
+
+
+## Animation ngồi núp có trong bộ frame này (rỗng nếu chưa vẽ). Dùng chung cho người đi theo.
+static func crouch_anim_of(frames: SpriteFrames) -> StringName:
+	if frames:
+		for n in CROUCH_ANIMS:
+			if frames.has_animation(n):
+				return n
+	return &""
+
+
+## Phím ngồi: Ctrl (tạo lúc chạy nếu project.godot chưa khai báo action "crouch").
+func _ensure_crouch_action() -> void:
+	if InputMap.has_action(&"crouch"):
+		return
+	InputMap.add_action(&"crouch")
+	var ev := InputEventKey.new()
+	ev.physical_keycode = KEY_CTRL
+	InputMap.action_add_event(&"crouch", ev)
 
 
 # --- Tiếng bước chân ----------------------------------------------------------

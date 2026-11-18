@@ -34,6 +34,7 @@ Mặt đường dùng ở map nào: thuộc tính `footstep_surface` trên node 
 | `village.mp3` | Indian village ambience (`ranjit_foley-indian-village-ambience-219221.mp3`) | ranjit_foley – https://pixabay.com/sound-effects/ | Góc cây đa |
 | `room.mp3` | Room (`freesound_community-room-71897.mp3`) | freesound_community – https://pixabay.com/sound-effects/ | Phòng Minh ở thành phố |
 | `classroom.mp3` | Ghi âm (VLC) từ video "Study with me 3: Học ở trường (tiếng ồn lớp học)" | Chưa rõ – **chưa xác minh giấy phép**, cần thay bằng âm thanh có giấy phép trước khi phát hành | Lớp học |
+| `cricket_night.mp3` | Cricket on a summer night (`u_s8g68hg8n6-cricket-on-a-summer-night-_-cricket-sound-341501.mp3`) | u_s8g68hg8n6 – https://pixabay.com/sound-effects/ | Ruộng dưa (ban đêm) |
 
 ## Khác — `sfx/`
 
