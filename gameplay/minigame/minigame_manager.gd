@@ -24,6 +24,9 @@ var _active_minigame: MinigameBase = null
 var _active_id: String = ""
 var _world_node: Node = null
 var _prev_world_process_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
+var _player_node: Node = null
+var _prev_player_process_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
+var _saved_player_pos: Vector2 = Vector2.ZERO
 var _dialogue_open: bool = false
 
 
@@ -56,12 +59,19 @@ func start(minigame_id: String, params: Dictionary = {}) -> void:
 		push_error("MinigameManager: không nạp được '%s'" % path)
 		return
 
-	# Khoá Player và dừng World
-	var player := get_tree().get_first_node_in_group(&"player")
-	if player:
-		player.can_move = false
-		if "velocity" in player:
-			player.velocity = Vector2.ZERO
+	# Khoá & đóng băng Player để không bị rơi xuyên sàn khi World tạm dừng
+	_player_node = get_tree().get_first_node_in_group(&"player")
+	if _player_node:
+		_player_node.can_move = false
+		if "velocity" in _player_node:
+			_player_node.velocity = Vector2.ZERO
+		var footsteps := _player_node.get_node_or_null("Footsteps") as AudioStreamPlayer
+		if footsteps and footsteps.playing:
+			footsteps.stop()
+		if _player_node is Node2D:
+			_saved_player_pos = (_player_node as Node2D).global_position
+		_prev_player_process_mode = _player_node.process_mode
+		_player_node.process_mode = Node.PROCESS_MODE_DISABLED
 
 	var main := get_tree().current_scene
 	_world_node = main.get_node_or_null("World") if main else null
@@ -124,11 +134,17 @@ func _on_minigame_finished(result: Dictionary, minigame_id: String) -> void:
 		_world_node.process_mode = _prev_world_process_mode
 	_world_node = null
 
-	# Đợi 1 frame trước khi mở khoá Player để phím E/Space cuối màn không kích hoạt lại điểm tương tác
+	# Đợi 1 frame để physics của map (StaticBody2D mặt đất) bật lại trước khi mở Player
 	await get_tree().process_frame
-	var player := get_tree().get_first_node_in_group(&"player")
-	if player and not _dialogue_open:
-		player.can_move = true
+	if is_instance_valid(_player_node):
+		if _player_node is Node2D:
+			(_player_node as Node2D).global_position = _saved_player_pos
+		if "velocity" in _player_node:
+			_player_node.velocity = Vector2.ZERO
+		_player_node.process_mode = _prev_player_process_mode
+		if not _dialogue_open:
+			_player_node.can_move = true
+	_player_node = null
 
 	EventBus.minigame_finished.emit(minigame_id, result)
 	minigame_closed.emit(minigame_id, result)

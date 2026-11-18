@@ -17,6 +17,7 @@ enum State {
 	CAST_EMPTY,
 	WAITING_BITE,
 	BITE_WINDOW,
+	REELING,
 	CAUGHT_FEEDBACK,
 	MISS_FEEDBACK,
 	WON,
@@ -30,6 +31,18 @@ const MAGNET_RADIUS := 28.0
 const ROD_BASE_POS := Vector2(126.0, 136.0)
 const ROD_TIP_REST := Vector2(170.0, 88.0)
 const BASKET_POS := Vector2(150.0, 182.0)
+
+## Tham số thanh kéo cá kiểu Stardew Valley (hệ quy chuẩn [0.0 đáy, 1.0 đỉnh])
+const BASE_REEL_BAR_HEIGHT := 0.30
+const REEL_BAR_THRUST := 2.75
+const REEL_BAR_GRAVITY := 1.95
+const REEL_BAR_MAX_VEL := 1.45
+const REEL_BAR_BOUNCE := 0.32
+const REEL_FISH_RADIUS := 0.045
+const REEL_GAIN_RATE := 0.28
+const REEL_DRAIN_RATES := [0.12, 0.15, 0.18]
+const GAUGE_POS := Vector2(562.0, 74.0)
+const GAUGE_TRACK_SIZE := Vector2(20.0, 194.0)
 
 ## 5 điểm có cá (3 gần: 0..2, 2 xa: 3..4) — GDD Bảng 40
 const FISHING_SPOTS: Array[Vector2] = [
@@ -80,9 +93,25 @@ var current_bite_window: float = 1.0
 var current_base_window: float = 1.0
 var state_timer: float = 0.0
 
+## Trạng thái thanh kéo kiểu Stardew Valley
+var reel_bar_pos: float = 0.20
+var reel_bar_vel: float = 0.0
+var reel_bar_height: float = BASE_REEL_BAR_HEIGHT
+var reel_fish_pos: float = 0.35
+var reel_fish_target: float = 0.55
+var reel_fish_wait: float = 0.4
+var reel_progress: float = 0.30
+var reel_fish_overlapping: bool = false
+var reel_hold_override: int = -1
+var _mouse_reeling_held: bool = false
+var _reel_tick_timer: float = 0.0
+var _reel_splash_timer: float = 0.0
+
 var _elapsed_visual: float = 0.0
 var _ripples: Array[Dictionary] = []
+var _bubbles: Array[Dictionary] = []
 var _splashes: Array[Dictionary] = []
+var _bubble_hint_timer: float = 0.0
 var _caught_arc_active: bool = false
 var _caught_arc_start: Vector2 = Vector2.ZERO
 var _caught_arc_t: float = 0.0
@@ -129,6 +158,7 @@ var _manual_rng := RandomNumberGenerator.new()
 @onready var sfx_catch: AudioStreamPlayer = $Audio/SfxCatch
 @onready var sfx_miss: AudioStreamPlayer = $Audio/SfxMiss
 @onready var sfx_na: AudioStreamPlayer = $Audio/SfxNa
+@onready var sfx_reel_tick: AudioStreamPlayer = $Audio/SfxReelTick
 
 
 func _on_setup(p: Dictionary) -> void:
@@ -138,9 +168,9 @@ func _on_setup(p: Dictionary) -> void:
 	na_duration = 4.0
 	na_cooldown = 15.0
 	hint_lines = PackedStringArray([
-		"Bé Na: Đừng vội Minh ơi! Đợi phao thụt xuống và hiện dấu '!' hẳn giật cần nha!",
-		"Ông Nội: 'Chậm mà chắc, nước động mới buông câu' — cứ đợi vòng sáng trên phao hãy bấm E hoặc click chuột nghen cháu.",
-		"Gợi ý trực quan: Đã bật vòng định vị cá và thanh canh nhịp kéo cần!"
+		"Bé Na: Giữ nút (Click / E / W) để nâng thanh xanh, thả nhẹ để hạ xuống giữ con cá bên trong nha!",
+		"Ông Nội: 'Lúc cá quẫy mạnh cứ nhấp nhả đều tay, đừng giữ chặt quá kẻo vọt lên trên' — giữ cá trong vùng xanh là kéo lên được cháu.",
+		"Gợi ý trực quan: Đã nới rộng thanh xanh và bật mũi tên báo hướng cá sắp bơi!"
 	])
 
 	_manual_rng.randomize()
@@ -165,7 +195,7 @@ func _on_setup(p: Dictionary) -> void:
 
 func _configure_audio_buses() -> void:
 	var sfx_bus := &"SFX" if AudioServer.get_bus_index(&"SFX") != -1 else &"Master"
-	for player in [sfx_cast, sfx_nibble, sfx_bite, sfx_catch, sfx_miss, sfx_na]:
+	for player in [sfx_cast, sfx_nibble, sfx_bite, sfx_catch, sfx_miss, sfx_na, sfx_reel_tick]:
 		if player:
 			player.bus = sfx_bus
 	if ambience_player:
@@ -207,9 +237,11 @@ func _reset_match_state() -> void:
 	score = 0
 	used_adaptive_margin = false
 	_ripples.clear()
+	_bubbles.clear()
 	_splashes.clear()
+	_bubble_hint_timer = 0.0
 	_caught_arc_active = false
-	_set_feedback("Bé Na: Minh nhìn chỗ có gợn sóng rồi thả cần xuống nha!")
+	_set_feedback("Bé Na: Minh để ý chỗ nào thỉnh thoảng có bong bóng sủi lên rồi thả cần nha!")
 	_start_next_turn()
 
 
@@ -220,6 +252,8 @@ func _start_next_turn() -> void:
 	bite_elapsed = 0.0
 	nibble_dip_timer = 0.0
 	cast_anim_t = 1.0
+	_mouse_reeling_held = false
+	reel_hold_override = -1
 	_spawn_fish_for_current_stage()
 	_update_hud()
 
@@ -293,7 +327,9 @@ func _spawn_fish_for_current_stage() -> void:
 	fish_target_pos = FISHING_SPOTS[fish_spot_index]
 	fish_pos = fish_target_pos + Vector2(_manual_rng.randf_range(-16.0, 16.0), _manual_rng.randf_range(-6.0, 6.0))
 	fish_facing = -1.0 if fish_pos.x > fish_target_pos.x else 1.0
-	_spawn_ripple(fish_target_pos, 1.0)
+	_bubble_hint_timer = _manual_rng.randf_range(1.1, 1.8)
+	_spawn_bubble_cluster(fish_pos, 3)
+	_spawn_ripple(fish_target_pos, 0.9)
 
 
 func _relocate_fish() -> void:
@@ -306,6 +342,7 @@ func _relocate_fish() -> void:
 		fish_spot_index = next_idx
 		fish_target_pos = FISHING_SPOTS[fish_spot_index]
 		fish_facing = 1.0 if fish_target_pos.x >= fish_pos.x else -1.0
+		_bubble_hint_timer = 0.45
 	fish_relocate_timer = 7.5 if stage == 1 else (5.5 if stage == 2 else 3.8)
 
 
@@ -372,14 +409,20 @@ func _update_fish_motion(delta: float) -> void:
 		if diff.length() > 1.5:
 			fish_facing = 1.0 if diff.x >= 0.0 else -1.0
 			fish_pos += diff.normalized() * minf(diff.length(), swim_speed * delta)
-		if int(floor(_elapsed_visual * 2.2)) != int(floor((_elapsed_visual - delta) * 2.2)):
-			_spawn_ripple(fish_pos, 0.75)
+		_bubble_hint_timer -= delta
+		if _bubble_hint_timer <= 0.0:
+			_bubble_hint_timer = _manual_rng.randf_range(1.2, 2.2)
+			_spawn_bubble_cluster(fish_pos, _manual_rng.randi_range(2, 4))
 
 	elif state == State.WAITING_BITE:
 		var approach := bobber_pos + Vector2(-fish_facing * 8.0, 2.0)
 		var diff := approach - fish_pos
 		if diff.length() > 1.0:
 			fish_pos += diff.normalized() * minf(diff.length(), swim_speed * 1.2 * delta)
+		_bubble_hint_timer -= delta
+		if _bubble_hint_timer <= 0.0:
+			_bubble_hint_timer = _manual_rng.randf_range(0.55, 0.95)
+			_spawn_bubble_cluster(fish_pos, 2)
 
 
 func _update_state_machine(delta: float) -> void:
@@ -411,6 +454,9 @@ func _update_state_machine(delta: float) -> void:
 			if bite_elapsed > current_bite_window:
 				_trigger_miss("Quá trễ! Cá nhả mồi lặn mất tiêu rồi...", false)
 
+		State.REELING:
+			_update_stardew_reeling(delta)
+
 		State.CAUGHT_FEEDBACK:
 			state_timer += delta
 			_caught_arc_t = clampf(state_timer / 0.65, 0.0, 1.0)
@@ -427,6 +473,13 @@ func _update_state_machine(delta: float) -> void:
 				_start_next_turn()
 
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		if mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed:
+			_mouse_reeling_held = false
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
 		get_viewport().set_input_as_handled()
@@ -439,7 +492,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if is_paused_for_guide:
-		if event.is_action_pressed(&"interact") or event.is_action_pressed(&"ui_accept") or event.is_action_pressed(&"show_hint") or event.is_action_pressed(&"cancel"):
+		var clicked_guide := event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
+		if clicked_guide or event.is_action_pressed(&"interact") or event.is_action_pressed(&"ui_accept") or event.is_action_pressed(&"show_hint") or event.is_action_pressed(&"cancel"):
 			get_viewport().set_input_as_handled()
 			_set_guide_visible(false)
 		return
@@ -474,15 +528,24 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			if state == State.REELING:
+				_mouse_reeling_held = true
+				get_viewport().set_input_as_handled()
+				return
 			var s: float = world_viewport.scale.x if world_viewport.scale.x > 0.0 else WORLD_SCALE
 			var logical_pos: Vector2 = (mb.position - world_viewport.position) / s
 			if state == State.OBSERVE_AND_AIM:
 				aim_pos = _clamp_to_water(logical_pos)
 			get_viewport().set_input_as_handled()
-			trigger_primary_action()
+			var res := trigger_primary_action()
+			if res == "hooked":
+				_mouse_reeling_held = true
 		return
 
 	if event.is_action_pressed(&"interact") or event.is_action_pressed(&"ui_accept"):
+		if state == State.REELING:
+			get_viewport().set_input_as_handled()
+			return
 		get_viewport().set_input_as_handled()
 		trigger_primary_action()
 
@@ -553,11 +616,119 @@ func pull_rod() -> String:
 		if bite_elapsed <= current_bite_window:
 			if bite_elapsed > current_base_window:
 				used_adaptive_margin = true
-			_trigger_catch()
-			return "caught"
+			_enter_reeling_state()
+			return "hooked"
 		_trigger_miss("Trễ nhịp mất rồi! Cá lặn xuống đáy mất...", false)
 		return "late"
 	return "ignored"
+
+
+func is_reeling_input_held() -> bool:
+	if reel_hold_override >= 0:
+		return reel_hold_override > 0
+	return _mouse_reeling_held or Input.is_action_pressed(&"interact") or Input.is_action_pressed(&"move_up") or Input.is_action_pressed(&"ui_accept")
+
+
+func get_effective_reel_bar_height() -> float:
+	var h := get_effective_tolerance(BASE_REEL_BAR_HEIGHT)
+	if na_active_remaining > 0.0:
+		h = minf(0.55, h + 0.08)
+	return h
+
+
+func _enter_reeling_state() -> void:
+	state = State.REELING
+	reel_bar_height = get_effective_reel_bar_height()
+	reel_fish_pos = 0.35
+	reel_fish_target = _pick_next_reel_fish_target()
+	reel_fish_wait = 0.35
+	reel_bar_pos = clampf(reel_fish_pos - reel_bar_height * 0.5, 0.0, 1.0 - reel_bar_height)
+	reel_bar_vel = 0.0
+	reel_progress = 0.30
+	reel_fish_overlapping = true
+	_reel_tick_timer = 0.0
+	_reel_splash_timer = 0.0
+	_spawn_ripple(bobber_pos, 1.3)
+	_spawn_splashes(bobber_pos, 8)
+	_set_feedback("Bé Na: Dính câu rồi! GIỮ [Click / E / W] nâng thanh xanh giữ lấy cá nha!")
+	_update_hud()
+
+
+func _pick_next_reel_fish_target() -> float:
+	var stage := get_current_stage()
+	var lo := 0.14 if stage == 1 else (0.09 if stage == 2 else 0.06)
+	var hi := 0.84 if stage == 1 else (0.90 if stage == 2 else 0.94)
+	var max_jump := 0.36 if stage == 1 else (0.50 if stage == 2 else 0.66)
+	return clampf(reel_fish_pos + _manual_rng.randf_range(-max_jump, max_jump), lo, hi)
+
+
+func _update_stardew_reeling(delta: float) -> void:
+	var stage := get_current_stage()
+	reel_bar_height = get_effective_reel_bar_height()
+
+	# 1. Vật lý thanh xanh (nhấn giữ đẩy lên, thả rơi có nảy nhẹ ở đáy giống Stardew Valley)
+	if is_reeling_input_held():
+		reel_bar_vel += REEL_BAR_THRUST * delta
+	else:
+		reel_bar_vel -= REEL_BAR_GRAVITY * delta
+	reel_bar_vel = clampf(reel_bar_vel, -REEL_BAR_MAX_VEL, REEL_BAR_MAX_VEL)
+	reel_bar_pos += reel_bar_vel * delta
+
+	var max_bar_pos := maxf(0.0, 1.0 - reel_bar_height)
+	if reel_bar_pos <= 0.0:
+		reel_bar_pos = 0.0
+		if reel_bar_vel < -0.35:
+			reel_bar_vel = -reel_bar_vel * REEL_BAR_BOUNCE
+		else:
+			reel_bar_vel = 0.0
+	elif reel_bar_pos >= max_bar_pos:
+		reel_bar_pos = max_bar_pos
+		if reel_bar_vel > 0.0:
+			reel_bar_vel = 0.0
+
+	# 2. Chuyển động của cá trong cột dọc (Nhờ Na sẽ làm cá bơi chậm và dịu hơn)
+	var base_speed := 0.40 if stage == 1 else (0.62 if stage == 2 else 0.86)
+	if na_active_remaining > 0.0:
+		base_speed *= 0.45
+	var dist := reel_fish_target - reel_fish_pos
+	if absf(dist) > 0.015:
+		reel_fish_pos += signf(dist) * minf(absf(dist), base_speed * delta)
+	else:
+		reel_fish_wait -= delta
+		if reel_fish_wait <= 0.0:
+			reel_fish_target = _pick_next_reel_fish_target()
+			reel_fish_wait = _manual_rng.randf_range(0.75, 1.35) if stage == 1 else (_manual_rng.randf_range(0.40, 0.90) if stage == 2 else _manual_rng.randf_range(0.20, 0.55))
+
+	# 3. Kiểm tra cá nằm trong thanh xanh và cập nhật tiến độ
+	var bar_bottom := reel_bar_pos - REEL_FISH_RADIUS
+	var bar_top := reel_bar_pos + reel_bar_height + REEL_FISH_RADIUS
+	reel_fish_overlapping = reel_fish_pos >= bar_bottom and reel_fish_pos <= bar_top
+
+	if reel_fish_overlapping:
+		# Ghi nhận nếu chỉ còn bám nhờ phần nới thích ứng vượt mức BASE_REEL_BAR_HEIGHT
+		var base_top := reel_bar_pos + BASE_REEL_BAR_HEIGHT + REEL_FISH_RADIUS
+		if reel_fish_pos > base_top:
+			used_adaptive_margin = true
+		reel_progress = minf(1.0, reel_progress + REEL_GAIN_RATE * delta)
+		_reel_tick_timer -= delta
+		if _reel_tick_timer <= 0.0:
+			_reel_tick_timer = 0.14
+			_play_sfx(sfx_reel_tick)
+	else:
+		var drain := float(REEL_DRAIN_RATES[mini(stage - 1, REEL_DRAIN_RATES.size() - 1)])
+		reel_progress = maxf(0.0, reel_progress - drain * delta)
+
+	_reel_splash_timer -= delta
+	if _reel_splash_timer <= 0.0:
+		_reel_splash_timer = 0.28
+		_spawn_ripple(bobber_pos + Vector2(_manual_rng.randf_range(-5.0, 5.0), 0.0), 0.75)
+
+	if reel_progress >= 1.0:
+		_mouse_reeling_held = false
+		_trigger_catch()
+	elif reel_progress <= 0.0:
+		_mouse_reeling_held = false
+		_trigger_miss("Ôi! Cá vùng thoát khỏi thanh kéo rồi...", false)
 
 
 func _trigger_catch() -> void:
@@ -636,8 +807,12 @@ func _abort_to_map() -> void:
 
 func _on_na_help() -> void:
 	_play_sfx(sfx_na)
-	_spawn_ripple(fish_target_pos, 1.5)
-	_set_feedback("Bé Na: A! Mình thấy bóng cá đang quẫy ngay chỗ mũi tên vàng kìa Minh!")
+	if state == State.REELING:
+		_set_feedback("Bé Na: Để mình phụ giữ dây! Cá đang dịu lại rồi nè, kéo lên Minh ơi!")
+	else:
+		_spawn_bubble_cluster(fish_target_pos, 4)
+		_spawn_ripple(fish_target_pos, 1.5)
+		_set_feedback("Bé Na: A! Có bong bóng sủi ngay chỗ mũi tên vàng kìa Minh!")
 	_update_hud()
 
 
@@ -730,13 +905,13 @@ func _update_hud() -> void:
 		na_button.text = "[Space / X] Nhờ Na"
 		na_button.disabled = false
 
-	# Hiển thị thanh nhịp trực quan khi cấp gợi ý 3 (F >= 9) bật
+	# Hiển thị thanh nhịp trực quan khi cấp gợi ý 3 (F >= 9) bật lúc cá cắn câu
 	var show_aid := visual_aid_enabled and state == State.BITE_WINDOW
 	visual_aid_box.visible = show_aid
 	if show_aid:
 		var remain := clampf(1.0 - (bite_elapsed / maxf(0.01, current_bite_window)), 0.0, 1.0)
 		visual_aid_bar.value = remain * 100.0
-		visual_aid_label.text = "KÉO NGAY! [E / Click / A] (%.2fs)" % maxf(0.0, current_bite_window - bite_elapsed)
+		visual_aid_label.text = "MÓC CÁ NGAY! [E / Click / A] (%.2fs)" % maxf(0.0, current_bite_window - bite_elapsed)
 
 
 # --- Vẽ khung cảnh pixel-art, cần câu, sóng nước & bóng cá --------------------
@@ -776,6 +951,17 @@ func _update_particles(delta: float) -> void:
 		if float(r["age"]) >= float(r["life"]):
 			_ripples.remove_at(i)
 
+	for i in range(_bubbles.size() - 1, -1, -1):
+		var b: Dictionary = _bubbles[i]
+		b["age"] = float(b["age"]) + delta
+		var pos: Vector2 = b["pos"]
+		pos.y -= float(b["rise"]) * delta
+		pos.x = float(b["origin_x"]) + sin(float(b["age"]) * 5.5 + float(b["phase"])) * float(b["sway"])
+		b["pos"] = pos
+		if float(b["age"]) >= float(b["life"]):
+			_spawn_ripple(pos, 0.55)
+			_bubbles.remove_at(i)
+
 	for i in range(_splashes.size() - 1, -1, -1):
 		var sp: Dictionary = _splashes[i]
 		sp["age"] = float(sp["age"]) + delta
@@ -789,6 +975,22 @@ func _update_particles(delta: float) -> void:
 
 func _spawn_ripple(pos: Vector2, scale_mul: float = 1.0) -> void:
 	_ripples.append({"pos": pos, "age": 0.0, "life": 0.95, "scale": scale_mul})
+
+
+func _spawn_bubble_cluster(pos: Vector2, count: int = 3) -> void:
+	for i in count:
+		var ox := pos.x + _manual_rng.randf_range(-10.0, 10.0)
+		var oy := pos.y + _manual_rng.randf_range(-4.0, 5.0)
+		_bubbles.append({
+			"pos": Vector2(ox, oy),
+			"origin_x": ox,
+			"rise": _manual_rng.randf_range(12.0, 20.0),
+			"sway": _manual_rng.randf_range(1.2, 2.8),
+			"phase": _manual_rng.randf_range(0.0, TAU),
+			"radius": _manual_rng.randf_range(1.6, 2.8),
+			"age": -float(i) * 0.14,
+			"life": _manual_rng.randf_range(0.65, 0.95),
+		})
 
 
 func _spawn_splashes(pos: Vector2, count: int) -> void:
@@ -847,17 +1049,12 @@ func _draw_basket(canvas: Node2D) -> void:
 
 
 func _draw_spots_and_fish(canvas: Node2D) -> void:
-	# 5 điểm câu mờ dịu trên mặt nước
+	# 5 vùng nước nhẹ trên mặt mương (ẩn cá dưới nước; chỉ hiện bong bóng gợi ý)
 	for i in FISHING_SPOTS.size():
 		var sp := FISHING_SPOTS[i]
 		var is_far := i >= 3
-		var col := Color(0.85, 0.95, 1.0, 0.14 if not is_far else 0.18)
+		var col := Color(0.85, 0.95, 1.0, 0.08 if not is_far else 0.10)
 		_draw_pixel_oval(canvas, sp, 18.0, 6.5, col)
-
-	# Bóng cá đang bơi dưới nước
-	if state in [State.OBSERVE_AND_AIM, State.CAST_EMPTY, State.WAITING_BITE, State.BITE_WINDOW]:
-		var spec: Dictionary = FISH_SPECIES[mini(get_current_stage() - 1, FISH_SPECIES.size() - 1)]
-		_draw_fish_silhouette(canvas, fish_pos, float(spec["length"]), fish_facing, spec["body"], spec["fin"])
 
 	# Nếu "Nhờ Na" hoặc Gợi ý cấp 3 đang bật → vòng sáng định vị chỗ cá
 	if (na_active_remaining > 0.0 or visual_aid_enabled) and state in [State.OBSERVE_AND_AIM, State.CAST_EMPTY]:
@@ -894,6 +1091,18 @@ func _draw_ripples_and_splashes(canvas: Node2D) -> void:
 		var alpha := (1.0 - t) * 0.65
 		_draw_pixel_oval(canvas, Vector2(r["pos"]), rad, rad * 0.38, Color(0.86, 0.96, 1.0, alpha), 1.0)
 
+	for b in _bubbles:
+		var age := float(b["age"])
+		if age < 0.0:
+			continue
+		var t := clampf(age / float(b["life"]), 0.0, 1.0)
+		var alpha := sin(t * PI) * 0.92
+		var p := Vector2(b["pos"])
+		var rad := float(b["radius"])
+		canvas.draw_circle(p, rad, Color(0.58, 0.90, 1.0, alpha * 0.38))
+		canvas.draw_arc(p, rad, 0.0, TAU, 12, Color(0.92, 0.99, 1.0, alpha), 1.0)
+		canvas.draw_rect(Rect2(p + Vector2(-rad * 0.35, -rad * 0.35), Vector2(1.2, 1.2)), Color(1.0, 1.0, 1.0, alpha))
+
 	for sp in _splashes:
 		var alpha := 1.0 - float(sp["age"]) / float(sp["life"])
 		canvas.draw_rect(Rect2(Vector2(sp["pos"]), Vector2(2, 2)), Color(0.92, 0.98, 1.0, alpha))
@@ -903,6 +1112,8 @@ func _draw_rod_and_bobber(canvas: Node2D) -> void:
 	var rod_flex := 0.0
 	if state == State.BITE_WINDOW:
 		rod_flex = 8.0 + sin(_elapsed_visual * 24.0) * 2.0
+	elif state == State.REELING:
+		rod_flex = 9.0 + (3.0 if is_reeling_input_held() else 0.0) + sin(_elapsed_visual * 16.0) * 1.5
 	elif state == State.CAUGHT_FEEDBACK:
 		rod_flex = -12.0
 	var tip := ROD_TIP_REST + Vector2(0, rod_flex)
@@ -911,7 +1122,7 @@ func _draw_rod_and_bobber(canvas: Node2D) -> void:
 	canvas.draw_line(ROD_BASE_POS, tip, Color(0.45, 0.48, 0.22), 2.5)
 	canvas.draw_line(ROD_BASE_POS + Vector2(0, -1), tip + Vector2(0, -1), Color(0.76, 0.78, 0.40), 1.0)
 
-	if state in [State.CAST_EMPTY, State.WAITING_BITE, State.BITE_WINDOW]:
+	if state in [State.CAST_EMPTY, State.WAITING_BITE, State.BITE_WINDOW, State.REELING]:
 		var b_pos := cast_from_pos.lerp(bobber_pos, cast_anim_t)
 		if cast_anim_t < 1.0:
 			b_pos.y -= sin(cast_anim_t * PI) * 32.0
@@ -920,6 +1131,9 @@ func _draw_rod_and_bobber(canvas: Node2D) -> void:
 			bob_y += 2.8
 		elif state == State.BITE_WINDOW:
 			bob_y += 5.5
+		elif state == State.REELING:
+			b_pos.x += sin(_elapsed_visual * 14.0) * 3.5
+			bob_y += 2.5 + cos(_elapsed_visual * 18.0) * 1.5
 		b_pos.y += bob_y
 
 		# Dây câu hơi võng tự nhiên
@@ -937,9 +1151,10 @@ func _draw_rod_and_bobber(canvas: Node2D) -> void:
 
 func _draw_aim_and_alerts(canvas: Node2D) -> void:
 	if state == State.OBSERVE_AND_AIM:
+		var show_lock := na_active_remaining > 0.0 or visual_aid_enabled
 		var hit_r := get_spot_hit_radius(get_current_stage())
-		var in_range := aim_pos.distance_to(fish_pos) <= hit_r or aim_pos.distance_to(fish_target_pos) <= hit_r
-		var col := Color(0.98, 0.85, 0.34, 0.95) if in_range else Color(0.95, 0.98, 1.0, 0.85)
+		var in_range := show_lock and (aim_pos.distance_to(fish_pos) <= hit_r or aim_pos.distance_to(fish_target_pos) <= hit_r)
+		var col := Color(0.98, 0.85, 0.34, 0.95) if in_range else Color(0.95, 0.98, 1.0, 0.88)
 		_draw_pixel_oval(canvas, aim_pos, 12.0, 5.0, col, 1.5)
 		canvas.draw_line(aim_pos + Vector2(-4, 0), aim_pos + Vector2(4, 0), col, 1.0)
 		canvas.draw_line(aim_pos + Vector2(0, -3), aim_pos + Vector2(0, 3), col, 1.0)
@@ -957,6 +1172,70 @@ func _draw_aim_and_alerts(canvas: Node2D) -> void:
 		canvas.draw_rect(Rect2(alert_pos.x - 5, alert_pos.y - 9, 10, 14), Color(0.98, 0.80, 0.28))
 		canvas.draw_rect(Rect2(alert_pos.x - 1.5, alert_pos.y - 7, 3, 7), Color(0.10, 0.08, 0.14))
 		canvas.draw_rect(Rect2(alert_pos.x - 1.5, alert_pos.y + 1.5, 3, 2.5), Color(0.10, 0.08, 0.14))
+
+	elif state == State.REELING:
+		_draw_stardew_reel_gauge(canvas)
+
+
+func _draw_stardew_reel_gauge(canvas: Node2D) -> void:
+	var gx := GAUGE_POS.x
+	var gy := GAUGE_POS.y
+	var tw := GAUGE_TRACK_SIZE.x
+	var th := GAUGE_TRACK_SIZE.y
+	var pw := 7.0
+	var gap := 4.0
+
+	# Khung gỗ tre kiểu pixel art bao quanh cột nước & thanh tiến độ
+	var frame_rect := Rect2(gx - 6, gy - 7, tw + gap + pw + 12, th + 14)
+	canvas.draw_rect(frame_rect.grow(2.0), Color(0.11, 0.09, 0.16, 0.96))
+	canvas.draw_rect(frame_rect, Color(0.64, 0.42, 0.24))
+	canvas.draw_rect(Rect2(frame_rect.position + Vector2(2, 2), frame_rect.size - Vector2(4, 4)), Color(0.82, 0.58, 0.34))
+
+	# Nền cột nước chứa cá
+	var track_rect := Rect2(gx, gy, tw, th)
+	canvas.draw_rect(track_rect.grow(1.0), Color(0.10, 0.13, 0.20))
+	canvas.draw_rect(track_rect, Color(0.12, 0.31, 0.46))
+	for step in 8:
+		var sy := gy + th * (float(step) / 8.0)
+		canvas.draw_line(Vector2(gx + 1, sy), Vector2(gx + tw - 1, sy), Color(0.20, 0.46, 0.64, 0.35), 1.0)
+
+	# Thanh xanh lá bắt cá (tọa độ chuẩn hoá 0.0 = đáy, 1.0 = đỉnh)
+	var bar_px_h := reel_bar_height * th
+	var bar_top_y := gy + th - (reel_bar_pos + reel_bar_height) * th
+	var bar_rect := Rect2(gx + 2, bar_top_y, tw - 4, bar_px_h)
+	var bar_border := Color(0.10, 0.28, 0.14)
+	var bar_fill := Color(0.32, 0.88, 0.42, 0.94) if reel_fish_overlapping else Color(0.62, 0.78, 0.30, 0.76)
+	var bar_hi := Color(0.62, 0.98, 0.66, 0.95) if reel_fish_overlapping else Color(0.80, 0.90, 0.48, 0.80)
+	canvas.draw_rect(bar_rect.grow(1.0), bar_border)
+	canvas.draw_rect(bar_rect, bar_fill)
+	canvas.draw_rect(Rect2(bar_rect.position + Vector2(1, 1), Vector2(4, maxf(2.0, bar_rect.size.y - 2))), bar_hi)
+
+	# Biểu tượng cá pixel bên trong cột dọc
+	var fish_y := gy + th - reel_fish_pos * th
+	var fish_cx := gx + tw * 0.5
+	var f_body := Color(0.98, 0.84, 0.36) if reel_fish_overlapping else Color(0.96, 0.54, 0.34)
+	var f_fin := Color(0.92, 0.46, 0.26)
+	_draw_fish_silhouette(canvas, Vector2(fish_cx, fish_y), 11.0, 1.0, f_body, f_fin)
+
+	# Gợi ý trực quan cấp 3 (F >= 9): mũi tên báo hướng cá sắp di chuyển
+	if visual_aid_enabled and absf(reel_fish_target - reel_fish_pos) > 0.03:
+		var dir_y := -1.0 if reel_fish_target > reel_fish_pos else 1.0
+		var ay := fish_y + dir_y * 10.0
+		canvas.draw_line(Vector2(fish_cx, ay), Vector2(fish_cx, ay + dir_y * 6.0), Color(0.42, 0.98, 0.72), 1.5)
+		canvas.draw_line(Vector2(fish_cx - 3, ay + dir_y * 3.0), Vector2(fish_cx, ay + dir_y * 6.0), Color(0.42, 0.98, 0.72), 1.5)
+		canvas.draw_line(Vector2(fish_cx + 3, ay + dir_y * 3.0), Vector2(fish_cx, ay + dir_y * 6.0), Color(0.42, 0.98, 0.72), 1.5)
+
+	# Thanh tiến độ kéo cá bên phải (đầy 1.0 là bắt được cá)
+	var prog_x := gx + tw + gap
+	var prog_bg := Rect2(prog_x, gy, pw, th)
+	canvas.draw_rect(prog_bg.grow(1.0), Color(0.10, 0.10, 0.16))
+	canvas.draw_rect(prog_bg, Color(0.16, 0.15, 0.22))
+	var fill_h := clampf(reel_progress, 0.0, 1.0) * th
+	if fill_h > 0.5:
+		var prog_col := Color(0.92, 0.34, 0.26).lerp(Color(0.96, 0.80, 0.28), clampf(reel_progress * 2.0, 0.0, 1.0))
+		if reel_progress > 0.5:
+			prog_col = Color(0.96, 0.80, 0.28).lerp(Color(0.28, 0.90, 0.46), clampf((reel_progress - 0.5) * 2.0, 0.0, 1.0))
+		canvas.draw_rect(Rect2(prog_x, gy + th - fill_h, pw, fill_h), prog_col)
 
 
 func _draw_pixel_oval(canvas: Node2D, center: Vector2, rx: float, ry: float, col: Color, width: float = 1.0) -> void:

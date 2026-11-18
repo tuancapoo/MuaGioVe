@@ -63,6 +63,7 @@ func _test_stages_and_windows() -> void:
 	_assert(mg.get_current_stage() == 1, "Bắt đầu ở Giai đoạn 1")
 	_assert(is_equal_approx(mg.get_current_catch_window(), 1.0), "Giai đoạn 1: cửa sổ w = 1,0 s")
 	_assert(mg.get_active_fish_spot_index() in [0, 1, 2], "Giai đoạn 1 chỉ sinh cá ở 3 điểm gần")
+	_assert(mg._bubbles.size() > 0, "Hiển thị bong bóng gợi ý vị trí cá dưới nước")
 
 	mg.caught_count = 2
 	_assert(mg.get_current_stage() == 2, "Sau 2 cá chuyển sang Giai đoạn 2")
@@ -155,7 +156,7 @@ func _test_no_gameover_and_fast_restart() -> void:
 
 
 func _test_bot_fast_fish_bal_tc_06() -> void:
-	# Bot phản ứng 0,35 s trên cá nhanh (w = 0,7 s) trong 30 lượt
+	# Bot phản ứng 0,35 s móc cá nhanh (w = 0,7 s) trong 30 lượt, rồi giữ thanh kéo kiểu Stardew Valley
 	var mg := _spawn_fishing({"target": 100, "force_stage": 3})
 	var wins := 0
 	var trials := 30
@@ -169,9 +170,18 @@ func _test_bot_fast_fish_bal_tc_06() -> void:
 		mg._on_minigame_process(mg.wait_bite_duration + 0.01)
 		if mg.state == 3: # BITE_WINDOW
 			mg._on_minigame_process(0.35)
-			if mg.pull_rod() == "caught":
-				wins += 1
-	_assert(wins >= 29, "BAL-TC-06: Bot phản ứng 0,35 s bắt được cá nhanh (w=0,7s): %d/%d (≥ 95%%)" % [wins, trials])
+			if mg.pull_rod() == "hooked":
+				# Bot bám thanh xanh theo cá ở chế độ Stardew Valley
+				var guard := 0
+				while mg.state == 4 and guard < 400: # REELING
+					var center: float = mg.reel_bar_pos + mg.reel_bar_height * 0.5
+					mg.reel_hold_override = 1 if mg.reel_fish_pos > center else 0
+					mg._on_minigame_process(0.02)
+					guard += 1
+				mg.reel_hold_override = -1
+				if mg.state == 5: # CAUGHT_FEEDBACK
+					wins += 1
+	_assert(wins >= 29, "BAL-TC-06 + Stardew Reel: Bot phản ứng 0,35 s móc & kéo được cá nhanh (w=0,7s): %d/%d (≥ 95%%)" % [wins, trials])
 
 	# Bot thao tác ngoài cửa sổ (quá trễ > 0,7 s) → cá thoát
 	mg.state = 0 # OBSERVE_AND_AIM
@@ -179,7 +189,42 @@ func _test_bot_fast_fish_bal_tc_06() -> void:
 	mg.attempt_cast_at(mg.fish_target_pos)
 	mg._on_minigame_process(mg.wait_bite_duration + 0.01)
 	mg._on_minigame_process(0.75)
-	_assert(mg.state == 5, "BAL-TC-06: Thao tác quá cửa sổ làm cá thoát") # MISS_FEEDBACK = 5
+	_assert(mg.state == 6, "BAL-TC-06: Thao tác quá cửa sổ làm cá thoát") # MISS_FEEDBACK = 6
+
+	# Kiểm tra trực tiếp vật lý thanh kéo Stardew Valley (lên, rơi + nảy đáy, hết thanh thì thoát, Nhờ Na hỗ trợ)
+	mg.state = 0
+	mg._spawn_fish_for_current_stage()
+	mg.attempt_cast_at(mg.fish_target_pos)
+	mg._on_minigame_process(mg.wait_bite_duration + 0.01)
+	mg._on_minigame_process(0.20)
+	_assert(mg.pull_rod() == "hooked" and mg.state == 4, "Móc cá chuyển vào trạng thái kéo thanh Stardew (REELING)")
+	var start_bar: float = mg.reel_bar_pos
+	mg.reel_hold_override = 1
+	mg._on_minigame_process(0.18)
+	_assert(mg.reel_bar_pos > start_bar, "Giữ nút nâng thanh xanh đi lên")
+	mg.reel_hold_override = 0
+	for _k in 20:
+		mg._on_minigame_process(0.05)
+	_assert(mg.reel_bar_pos <= start_bar, "Thả nút cho thanh xanh rơi xuống theo trọng lực")
+
+	# Nhờ Na khi đang kéo mở rộng thanh xanh
+	var base_h: float = mg.get_effective_reel_bar_height()
+	_assert(mg.call_na(), "Nhờ Na hoạt động cả trong lúc đang kéo cá")
+	_assert(mg.get_effective_reel_bar_height() > base_h, "Nhờ Na nới rộng thanh xanh khi kéo")
+
+	# Cố tình để cá ra ngoài thanh xanh tới khi cạn thanh tiến độ → cá thoát (MISS_FEEDBACK = 6)
+	mg.reel_fish_pos = 0.95
+	mg.reel_fish_target = 0.95
+	mg.reel_bar_pos = 0.0
+	mg.reel_hold_override = 0
+	var fails_before: int = mg.fail_count
+	for _k in 80:
+		if mg.state != 4:
+			break
+		mg.reel_fish_pos = 0.95
+		mg._on_minigame_process(0.05)
+	mg.reel_hold_override = -1
+	_assert(mg.state == 6 and mg.fail_count == fails_before + 1, "Để cá ra ngoài thanh làm cạn tiến độ và tính cá thoát")
 	mg.queue_free()
 	await process_frame
 
@@ -209,28 +254,55 @@ func _test_world_integration_bo_muong() -> void:
 	var spot: Node = main.map_node.get_node("Objects/FishingSpot")
 	_assert(spot != null, "Tìm thấy FishingSpot trên bờ mương")
 
-	mg_mgr.start("fishing", {"target": 5, "skip_intro": true})
+	# Di chuyển Minh tới sát điểm câu cá và kiểm tra bấm chuột vào FishingSpot mở được minigame
+	main.player.global_position = Vector2(780, 224)
+	for _i in 6:
+		await physics_frame
+	_assert(main.player._current_target == spot, "Đứng cạnh điểm câu nhận đúng target FishingSpot")
+	_assert(main.player._is_click_on_target(spot, spot.global_position + Vector2(0, -24)), "Click chuột trúng điểm câu cá hợp lệ")
+	var saved_player_pos: Vector2 = main.player.global_position
+
+	mg_mgr.start("fishing", {"target": 5, "skip_intro": false})
 	await process_frame
 	_assert(mg_mgr.is_running(), "MinigameManager đang chạy fishing")
 	_assert(not main.player.can_move, "Player bị khoá khi đang chơi minigame")
 	_assert(main.world.process_mode == Node.PROCESS_MODE_DISABLED, "World tạm dừng khi đang chơi minigame")
 
+	# Mô phỏng chơi trong 90 frame vật lý: kiểm tra Minh KHÔNG bị rơi xuyên sàn
+	for _i in 90:
+		await physics_frame
+	_assert(main.player.global_position.distance_to(saved_player_pos) < 1.0, "Minh giữ nguyên vị trí (không rơi xuyên sàn) khi đang chơi minigame")
+
 	var mg: Node = mg_mgr._active_minigame
-	# Hoàn thành đủ 5 con cá
+	# Đóng bảng hướng dẫn bằng thao tác bấm
+	mg._set_guide_visible(false)
+	# Hoàn thành đủ 5 con cá (móc + kéo thanh Stardew)
 	for _c in 5:
 		mg.attempt_cast_at(mg.fish_target_pos)
 		mg._on_minigame_process(mg.wait_bite_duration + 0.01)
 		mg._on_minigame_process(0.30)
 		mg.pull_rod()
+		var guard := 0
+		while mg.state == 4 and guard < 400:
+			var center: float = mg.reel_bar_pos + mg.reel_bar_height * 0.5
+			mg.reel_hold_override = 1 if mg.reel_fish_pos > center else 0
+			mg._on_minigame_process(0.02)
+			guard += 1
+		mg.reel_hold_override = -1
 		mg._on_minigame_process(0.90)
 
-	_assert(mg.state == 6, "Sau 5 con cá chuyển sang trạng thái WON")
+	_assert(mg.state == 7, "Sau 5 con cá chuyển sang trạng thái WON")
 	mg._emit_win_result()
 	await process_frame
 	await process_frame
+	for _i in 10:
+		await physics_frame
 
 	_assert(not mg_mgr.is_running(), "MinigameManager đóng minigame sau khi thắng")
-	_assert(main.player.can_move, "Mở khoá Player sau khi đóng minigame")
+	_assert(main.player.can_move and main.player.visible, "Mở khoá Player và nhân vật vẫn hiển thị sau minigame")
+	_assert(main.player.global_position.distance_to(saved_player_pos) < 2.0 and main.player.is_on_floor(), "Minh đứng đúng trên mặt đất bờ mương sau khi chơi xong (không bị mất)")
+	if main.companion:
+		_assert(main.companion.visible and absf(main.companion.global_position.y - 280.0) < 4.0, "Bé Na vẫn hiện đúng trên mặt đất sau khi chơi xong")
 	_assert(game_state.has_flag("minigame.fishing.won"), "Cờ minigame.fishing.won được bật")
 	_assert(game_state.is_quest_done("fishing"), "Quest fishing tự động hoàn thành khi thắng")
 	_assert(game_state.item_count("fish") == 5, "Nhận đủ 5 Cá đồng vào túi đồ (GameState.inventory)")

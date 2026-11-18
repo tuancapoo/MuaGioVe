@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://gameplay/minigame/minigame_spot.gd" id="1_spot"]
 
 [sub_resource type="RectangleShape2D" id="Shape_spot"]
-size = Vector2(96, 96)
+size = Vector2(128, 110)
 
 [node name="MinigameSpot" type="Area2D"]
 script = ExtResource("1_spot")

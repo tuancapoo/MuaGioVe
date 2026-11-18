@@ -24,6 +24,7 @@
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/catch.wav" id="A_catch"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/miss.wav" id="A_miss"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/na_help.wav" id="A_na"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/fishing/reel_tick.wav" id="A_reel"]
 
 [sub_resource type="ShaderMaterial" id="Mat_surface"]
 shader = ExtResource("W_shader")
@@ -398,13 +399,12 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
 theme_override_fonts/font = ExtResource("Font_vt")
 theme_override_font_sizes/font_size = 34
-text = "1. Quan sát mặt nước để tìm gợn sóng hoặc bóng cá di chuyển.
-2. Căn chỉnh điểm thả cần rồi thả phao xuống đúng chỗ có cá.
-3. Đợi phao thụt xuống và hiện dấu '!' thì bấm giật cần đúng lúc!
+text = "1. Quan sát mặt nước, tìm chỗ có vài bong bóng sủi lên rồi thả phao vào vùng đó.
+2. Khi phao thụt xuống & hiện dấu '!' → bấm nhanh [Click / E / A] để móc cá.
+3. Thanh kéo cá: GIỮ [Click trái / E / W / A] để nâng thanh xanh, THẢ để hạ xuống; giữ cá trong thanh xanh tới khi đầy cột bên phải!
 
-• Chuột / Phím: Di chuột hoặc A/D/W/S chọn chỗ · Click trái / E thả & giật cần
-• Tay cầm: Analog trái chọn chỗ · A thả & giật · X nhờ Na · Back hướng dẫn
-• Mẹo: Bấm [Space / X] để Nhờ Na chỉ vị trí cá (hồi 15 giây)."
+• Di chuyển tâm thả: Chuột hoặc A/D/W/S (Analog trái tay cầm)
+• Mẹo: Bấm [Space / X] để Nhờ Na chỉ vị trí cá hoặc làm cá dịu lại lúc đang kéo (hồi 15s)."
 autowrap_mode = 2
 
 [node name="GuideStartButton" type="Button" parent="HUD/GuideOverlay/VBox"]
@@ -587,3 +587,7 @@ volume_db = -6.0
 [node name="SfxNa" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("A_na")
 volume_db = -6.0
+
+[node name="SfxReelTick" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("A_reel")
+volume_db = -11.0
