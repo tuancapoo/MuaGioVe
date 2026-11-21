@@ -11,6 +11,7 @@ const ICONS := {
 	&"talk": preload("res://assets/ui/icons/action_talk.png"),
 	&"examine": preload("res://assets/ui/icons/action_examine.png"),
 	&"take": preload("res://assets/ui/icons/action_take.png"),
+	&"search": preload("res://assets/ui/icons/action_search.png"),
 }
 const ICON_ITEM := preload("res://assets/ui/icons/action_use_item.png")
 const ARROW_L := preload("res://assets/ui/icons/arrow_left.png")

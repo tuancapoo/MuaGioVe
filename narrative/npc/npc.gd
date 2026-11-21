@@ -83,18 +83,48 @@ func _on_action(action: StringName, player: Node, item_id: StringName) -> void:
 
 
 ## Đưa đồ cho NPC: chạy cue "give_<id>" nếu có trong file thoại của NPC.
+
+
 func _give(item_id: StringName, player: Node) -> void:
 	if face_player and player is Node2D:
 		sprite.flip_h = (player as Node2D).global_position.x < global_position.x
-	var cue := "give_" + String(item_id)
-	if data and data.dialogue and data.dialogue.get_cues().has(cue):
-		DialogueManager.show_dialogue_balloon(data.dialogue, cue)
-	else:
-		var who := speaker_name if not speaker_name.is_empty() else "người ta"
-		var line := "Minh: (Chắc %s không cần %s đâu.)" % [who, ItemData.name_of(item_id).to_lower()]
-		var res = DialogueManager.create_resource_from_text("~ start\n" + line + "\n=> END\n")
-		DialogueManager.show_dialogue_balloon(res, "start")
 
+	var item_key := String(item_id)
+	var cue := "give_" + item_key
+
+	if data and data.dialogue and data.dialogue.get_cues().has(cue):
+		if not GameState.has_item(item_key):
+			return
+
+		# Chỉ trừ vật phẩm khi NPC có hội thoại nhận món đó.
+		var removed := GameState.remove_item(item_key, 1)
+		if not removed:
+			return
+
+		# Ghi nhớ các linh kiện đã giao cho Ông Nội.
+		if npc_id == &"ong_noi" and item_key in [
+			"pipe_clamp",
+			"pipe_connector",
+			"rubber_ring"
+		]:
+			GameState.set_flag("pipe_delivered." + item_key)
+
+		print("[NPC] Đã giao: ", item_key)
+		print("[NPC] Còn trong túi: ", GameState.item_count(item_key))
+
+		DialogueManager.show_dialogue_balloon(data.dialogue, cue)
+		return
+
+	var who := speaker_name if not speaker_name.is_empty() else "người ta"
+	var line := "Minh: (Chắc %s không cần %s đâu.)" % [
+		who,
+		ItemData.name_of(item_id).to_lower()
+	]
+
+	var res = DialogueManager.create_resource_from_text(
+		"~ start\n" + line + "\n=> END\n"
+	)
+	DialogueManager.show_dialogue_balloon(res, "start")
 
 func get_speech_anchor() -> Vector2:
 	return global_position + Vector2(0, -(data.speech_height if data else 122.0))

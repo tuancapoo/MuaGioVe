@@ -1,0 +1,23 @@
+*   [33m94ffab9[m[33m ([m[1;35mrefs/stash[m[33m)[m On main: backup import files before update
+[31m|[m[32m\[m  
+[31m|[m * [33mc3ecaa5[m index on main: 19c80b3 ok
+[31m|[m[31m/[m  
+[31m|[m * [33m281c329[m[33m ([m[1;31morigin/Tris[m[33m)[m feat: implement mini-game fishing
+[31m|[m * [33m27753f4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m sound effect/ inventory system
+[31m|[m * [33m8fcf00a[m Merge pull request #1 from tuancapoo/feature/art-png
+[31m|[m[31m/[m[35m|[m 
+[31m|[m * [33mefd222b[m[33m ([m[1;31morigin/feature/art-png[m[33m)[m Chuyển art sang PNG xuất từ .aseprite, bỏ phụ thuộc Aseprite khi chạy game
+[31m|[m[31m/[m  
+* [33m19c80b3[m ok
+* [33mb08b1f5[m an follow minh
+* [33m4b7b4c7[m ok
+* [33m4f725fc[m done map
+* [33m5e65f0c[m living room
+* [33m9c353c1[m map setup
+* [33m286d67b[m restruct project
+* [33m37f4831[m test di chuyen
+* [33m053e03d[m requirement
+* [33m7860f1d[m init project
+* [33ma84ed38[m dd
+* [33mefc49a9[m init
+* [33md07380d[m chore: initial Godot project setup

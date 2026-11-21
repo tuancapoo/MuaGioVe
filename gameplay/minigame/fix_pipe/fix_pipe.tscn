@@ -1,0 +1,163 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://gameplay/minigame/fix_pipe/fix_pipe.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/fonts/vt323_regular.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="dark_panel"]
+bg_color = Color(0.071, 0.08, 0.13, 0.94)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.95, 0.78, 0.36, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 20.0
+content_margin_top = 18.0
+content_margin_right = 20.0
+content_margin_bottom = 18.0
+
+[node name="FixPipe" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture_filter = 1
+script = ExtResource("1_script")
+
+[node name="GuideOverlay" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="GuideOverlay"]
+layout_mode = 2
+custom_minimum_size = Vector2(650, 0)
+theme_override_styles/panel = SubResource("dark_panel")
+
+[node name="VBox" type="VBoxContainer" parent="GuideOverlay/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="GuideOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 54
+theme_override_colors/font_color = Color(0.95, 0.78, 0.35, 1)
+text = "SỬA ỐNG NƯỚC"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="GuideOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "Ống nước bị nứt!\n1. Nhấp vào đoạn ống nứt để tháo ra.\n2. Kéo ống mới vào khoảng trống.\n3. Lắp vòng cao su, rồi siết kẹp.\nSửa xong sẽ chuyển sang màn tưới rau."
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="GuideOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 38
+text = "Bắt đầu sửa [Click]"
+
+[node name="WinOverlay" type="CenterContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="WinOverlay"]
+layout_mode = 2
+custom_minimum_size = Vector2(650, 0)
+theme_override_styles/panel = SubResource("dark_panel")
+
+[node name="VBox" type="VBoxContainer" parent="WinOverlay/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="WinOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 55
+theme_override_colors/font_color = Color(0.95, 0.78, 0.35, 1)
+text = "SỬA ỐNG THÀNH CÔNG!"
+horizontal_alignment = 1
+
+[node name="Summary" type="Label" parent="WinOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 37
+text = "Ống nước không còn rò rỉ.\nBáo ông nội để nhận Hạt Gió"
+horizontal_alignment = 1
+
+[node name="WinButton" type="Button" parent="WinOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "Báo ông nội [Enter]"
+
+[node name="PauseOverlay" type="CenterContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="PauseOverlay"]
+layout_mode = 2
+custom_minimum_size = Vector2(450, 0)
+theme_override_styles/panel = SubResource("dark_panel")
+
+[node name="VBox" type="VBoxContainer" parent="PauseOverlay/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="PauseOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 45
+text = "TẠM DỪNG"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="PauseOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 35
+text = "Tiếp tục sửa"
+
+[node name="ExitButton" type="Button" parent="PauseOverlay/Panel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 35
+text = "Rời minigame (không nhận thưởng)"
+
+[node name="QuickExitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -170.0
+offset_top = 9.0
+offset_right = -12.0
+offset_bottom = 48.0
+grow_horizontal = 0
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "THOÁT [X]"

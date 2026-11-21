@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://world/objects/world_object.tscn" id="1_base"]
+[ext_resource type="Script" path="res://world/objects/searchable_bush.gd" id="2_script"]
+[ext_resource type="Texture2D" path="res://assets/objects/bush_white.png" id="3_sprite"]
+
+[node name="SearchableBush" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("3_sprite")
+offset = Vector2(0, -30)
+
+[node name="Interactable" parent="." index="1"]
+prompt_text = "Tìm trong bụi cây"
+show_items = false
+prompt_offset = Vector2(0, -80)
+
+[node name="CollisionShape2D" parent="Interactable" index="0"]
+position = Vector2(0, -34)
