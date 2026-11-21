@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://7t20dh2gsrl6"]
+
+[ext_resource type="Script" uid="uid://didcewddwb4ft" path="res://gameplay/minigame/water_garden/water_garden.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://ctdtntr3m18tp" path="res://assets/fonts/vt323_regular.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="dark_panel"]
+content_margin_left = 20.0
+content_margin_top = 18.0
+content_margin_right = 20.0
+content_margin_bottom = 18.0
+bg_color = Color(0.071, 0.08, 0.13, 0.96)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.95, 0.78, 0.36, 1)
+
+[node name="WaterGarden" type="Control" unique_id=1056326001]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="GuideOverlay" type="CenterContainer" parent="." unique_id=1983801141]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="GuideOverlay" unique_id=774772928]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("dark_panel")
+
+[node name="VBox" type="VBoxContainer" parent="GuideOverlay/Panel" unique_id=1117718103]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="GuideOverlay/Panel/VBox" unique_id=1370115941]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.78, 0.35, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 54
+text = "TƯỚI RAU"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="GuideOverlay/Panel/VBox" unique_id=1953814278]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 31
+text = "Ống nước đã sửa xong!
+Giữ chuột trái trên các luống rau để tưới.
+Rê chuột qua cả 3 luống đến khi đủ 100%.
+Hoàn thành mới nhận 3 Hạt Gió."
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="GuideOverlay/Panel/VBox" unique_id=96905013]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 38
+text = "Bắt đầu tưới [Click]"
+
+[node name="WinOverlay" type="CenterContainer" parent="." unique_id=1124293315]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="WinOverlay" unique_id=2051433395]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("dark_panel")
+
+[node name="VBox" type="VBoxContainer" parent="WinOverlay/Panel" unique_id=233764103]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="WinOverlay/Panel/VBox" unique_id=1860143479]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.78, 0.35, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 52
+text = "VƯỜN RAU ĐỦ NƯỚC!"
+horizontal_alignment = 1
+
+[node name="Summary" type="Label" parent="WinOverlay/Panel/VBox" unique_id=1499506614]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 35
+text = "Đã tưới đủ cả ba luống.
+Nhiệm vụ hoàn thành! +3 Hạt Gió"
+horizontal_alignment = 1
+
+[node name="WinButton" type="Button" parent="WinOverlay/Panel/VBox" unique_id=1902014498]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 38
+text = "Trở về vườn [Enter]"
+
+[node name="PauseOverlay" type="CenterContainer" parent="." unique_id=828399643]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="PauseOverlay" unique_id=680557740]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("dark_panel")
+
+[node name="VBox" type="VBoxContainer" parent="PauseOverlay/Panel" unique_id=1149385882]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="PauseOverlay/Panel/VBox" unique_id=1030738372]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 45
+text = "TẠM DỪNG"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="PauseOverlay/Panel/VBox" unique_id=535194697]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 35
+text = "Tiếp tục tưới"
+
+[node name="ExitButton" type="Button" parent="PauseOverlay/Panel/VBox" unique_id=1383131239]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 35
+text = "Rời minigame (không nhận thưởng)"
+
+[node name="QuickExitButton" type="Button" parent="." unique_id=377720914]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -170.0
+offset_top = 9.0
+offset_right = -12.0
+offset_bottom = 48.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "THOÁT [X]"

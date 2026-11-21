@@ -8,8 +8,10 @@ if is_quest_new("fix_pipe") and current_map == "garden":
     => intro_pipe
 elif is_quest_done("fix_pipe"):
     => pipe_done
-elif is_quest_active("fix_pipe") and has_flag("ch1.pipe_fixed"):
+elif is_quest_active("fix_pipe") and has_flag("ch1.garden_watered"):
     => pipe_done
+elif is_quest_active("fix_pipe") and has_flag("ch1.pipe_fixed"):
+    => pipe_repaired
 elif is_quest_active("fix_pipe") and GameState.all_pipe_parts_delivered():
     => pipe_ready
 elif is_quest_active("fix_pipe"):
@@ -37,7 +39,10 @@ Minh: (Ông nói chuyện hiền ghê... không giống mấy người ở trư�
 => END
 
 ~ pipe_waiting
-Ông Nội: Kiếm được {{GameState.count_pipe_parts()}}/3 món rồi hả? Con thử tìm gần mấy bụi cây xem sao.
+if GameState.count_pipe_parts_in_bag() > 0:
+    Ông Nội: Con kiếm được thêm {{GameState.count_pipe_parts_in_bag()}} món rồi hả? Đưa cho ông giữ giúp nhé.
+else:
+    Ông Nội: Còn thiếu {{GameState.count_pipe_parts_missing()}} món nữa hả? Con thử tìm gần các bụi cây xem sao.
 => END
 
 ~ pipe_report
@@ -91,4 +96,9 @@ do GameState.request_pipe_minigame()
 => END
 
 ~ pipe_repaired
-=> pipe_done
+Ông Nội: Ồ, Minh sửa xong đường ống rồi hả con?
+Ông Nội: Giỏi quá! Giờ nước không còn rò rỉ nữa rồi.
+Ông Nội: Nhưng mấy luống rau vẫn đang khô, con tưới giúp ông một chút nhé.
+Minh: Dạ, để con tưới rau ạ!
+do GameState.request_watering_minigame()
+=> END

@@ -117,6 +117,19 @@ func count_pipe_parts() -> int:
 			count += 1
 	return count
 
+func count_pipe_parts_in_bag() -> int:
+	var count := 0
+	for item_id in ["pipe_clamp", "pipe_connector", "rubber_ring"]:
+		if has_item(item_id):
+			count += 1
+	return count
+
+func count_pipe_parts_missing() -> int:
+	var count := 0
+	for item_id in ["pipe_clamp", "pipe_connector", "rubber_ring"]:
+		if not has_item(item_id) and not has_flag("pipe_delivered." + item_id):
+			count += 1
+	return count
 
 func all_pipe_parts_delivered() -> bool:
 	for item_id in ["pipe_clamp", "pipe_connector", "rubber_ring"]:
@@ -125,6 +138,7 @@ func all_pipe_parts_delivered() -> bool:
 	return true
 
 var pipe_minigame_pending: bool = false
+
 func request_pipe_minigame() -> void:
 	if pipe_minigame_pending:
 		return
@@ -134,7 +148,6 @@ func request_pipe_minigame() -> void:
 		return
 	pipe_minigame_pending = true
 	_launch_pending_pipe_minigame.call_deferred()
-
 
 func _launch_pending_pipe_minigame() -> void:
 	# Chờ hội thoại đóng, không đợi signal
@@ -148,6 +161,29 @@ func _launch_pending_pipe_minigame() -> void:
 	if MinigameManager.is_running():
 		return
 	MinigameManager.start("fix_pipe")
+
+func finish_garden_watering() -> void:
+	if not has_flag("ch1.pipe_fixed") or has_flag("ch1.garden_watered"):
+		return
+	set_flag("ch1.garden_watered", true)
+	# Dùng cờ thưởng cũ để tránh cộng trùng với các bản minigame trước.
+	if not has_flag("minigame.fix_pipe.rewarded"):
+		set_flag("minigame.fix_pipe.rewarded", true)
+		add_wind_seeds(3)
+		EventBus.toast_requested.emit("+3 Hạt Gió - Đã tưới đủ rau!")
+	if is_quest_active("fix_pipe"):
+		complete_quest("fix_pipe")
+
+func request_watering_minigame() -> void:
+	if not has_flag("ch1.pipe_fixed") or has_flag("ch1.garden_watered"):
+		return
+	_open_watering_after_dialogue.call_deferred()
+
+func _open_watering_after_dialogue() -> void:
+	# Chỉ dùng khi người chơi thoát màn tưới giữa chừng và nói chuyện lại.
+	await get_tree().create_timer(0.4).timeout
+	if not MinigameManager.is_running() and not has_flag("ch1.garden_watered"):
+		MinigameManager.start("water_garden")
 
 # --- Túi đồ ----------------------------------------------------------------------------
 # Gọi được cả trong .dialogue:  if has_item("pipe_clamp")  /  do remove_item("pipe_clamp")

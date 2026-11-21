@@ -1,14 +1,18 @@
 extends MinigameBase
 ## Sửa ống nước — minigame pixel 640x360 giống hệ thống Fishing.
 ## Click tháo ống hỏng; kéo ống mới -> vòng cao su -> kẹp.
-## Hoàn tất: phát finished(result) để MinigameManager trao 3 Hạt Gió và hoàn thành quest.
+## Hoàn tất: đánh dấu đã sửa ống; nói chuyện với Ông Nội để bắt đầu tưới rau.
 
 const FONT: Font = preload("res://assets/fonts/vt323_regular.ttf")
 const BG: Texture2D = preload("res://assets/minigames/fix_pipe/pipe_background_clean.png")
 const B_SIZE := Vector2(640.0, 360.0)
-const PIPE_AREA := Rect2(312, 217, 85, 57)
-const DROP := Rect2(307, 213, 95, 68)
-const TRAYS := [Rect2(82, 296, 132, 48), Rect2(254, 296, 132, 48), Rect2(426, 296, 132, 48)]
+const PIPE_AREA := Rect2(312, 143, 85, 54)
+const DROP := Rect2(307, 143, 95, 54)
+const TRAYS := [
+	Rect2(55, 278, 140, 52),
+	Rect2(250, 278, 140, 52),
+	Rect2(445, 278, 140, 52)
+]
 const TASKS := [
 	"1/4  Nhấp vào đoạn ống nứt để tháo bỏ",
 	"2/4  Kéo ỐNG MỚI vào vị trí ống hỏng",
@@ -171,29 +175,19 @@ func _gui_input(event: InputEvent) -> void:
 func _show_win() -> void:
 	if win_shown or is_finished:
 		return
-
-	# Chốt nhiệm vụ ngay tại thao tác lắp kẹp thành công.
+	# Chỉ ghi nhận đã sửa ống; CHƯA hoàn thành quest hay nhận Hạt Gió.
 	GameState.set_flag("ch1.pipe_fixed", true)
-	if not GameState.is_quest_done("fix_pipe"):
-		GameState.complete_quest("fix_pipe")
-
-	# Chỉ cộng thưởng một lần, không phụ thuộc việc đóng màn chiến thắng.
-	if not GameState.has_flag("minigame.fix_pipe.rewarded"):
-		GameState.add_wind_seeds(3)
-		GameState.set_flag("minigame.fix_pipe.rewarded", true)
-		EventBus.toast_requested.emit("+3 Hạt Gió - Đã sửa xong ống nước!")
-
 	win_shown = true
 	quick_exit_button.hide()
 	win_overlay.show()
 	win_button.grab_focus()
 	queue_redraw()
 
+
 func _finish_success() -> void:
 	if is_finished:
 		return
-	# Reward đã được cấp ngay khi hoàn tất thao tác lắp kẹp.
-	# Trả success để MinigameManager đóng màn và khôi phục Minh.
+	# Trả về vườn; Minh nói chuyện với Ông Nội để bắt đầu tưới rau.
 	finish({"success": true, "score": 100, "wind_seeds": 0, "flawless": false})
 
 
@@ -234,38 +228,38 @@ func _draw() -> void:
 
 	# Phần ống tháo lắp thực sự tách khỏi background.
 	if phase == 0:
-		_pipe_piece(Rect2(312, 226, 85, 39))
-		_paint(Rect2(348, 231, 5, 20), Color("d8edf7"))
-		_paint(Rect2(353, 238, 4, 13), Color("1c2835"))
-		_paint(Rect2(347, 247, 5, 17), Color("a4dce9"))
+		_pipe_piece(Rect2(312, 149, 85, 41))
+		_paint(Rect2(348, 154, 5, 20), Color("d8edf7"))
+		_paint(Rect2(353, 161, 4, 13), Color("1c2835"))
+		_paint(Rect2(347, 170, 5, 17), Color("a4dce9"))
 		for j in range(3):
 			var dy := fmod(elapsed * 29.0 + j * 17.0, 36.0)
-			_paint(Rect2(344 + j * 5, 265 + dy, 4, 6), Color("36c7ed"))
+			_paint(Rect2(344 + j * 5, 188 + dy, 4, 6), Color("36c7ed"))
 	elif phase >= 2:
-		_pipe_piece(Rect2(312, 226, 85, 39))
+		_pipe_piece(Rect2(312, 149, 85, 41))
 		if phase >= 3:
-			_paint(Rect2(315, 222, 8, 47), Color("202632"))
-			_paint(Rect2(317, 223, 4, 45), Color("8fa0a3"))
+			_paint(Rect2(315, 145, 8, 47), Color("202632"))
+			_paint(Rect2(317, 146, 4, 45), Color("8fa0a3"))
 		if phase >= 4:
-			_paint(Rect2(379, 222, 11, 47), Color("182633"))
-			_paint(Rect2(382, 225, 5, 41), Color("b3c5c7"))
+			_paint(Rect2(379, 145, 11, 47), Color("182633"))
+			_paint(Rect2(382, 148, 5, 41), Color("b3c5c7"))
 	# Bước 1: nền trống sẽ hiện ở vùng đã tháo.
 	if phase == 1:
 		draw_rect(DROP, Color("ffd57a"), false, 2)
-		_txt("LẮP Ở ĐÂY", Vector2(321, 210), 16, Color("725525"))
+		_txt("LẮP Ở ĐÂY", Vector2(321, 137), 16, Color("725525"))
 
 	_paint(Rect2(0, 0, 640, 48), Color("17262bd9"))
 	_txt("SỬA ỐNG NƯỚC", Vector2(19, 31), 29, Color("f3c96b"))
-	_paint(Rect2(0, 268, 640, 92), Color("15272ae7"))
-	_txt(TASKS[phase], Vector2(33, 287), 20, Color("f7e7c3"))
+	_paint(Rect2(0, 245, 640, 115), Color("15272aaf"))
+	_txt(TASKS[phase], Vector2(26, 268), 16, Color("f7e7c3"))
 
 	for i in range(3):
 		var r: Rect2 = TRAYS[i]
 		_paint(r, Color("172c35"))
 		draw_rect(r, Color("eed08b") if phase == i + 1 else Color("667877"), false, 2)
 		if drag_index != i:
-			_part(i, r.position + Vector2(5, 3))
-		_txt(NAMES[i], r.position + Vector2(62, 28), 17,
+			_part(i, r.position + Vector2(5, 0))
+		_txt(NAMES[i], r.position + Vector2(60, 26), 13,
 			Color("ffe39c") if phase == i + 1 else Color("b8bdba"))
 		if phase > i + 1:
 			_paint(Rect2(r.position + Vector2(110, 6), Vector2(15, 15)), Color("55b66a"))

@@ -60,7 +60,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 32
-text = "Ống nước bị nứt!\n1. Nhấp vào đoạn ống nứt để tháo ra.\n2. Kéo ống mới vào khoảng trống.\n3. Lắp vòng cao su, rồi siết kẹp.\nHoàn thành sẽ nhận 3 Hạt Gió."
+text = "Ống nước bị nứt!\n1. Nhấp vào đoạn ống nứt để tháo ra.\n2. Kéo ống mới vào khoảng trống.\n3. Lắp vòng cao su, rồi siết kẹp.\nSửa xong sẽ chuyển sang màn tưới rau."
 autowrap_mode = 2
 
 [node name="StartButton" type="Button" parent="GuideOverlay/Panel/VBox"]
@@ -100,14 +100,14 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 37
-text = "Ống nước không còn rò rỉ.\nHoàn thành nhiệm vụ: +3 Hạt Gió"
+text = "Ống nước không còn rò rỉ.\nBáo ông nội để nhận Hạt Gió"
 horizontal_alignment = 1
 
 [node name="WinButton" type="Button" parent="WinOverlay/Panel/VBox"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 40
-text = "Nhận thưởng và trở lại vườn [Enter]"
+text = "Báo ông nội [Enter]"
 
 [node name="PauseOverlay" type="CenterContainer" parent="."]
 visible = false
