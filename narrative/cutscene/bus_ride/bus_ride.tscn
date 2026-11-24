@@ -1,0 +1,7 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://narrative/cutscene/bus_ride/bus_ride.gd" id="1_bus"]
+
+[node name="BusRideCutscene" type="CanvasLayer"]
+layer = 88
+script = ExtResource("1_bus")

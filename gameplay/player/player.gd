@@ -37,7 +37,12 @@ var dialogue_color: Color:
 	get: return npc_data.dialogue_color
 
 ## Tắt khi đang hội thoại, cutscene, minigame…
-var can_move: bool = true
+## Có thể gán trực tiếp (`can_move = false/true`) hoặc khoá theo lý do (`lock("cutscene") / unlock("cutscene")`).
+var _manual_can_move: bool = true
+var _locks: Dictionary = {}
+var can_move: bool:
+	get: return _manual_can_move and _locks.is_empty()
+	set(value): _manual_can_move = value
 ## Đang ngồi núp (giữ Ctrl). Minigame / người đi theo đọc biến này.
 var crouching: bool = false
 
@@ -66,8 +71,8 @@ var _current_target: Node = null
 func _ready() -> void:
 	add_to_group("player")
 	add_to_group(&"dialogue_speaker")
-	DialogueManager.dialogue_started.connect(func(_r): can_move = false)
-	DialogueManager.dialogue_ended.connect(func(_r): can_move = true)
+	DialogueManager.dialogue_started.connect(func(_r): lock(&"dialogue"))
+	DialogueManager.dialogue_ended.connect(func(_r): unlock(&"dialogue"))
 	interaction_area.area_entered.connect(_on_area_entered)
 	interaction_area.area_exited.connect(_on_area_exited)
 	interaction_area.body_entered.connect(_on_area_entered)
@@ -158,6 +163,20 @@ func _update_animation(direction: float, is_running: bool) -> void:
 func _play(anim_name: StringName) -> void:
 	if anim.animation != anim_name:
 		anim.play(anim_name)
+
+
+## Khoá / mở khoá điều khiển theo lý do (tránh hội thoại kết thúc giữa cutscene/minigame mở khoá nhầm).
+func lock(reason: StringName) -> void:
+	_locks[reason] = true
+	velocity = Vector2.ZERO
+
+
+func unlock(reason: StringName) -> void:
+	_locks.erase(reason)
+
+
+func is_locked() -> bool:
+	return not can_move
 
 
 ## Đặt tư thế khi đứng yên: POSE_FRONT, POSE_SIT hoặc &"" (bình thường).

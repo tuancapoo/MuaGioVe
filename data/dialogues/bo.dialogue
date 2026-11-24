@@ -1,0 +1,8 @@
+# Hội thoại của Bố.
+
+~ start
+if chapter == 0:
+	Bố: Chuẩn bị xong chưa đó? Xe đợi ngoài ngõ rồi, lẹ cái chân lên!
+else:
+	Bố: Về quê ở với ông nội cho đàng hoàng, đừng có gây chuyện nữa nghe chưa.
+=> END

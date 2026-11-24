@@ -1,0 +1,39 @@
+# Hội thoại Chương 0 — Mở đầu trong phòng Minh ở thành phố.
+
+~ intro_black
+Bố: Thằng kia, xe tới rồi, chuẩn bị đồ đạc nhanh lên!
+Minh: ...Dạ.
+=> END
+
+~ intro_room
+Minh: (Vậy là phải về vùng quê chán phèo đó sống sao...)
+Minh: (Mà thôi, dù sao cũng được.)
+=> END
+
+~ bag_done
+Minh: (Mình lấy điện thoại rồi. Đừng đụng tới mấy thứ trong đó nữa...)
+=> END
+
+~ wardrobe_take
+Minh: (Lấy vài bộ áo quần thường ngày là đủ rồi...)
+Minh: (Còn bộ đồng phục trường cũ... để lại đây đi.)
+=> END
+
+~ wardrobe_done
+Minh: (Mình lấy đủ bộ áo quần rồi.)
+=> END
+
+~ door_locked
+if not has_flag("ch0.got_phone") and not has_flag("ch0.got_clothes"):
+	Minh: (Mình cần phải lấy điện thoại và áo quần trước.)
+elif not has_flag("ch0.got_phone"):
+	Minh: (Mình cần phải lấy điện thoại và áo quần trước... Cái điện thoại chắc vẫn nằm trong balo.)
+else:
+	Minh: (Mình cần phải lấy điện thoại và áo quần trước... Bộ áo quần vẫn còn trong tủ.)
+=> END
+
+~ door_leave
+Minh: (Điện thoại... áo quần... đủ cả rồi.)
+Bố: Lẹ cái chân lên! Xe đợi ngoài ngõ rồi đó!
+Minh: ...Con ra liền.
+=> END

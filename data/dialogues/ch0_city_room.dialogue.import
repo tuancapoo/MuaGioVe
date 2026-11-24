@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://dbmd47hvspor3"
+path="res://.godot/imported/ch0_city_room.dialogue-6735599468127f1cbc34c3b674865050.tres"
+
+[deps]
+
+source_file="res://data/dialogues/ch0_city_room.dialogue"
+dest_files=["res://.godot/imported/ch0_city_room.dialogue-6735599468127f1cbc34c3b674865050.tres"]
+
+[params]
+
+defaults=true

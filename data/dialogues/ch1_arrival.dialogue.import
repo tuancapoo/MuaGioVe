@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://dt5hkej4dh1w5"
+path="res://.godot/imported/ch1_arrival.dialogue-93c3a4c882bfd84498c4341137846b44.tres"
+
+[deps]
+
+source_file="res://data/dialogues/ch1_arrival.dialogue"
+dest_files=["res://.godot/imported/ch1_arrival.dialogue-93c3a4c882bfd84498c4341137846b44.tres"]
+
+[params]
+
+defaults=true

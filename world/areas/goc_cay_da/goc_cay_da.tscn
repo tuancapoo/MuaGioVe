@@ -16,6 +16,9 @@
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 [ext_resource type="AudioStream" path="res://assets/audio/ambience/village.mp3" id="A_amb"]
+[ext_resource type="PackedScene" path="res://narrative/npc/characters/ong_noi/ong_noi.tscn" id="N_ongnoi"]
+[ext_resource type="PackedScene" path="res://narrative/npc/characters/bo/bo.tscn" id="N_bo"]
+[ext_resource type="Script" path="res://world/areas/goc_cay_da/bus_arrival.gd" id="S_arrival"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1040, 40)
@@ -123,6 +126,14 @@ position = Vector2(80, 330)
 
 [node name="NPCs" type="Node2D" parent="."]
 
+[node name="OngNoi" parent="NPCs" instance=ExtResource("N_ongnoi")]
+position = Vector2(345, 330)
+appear_condition = "has_flag('ch0.bus_arriving') or (has_flag('ch0.arrived_village') and is_quest_new('fix_pipe'))"
+
+[node name="Bo" parent="NPCs" instance=ExtResource("N_bo")]
+position = Vector2(500, 330)
+appear_condition = "has_flag('ch0.bus_arriving')"
+
 [node name="Objects" type="Node2D" parent="."]
 
 [node name="Collectibles" type="Node2D" parent="."]
@@ -149,3 +160,9 @@ shape = SubResource("T_edge_shape")
 
 [node name="from_nha_minh_va_an" type="Marker2D" parent="Spawns"]
 position = Vector2(110.0, 330.0)
+
+[node name="from_bus" type="Marker2D" parent="Spawns"]
+position = Vector2(430.0, 330.0)
+
+[node name="BusArrival" type="Node" parent="."]
+script = ExtResource("S_arrival")

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="NpcData" format=3]
+
+[ext_resource type="Script" path="res://narrative/npc/npc_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://assets/characters/bo/bo_idle_frames.tres" id="2_frames"]
+[ext_resource type="Resource" path="res://data/dialogues/bo.dialogue" id="3_dialogue"]
+
+[resource]
+script = ExtResource("1_data")
+id = &"bo"
+display_name = "Bố"
+dialogue_color = Color(0.84, 0.44, 0.36, 1)
+sprite_frames = ExtResource("2_frames")
+dialogue = ExtResource("3_dialogue")
+speech_height = 126.0

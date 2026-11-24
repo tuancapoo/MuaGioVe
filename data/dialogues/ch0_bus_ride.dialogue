@@ -1,0 +1,17 @@
+# Hội thoại Cutscene chuyến xe buýt về quê (cuối Chương 0).
+
+~ beat_1
+Minh: (Xe đi xa thành phố lắm rồi...)
+=> END
+
+~ beat_2
+Minh: (Ngoài cửa sổ toàn là đồng lúa với rặng tre. Khác hẳn mấy dãy nhà chật chội kia.)
+=> END
+
+~ beat_3
+Minh: (Làng Cỏ... Lâu lắm rồi mình mới về thăm ông nội.)
+=> END
+
+~ beat_4
+Minh: (Không biết ở đây... có khá hơn chút nào không nữa.)
+=> END

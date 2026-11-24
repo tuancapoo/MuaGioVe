@@ -14,12 +14,24 @@
 [ext_resource type="Texture2D" path="res://assets/maps/phong_minh_o_thanh_pho/chair.png" id="L10"]
 [ext_resource type="Texture2D" path="res://assets/maps/phong_minh_o_thanh_pho/Tien_canh.png" id="L11"]
 [ext_resource type="AudioStream" path="res://assets/audio/ambience/room.mp3" id="A_amb"]
+[ext_resource type="Script" path="res://core/components/interactable.gd" id="S_inter"]
+[ext_resource type="Script" path="res://world/areas/phong_minh_o_thanh_pho/room_door_interactable.gd" id="S_door"]
+[ext_resource type="Script" path="res://world/areas/phong_minh_o_thanh_pho/chapter0_room.gd" id="S_ch0"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(720, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 480)
+
+[sub_resource type="RectangleShape2D" id="Shape_bag"]
+size = Vector2(68, 86)
+
+[sub_resource type="RectangleShape2D" id="Shape_wardrobe"]
+size = Vector2(78, 150)
+
+[sub_resource type="RectangleShape2D" id="Shape_door"]
+size = Vector2(68, 170)
 
 [node name="PhongMinhOThanhPho" type="Node2D" unique_id=380822700]
 scale = Vector2(0.75, 0.75)
@@ -28,6 +40,7 @@ ambience = ExtResource("A_amb")
 map_id = "phong_minh_o_thanh_pho"
 map_name = "Phòng Minh ở thành phố"
 map_size = Vector2i(480, 270)
+footstep_surface = "tile"
 
 [node name="Background" type="Node2D" parent="." unique_id=1908163827]
 z_index = -10
@@ -92,7 +105,7 @@ position = Vector2(612, 177.33333)
 shape = SubResource("Shape_wall")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=861117084]
-position = Vector2(80, 330)
+position = Vector2(115, 322)
 
 [node name="Spawns" type="Node2D" parent="." unique_id=869407803]
 
@@ -102,9 +115,36 @@ position = Vector2(80, 330)
 
 [node name="Objects" type="Node2D" parent="." unique_id=1736304666]
 
+[node name="BagSpot" type="Area2D" parent="Objects"]
+position = Vector2(236, 282)
+script = ExtResource("S_inter")
+prompt_text = "Mở balo"
+prompt_offset = Vector2(0, -48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/BagSpot"]
+shape = SubResource("Shape_bag")
+
+[node name="WardrobeSpot" type="Area2D" parent="Objects"]
+position = Vector2(506, 260)
+script = ExtResource("S_inter")
+prompt_text = "Tủ áo quần"
+prompt_offset = Vector2(8, -96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/WardrobeSpot"]
+shape = SubResource("Shape_wardrobe")
+
 [node name="Collectibles" type="Node2D" parent="." unique_id=731597169]
 
 [node name="Exits" type="Node2D" parent="." unique_id=1360910013]
+
+[node name="RoomDoor" type="Area2D" parent="Exits"]
+position = Vector2(594, 260)
+script = ExtResource("S_door")
+prompt_text = "Ra cửa"
+prompt_offset = Vector2(-10, -82)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/RoomDoor"]
+shape = SubResource("Shape_door")
 
 [node name="Foreground" type="Node2D" parent="." unique_id=1888527167]
 z_index = 50
@@ -113,3 +153,6 @@ texture_filter = 1
 [node name="Tien_canh" type="Sprite2D" parent="Foreground" unique_id=816073588]
 texture = ExtResource("L11")
 centered = false
+
+[node name="Chapter0Room" type="Node" parent="."]
+script = ExtResource("S_ch0")

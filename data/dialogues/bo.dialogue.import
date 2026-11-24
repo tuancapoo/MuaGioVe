@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://bibh2mvn3r6b8"
+path="res://.godot/imported/bo.dialogue-39ccc50c46a85cfbd7a7838e3f580686.tres"
+
+[deps]
+
+source_file="res://data/dialogues/bo.dialogue"
+dest_files=["res://.godot/imported/bo.dialogue-39ccc50c46a85cfbd7a7838e3f580686.tres"]
+
+[params]
+
+defaults=true

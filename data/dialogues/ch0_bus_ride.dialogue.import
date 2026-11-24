@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://cgn854eyb5ujl"
+path="res://.godot/imported/ch0_bus_ride.dialogue-e351dd56f6c697f346e14a13a07902dd.tres"
+
+[deps]
+
+source_file="res://data/dialogues/ch0_bus_ride.dialogue"
+dest_files=["res://.godot/imported/ch0_bus_ride.dialogue-e351dd56f6c697f346e14a13a07902dd.tres"]
+
+[params]
+
+defaults=true

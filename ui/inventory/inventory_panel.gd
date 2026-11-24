@@ -1,5 +1,6 @@
 extends CanvasLayer
-## Bảng Túi đồ: phím I (action "open_inventory") hoặc Tab mở / đóng. ←/→ chọn món, Esc / I đóng.
+## Bảng Túi đồ dạng lưới: Tab mở / đóng. ←/→ chọn món, Esc / Tab đóng.
+## (Phím I mở túi đồ dạng thanh chọn một hàng trên đầu Minh — xem ui/action_wheel/action_wheel.gd)
 ## Ô bên trái: lưới đồ; bên dưới: tên + mô tả món đang chọn. Chỉ đọc GameState, không tự sửa túi đồ.
 
 const FONT := preload("res://assets/fonts/vt323_regular.ttf")
@@ -49,7 +50,7 @@ func _ready() -> void:
 	_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_desc.custom_minimum_size = Vector2(COLS * (SLOT + 12), 0)
 	v.add_child(_desc)
-	v.add_child(_text("←/→ chọn · I / Esc đóng", 32, Color(0.55, 0.53, 0.6)))
+	v.add_child(_text("←/→ chọn · Tab / Esc đóng", 32, Color(0.55, 0.53, 0.6)))
 	hide()
 	GameState.changed.connect(func(): if visible: _rebuild())
 
@@ -65,7 +66,7 @@ func _ensure_inventory_action() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"open_inventory") or event.is_action_pressed(&"open_journal"):
+	if event.is_action_pressed(&"open_journal"):
 		if visible:
 			close()
 		elif _can_open():

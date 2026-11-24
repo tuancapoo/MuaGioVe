@@ -6,6 +6,9 @@ extends CanvasLayer
 ##   [Xem] (vật)  [Nói chuyện] (NPC)  [Nhặt] (vật chưa nhặt)  rồi từng món trong túi đồ
 ## Hiện tối đa VISIBLE ô; mũi tên ◀ ▶ báo còn ô ở bên trái / phải.
 ## ←/→ (A/D) dịch 1 ô · E / Enter / click chọn · Esc huỷ.
+##
+## Phím I: mở cùng thanh này nhưng CHỈ có các món trong túi đồ (không có Xem / Nói chuyện / Nhặt).
+## Chọn một món → Minh nói mô tả của món đó. Bấm I lần nữa / Esc để đóng.
 
 const ICONS := {
 	&"talk": preload("res://assets/ui/icons/action_talk.png"),
@@ -24,7 +27,7 @@ const VISIBLE := 4
 ## Hàng nằm cao hơn đỉnh đầu Minh bao nhiêu (px thế giới, tính từ gốc Player)
 @export var head_offset: Vector2 = Vector2(0, -95)
 
-var _target: Interactable
+var _target: Interactable          # null = đang mở túi đồ bằng phím I
 var _player: Node2D
 var _entries: Array = []            # [{action, item, label, icon}]
 var _index := 0                     # ô đang chọn (trong toàn bộ danh sách)
@@ -41,6 +44,7 @@ var _label: Label
 func _ready() -> void:
 	layer = 80
 	add_to_group(&"action_wheel")
+	_ensure_inventory_action()
 	_root = Control.new()
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -100,6 +104,21 @@ func open(target: Interactable, player: Node2D) -> void:
 	show()
 
 
+## Phím I: thanh chọn chỉ gồm các món trong túi đồ.
+func open_inventory(player: Node2D) -> void:
+	_target = null
+	_player = player
+	_build_entries()
+	if _entries.is_empty():
+		EventBus.toast_requested.emit("Túi đồ đang trống.")
+		return
+	_player.can_move = false
+	_index = 0
+	_first = 0
+	_refresh()
+	show()
+
+
 func close() -> void:
 	hide()
 	if is_instance_valid(_player):
@@ -110,9 +129,10 @@ func close() -> void:
 
 func _build_entries() -> void:
 	_entries.clear()
-	for a in _target.available_actions():
-		_entries.append({"action": a, "item": &"", "label": Interactable.ACTION_NAMES[a], "icon": ICONS[a]})
-	if _target.show_items:
+	if _target:
+		for a in _target.available_actions():
+			_entries.append({"action": a, "item": &"", "label": Interactable.ACTION_NAMES[a], "icon": ICONS[a]})
+	if _target == null or _target.show_items:
 		for id in GameState.item_ids():
 			var data := ItemData.get_item(id)
 			var count := GameState.item_count(id)
@@ -162,8 +182,16 @@ func _process(_d: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
+		# Phím I mở túi đồ khi Minh đang tự do đi lại
+		if event.is_action_pressed(&"open_inventory"):
+			var p := get_tree().get_first_node_in_group(&"player") as Player
+			if p and p.can_move:
+				get_viewport().set_input_as_handled()
+				open_inventory(p)
 		return
-	if event.is_action_pressed(&"move_left") or event.is_action_pressed(&"ui_left"):
+	if _target == null and event.is_action_pressed(&"open_inventory"):
+		close()
+	elif event.is_action_pressed(&"move_left") or event.is_action_pressed(&"ui_left"):
 		_step(-1)
 	elif event.is_action_pressed(&"move_right") or event.is_action_pressed(&"ui_right"):
 		_step(1)
@@ -197,7 +225,30 @@ func _confirm() -> void:
 	var target := _target
 	var player := _player
 	await close()
-	target.choose(e.action, player, e.item)
+	if target:
+		target.choose(e.action, player, e.item)
+	else:
+		_describe_item(e.item)
+
+
+## Túi đồ (phím I): Minh nói mô tả món được chọn.
+func _describe_item(item_id: StringName) -> void:
+	var data := ItemData.get_item(item_id)
+	var desc := data.description.strip_edges().replace("\n", " ") if data else ""
+	if desc.is_empty():
+		desc = "(%s.)" % ItemData.name_of(item_id)
+	var res = DialogueManager.create_resource_from_text("~ start" + "\n" + "Minh: " + desc + "\n" + "=> END" + "\n")
+	DialogueManager.show_dialogue_balloon(res, "start")
+
+
+## Phím I mở túi đồ (tạo lúc chạy nếu project.godot chưa khai báo action "open_inventory").
+func _ensure_inventory_action() -> void:
+	if InputMap.has_action(&"open_inventory"):
+		return
+	InputMap.add_action(&"open_inventory")
+	var ev := InputEventKey.new()
+	ev.physical_keycode = KEY_I
+	InputMap.action_add_event(&"open_inventory", ev)
 
 
 static func _box(bg: Color, border: Color, bw: int, radius_px: float, pad: int) -> StyleBoxFlat:
