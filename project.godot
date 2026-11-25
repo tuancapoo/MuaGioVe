@@ -20,6 +20,7 @@ GameState="*res://core/autoload/game_state.gd"
 SceneManager="*res://core/autoload/scene_manager.gd"
 MinigameManager="*res://gameplay/minigame/minigame_manager.gd"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
+QuestManager="*res://narrative/quest/quest_manager.gd"
 
 [dialogue_manager]
 

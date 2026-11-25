@@ -28,6 +28,8 @@ var _player_node: Node = null
 var _prev_player_process_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
 var _saved_player_pos: Vector2 = Vector2.ZERO
 var _dialogue_open: bool = false
+var _saved_player: Node2D = null
+var _saved_player_position: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -59,19 +61,15 @@ func start(minigame_id: String, params: Dictionary = {}) -> void:
 		push_error("MinigameManager: không nạp được '%s'" % path)
 		return
 
-	# Khoá & đóng băng Player để không bị rơi xuyên sàn khi World tạm dừng
-	_player_node = get_tree().get_first_node_in_group(&"player")
-	if _player_node:
-		_player_node.can_move = false
-		if "velocity" in _player_node:
-			_player_node.velocity = Vector2.ZERO
-		var footsteps := _player_node.get_node_or_null("Footsteps") as AudioStreamPlayer
-		if footsteps and footsteps.playing:
-			footsteps.stop()
-		if _player_node is Node2D:
-			_saved_player_pos = (_player_node as Node2D).global_position
-		_prev_player_process_mode = _player_node.process_mode
-		_player_node.process_mode = Node.PROCESS_MODE_DISABLED
+	# Khoá Player và dừng World
+	var player := get_tree().get_first_node_in_group(&"player")
+	_saved_player = player as Node2D
+	if is_instance_valid(_saved_player):
+		_saved_player_position = _saved_player.global_position
+	if player:
+		player.can_move = false
+		if "velocity" in player:
+			player.velocity = Vector2.ZERO
 
 	var main := get_tree().current_scene
 	_world_node = main.get_node_or_null("World") if main else null
@@ -120,8 +118,8 @@ func _on_minigame_finished(result: Dictionary, minigame_id: String) -> void:
 				GameState.add_wind_seeds(1)
 				EventBus.toast_requested.emit("+1 Hạt Gió (Tinh tế!)")
 
-		# Nếu quest trùng tên minigame đang active, đánh dấu hoàn thành
-		if GameState.is_quest_active(minigame_id):
+		# fix_pipe được hoàn thành ngay khi lắp xong kẹp, không đợi đóng minigame.
+		if minigame_id != "fix_pipe" and GameState.is_quest_active(minigame_id):
 			GameState.complete_quest(minigame_id)
 
 	# Đóng minigame và khôi phục World
@@ -134,17 +132,33 @@ func _on_minigame_finished(result: Dictionary, minigame_id: String) -> void:
 		_world_node.process_mode = _prev_world_process_mode
 	_world_node = null
 
-	# Đợi 1 frame để physics của map (StaticBody2D mặt đất) bật lại trước khi mở Player
+	# Khôi phục Player đúng scene chính, không đổi map / không tạo Player mới.
 	await get_tree().process_frame
-	if is_instance_valid(_player_node):
-		if _player_node is Node2D:
-			(_player_node as Node2D).global_position = _saved_player_pos
-		if "velocity" in _player_node:
-			_player_node.velocity = Vector2.ZERO
-		_player_node.process_mode = _prev_player_process_mode
+	var player := _saved_player
+	if not is_instance_valid(player):
+		player = get_tree().get_first_node_in_group(&"player") as Node2D
+	if is_instance_valid(player):
+		# World đã bật lại trước khi can thiệp Player.
+		player.process_mode = Node.PROCESS_MODE_INHERIT
+		player.show()
+		var visual := player.get_node_or_null("AnimatedSprite2D") as CanvasItem
+		if visual:
+			visual.show()
+		# Nếu vị trí bị ghi đè trái ý muốn trong minigame, đưa Minh về chỗ cũ.
+		if player.global_position.distance_to(_saved_player_position) > 256.0:
+			player.global_position = _saved_player_position
+		var camera := player.get_node_or_null("Camera2D") as Camera2D
+		if camera:
+			camera.enabled = true
+			camera.make_current()
 		if not _dialogue_open:
-			_player_node.can_move = true
-	_player_node = null
-
+			player.set("can_move", true)
+		print("[MinigameManager] player=", player.get_path(),
+			" visible=", player.is_visible_in_tree(),
+			" pos=", player.global_position,
+			" camera=", camera != null)
+	else:
+		push_error("[MinigameManager] Player không còn trong scene sau minigame!")
+	_saved_player = null
 	EventBus.minigame_finished.emit(minigame_id, result)
 	minigame_closed.emit(minigame_id, result)

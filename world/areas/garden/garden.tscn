@@ -17,6 +17,9 @@
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
 [ext_resource type="PackedScene" path="res://world/objects/world_object.tscn" id="W_obj"]
 [ext_resource type="Texture2D" path="res://assets/items/pipe_clamp.png" id="W_clamp"]
+[ext_resource type="PackedScene" path="res://world/objects/searchable_bush.tscn" id="U_bush_new"]
+[ext_resource type="Texture2D" path="res://assets/objects/bush_yellow.png" id="U_bush_yellow"]
+[ext_resource type="Texture2D" path="res://assets/items/pipe_connector.png" id="U_connector"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(720, 40)
@@ -172,3 +175,33 @@ prompt_offset = Vector2(0, -130)
 [node name="CollisionShape2D" parent="Objects/DemoMangoTree/Interactable" index="0"]
 position = Vector2(0, -55)
 shape = SubResource("W_tree_shape")
+
+
+[node name="Bush01" parent="Objects" instance=ExtResource("U_bush_new")]
+position = Vector2(190, 318)
+object_id = "garden_bush_01"
+examine_text = "Minh: Một bụi cây nhỏ. Chắc là hoa sữa."
+
+[node name="Bush02" parent="Objects" instance=ExtResource("U_bush_new")]
+position = Vector2(245, 318)
+object_id = "garden_bush_02"
+examine_text = "Minh: Bụi cây này rậm hơn những bụi khác. Có vài cành lá đan xen vào nhau."
+reward_item = &"rubber_ring"
+
+[node name="Sprite2D" parent="Objects/Bush02" index="0"]
+texture = ExtResource("U_bush_yellow")
+
+[node name="Bush03" parent="Objects" instance=ExtResource("U_bush_new")]
+position = Vector2(395, 318)
+object_id = "garden_bush_03"
+examine_text = "Minh: Một bụi cây nhỏ."
+
+[node name="ConnectorNearMango" parent="Collectibles" instance=ExtResource("W_obj")]
+position = Vector2(350, 320)
+object_id = "garden_connector"
+examine_text = "Một đầu nối ống nước nằm dưới gốc xoài."
+take_item = &"pipe_connector"
+take_text = "Minh: Tìm thấy đầu nối rồi!"
+
+[node name="Sprite2D" parent="Collectibles/ConnectorNearMango" index="0"]
+texture = ExtResource("U_connector")

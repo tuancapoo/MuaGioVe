@@ -1,0 +1,38 @@
+
+[gd_resource type="Resource" script_class="QuestData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://narrative/quest/quest_data.gd" id="1"]
+[ext_resource type="Script" path="res://narrative/quest/quest_objective.gd" id="2"]
+
+[sub_resource type="Resource" id="FindParts"]
+script = ExtResource("2")
+id = "find_parts"
+text = "Tìm đủ 3 bộ phận sửa vòi"
+done_when = "parts_collected"
+required = 3
+
+[sub_resource type="Resource" id="RepairPipe"]
+script = ExtResource("2")
+id = "repair_pipe"
+text = "Sửa chỗ ống nước bị rò"
+done_when = "ch1.pipe_fixed"
+required = 1
+
+[sub_resource type="Resource" id="WaterGarden"]
+script = ExtResource("2")
+id = "water_garden"
+text = "Mở van tưới rau"
+done_when = "ch1.garden_watered"
+required = 1
+
+[resource]
+script = ExtResource("1")
+id = "fix_pipe"
+title = "Sửa vòi nước cho ông"
+description = "Tìm các bộ phận, sửa vòi nước và tưới rau giúp Ông Nội."
+giver = "ong_noi"
+objectives = Array[ExtResource("2")]([SubResource("FindParts"), SubResource("RepairPipe"), SubResource("WaterGarden")])
+reward_wind_seeds = 3
+reward_items = {}
+reward_flags = Array[String](["ch1.village_unlocked"])
+auto_complete = false
