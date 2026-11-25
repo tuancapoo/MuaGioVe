@@ -28,7 +28,7 @@ required = 1
 [resource]
 script = ExtResource("1")
 id = "fix_pipe"
-title = "Sửa vòi nước cho ông"
+title = "Sửa ống nước"
 description = "Tìm các bộ phận, sửa vòi nước và tưới rau giúp Ông Nội."
 giver = "ong_noi"
 objectives = Array[ExtResource("2")]([SubResource("FindParts"), SubResource("RepairPipe"), SubResource("WaterGarden")])

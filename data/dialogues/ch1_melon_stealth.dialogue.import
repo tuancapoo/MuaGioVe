@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://njwtirucuc1w"
+path="res://.godot/imported/ch1_melon_stealth.dialogue-31e2518a305c854fdda4f04d73520649.tres"
+
+[deps]
+
+source_file="res://data/dialogues/ch1_melon_stealth.dialogue"
+dest_files=["res://.godot/imported/ch1_melon_stealth.dialogue-31e2518a305c854fdda4f04d73520649.tres"]
+
+[params]
+
+defaults=true

@@ -126,7 +126,7 @@ pause={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://data/dialogues/ong_noi.dialogue", "res://data/dialogues/an.dialogue", "res://data/dialogues/ch0_city_room.dialogue", "res://data/dialogues/ch0_bus_ride.dialogue", "res://data/dialogues/ch1_arrival.dialogue", "res://data/dialogues/bo.dialogue")
+locale/translations_pot_files=PackedStringArray("res://data/dialogues/ong_noi.dialogue", "res://data/dialogues/an.dialogue", "res://data/dialogues/ch0_city_room.dialogue", "res://data/dialogues/ch0_bus_ride.dialogue", "res://data/dialogues/ch1_arrival.dialogue", "res://data/dialogues/bo.dialogue", "res://data/dialogues/ch1_pipe_intro.dialogue", "res://data/dialogues/ch1_after_fishing.dialogue", "res://data/dialogues/ch1_melon_stealth.dialogue", "res://data/dialogues/ch1_ending.dialogue")
 
 [layer_names]
 

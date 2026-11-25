@@ -101,17 +101,6 @@ func _give(item_id: StringName, player: Node) -> void:
 		if not removed:
 			return
 
-		# Ghi nhớ các linh kiện đã giao cho Ông Nội.
-		if npc_id == &"ong_noi" and item_key in [
-			"pipe_clamp",
-			"pipe_connector",
-			"rubber_ring"
-		]:
-			GameState.set_flag("pipe_delivered." + item_key)
-
-		print("[NPC] Đã giao: ", item_key)
-		print("[NPC] Còn trong túi: ", GameState.item_count(item_key))
-
 		DialogueManager.show_dialogue_balloon(data.dialogue, cue)
 		return
 

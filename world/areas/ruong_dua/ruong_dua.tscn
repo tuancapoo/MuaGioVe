@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bouayh8srn218" path="res://assets/objects/bui_rom.png" id="O_buirom"]
 [ext_resource type="PackedScene" path="res://gameplay/minigame/melon_stealth/melon.tscn" id="W_melon"]
 [ext_resource type="Script" path="res://gameplay/minigame/melon_stealth/melon_stealth.gd" id="S_stealth"]
+[ext_resource type="Script" path="res://world/areas/ruong_dua/melon_intro_cutscene.gd" id="S_melon_intro"]
 
 [sub_resource type="ShaderMaterial" id="G_beds"]
 shader = ExtResource("G_shader")
@@ -264,3 +265,6 @@ centered = false
 [node name="MelonStealth" type="Node2D" parent="."]
 script = ExtResource("S_stealth")
 extra_hide_spots = Array[NodePath]([NodePath("../Collectibles/DuaHau4")])
+
+[node name="MelonIntroCutscene" type="Node" parent="."]
+script = ExtResource("S_melon_intro")

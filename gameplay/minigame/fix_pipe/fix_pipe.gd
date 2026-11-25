@@ -175,6 +175,11 @@ func _gui_input(event: InputEvent) -> void:
 func _show_win() -> void:
 	if win_shown or is_finished:
 		return
+	# Dùng 3 bộ phận sửa ống trong túi (nếu còn) và ghi nhận đã sửa xong đường ống.
+	for item_id: String in ["pipe_connector", "rubber_ring", "pipe_clamp"]:
+		if GameState.has_item(item_id):
+			GameState.remove_item(item_id, 1)
+		GameState.set_flag("pipe_delivered." + item_id, true)
 	# Chỉ ghi nhận đã sửa ống; CHƯA hoàn thành quest hay nhận Hạt Gió.
 	GameState.set_flag("ch1.pipe_fixed", true)
 	win_shown = true

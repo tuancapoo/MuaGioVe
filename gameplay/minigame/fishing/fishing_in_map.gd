@@ -28,6 +28,8 @@ const SFX := {
 	"tick": "res://assets/audio/sfx/fishing/reel_tick.wav",
 }
 const FISH_ICON_PATH := "res://assets/items/fish.png"
+const EMOTE_HAPPY_PATH := "res://assets/ui/emotes/emote_happy.png"
+const EMOTE_SWEAT_PATH := "res://assets/ui/emotes/emote_sweat.png"
 
 ## Điểm có cá (so với chỗ đứng câu, toạ độ map). 3 gần (0..2) + 2 xa (3..4)
 @export var fish_spots: Array[Vector2] = [
@@ -39,13 +41,13 @@ const FISH_ICON_PATH := "res://assets/items/fish.png"
 
 # Thanh kéo cá (giống bản gốc: 0 đáy … 1 đỉnh)
 const BAR_HEIGHT := 0.30
-const BAR_THRUST := 2.75
-const BAR_GRAVITY := 1.95
-const BAR_MAX_VEL := 1.45
-const BAR_BOUNCE := 0.32
+const BAR_THRUST := 3.45
+const BAR_GRAVITY := 3.10
+const BAR_MAX_VEL := 2.05
+const BAR_BOUNCE := 0.30
 const FISH_RADIUS := 0.045
 const GAIN_RATE := 0.28
-const DRAIN_RATES := [0.12, 0.15, 0.18]
+const DRAIN_RATES := [0.24, 0.30, 0.36]
 
 var player: Player
 var state: State = State.AIM
@@ -86,6 +88,7 @@ var _mouse_held := false     # giữ chuột trái khi kéo cá
 var _demo := false           # bạn đồng hành đang câu mẫu (người chơi chỉ xem)
 var _talking := false        # đang hiện hội thoại → tạm dừng mọi thứ
 var _demo_aim_target := Vector2.ZERO
+var _emote_node: Sprite2D = null
 
 const TUTORIAL_FLAG := "fishing.tutorial_done"
 
@@ -382,10 +385,12 @@ func _catch() -> void:
 	caught += 1
 	_play("catch")
 	_ripple(bobber, 1.4)
+	if not _demo:
+		_show_player_emote(EMOTE_HAPPY_PATH)
 	GameState.add_item(FISH_ITEM, 1)   # hiện "Đã nhận: Cá đồng"
 	_set_hint("Câu được rồi! (%d con lượt này) · E thả câu tiếp · A/D đứng dậy" % caught)
 	state = State.FEEDBACK
-	feedback_t = 0.8
+	feedback_t = 0.9
 	fish_pos = Vector2.ZERO
 	_spawn_fish()
 
@@ -394,10 +399,55 @@ func _miss(msg: String) -> void:
 	_alert = ""
 	_play("miss")
 	_ripple(bobber, 0.9)
+	if not _demo:
+		_show_player_emote(EMOTE_SWEAT_PATH)
 	_set_hint(msg + " Thả lại nào.")
 	state = State.FEEDBACK
-	feedback_t = 0.8
+	feedback_t = 0.9
 	_spawn_fish()
+
+
+func _show_player_emote(tex_path: String) -> void:
+	if player == null or not is_inside_tree():
+		return
+	var tex: Texture2D = _load_emote_tex(tex_path)
+	if tex == null:
+		return
+	if is_instance_valid(_emote_node):
+		_emote_node.queue_free()
+	var emote := Sprite2D.new()
+	emote.texture = tex
+	emote.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	emote.centered = false
+	emote.offset = Vector2(-tex.get_width() * 0.5, -tex.get_height())
+	emote.z_index = 45
+	emote.scale = Vector2(0.15, 0.15)
+	get_parent().add_child(emote)
+	emote.global_position = player.get_speech_anchor() + Vector2(0.0, sit_drop - 4.0)
+	_emote_node = emote
+
+	var base_y: float = emote.position.y
+	var tw := emote.create_tween()
+	tw.tween_property(emote, "scale", Vector2(1.22, 1.22), 0.14).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(emote, "scale", Vector2(1.0, 1.0), 0.08)
+	tw.tween_property(emote, "position:y", base_y - 3.0, 0.22).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(emote, "position:y", base_y, 0.22).set_trans(Tween.TRANS_SINE)
+	tw.tween_interval(0.50)
+	tw.tween_property(emote, "modulate:a", 0.0, 0.20)
+	tw.tween_callback(emote.queue_free)
+
+
+func _load_emote_tex(res_path: String) -> Texture2D:
+	if ResourceLoader.exists(res_path):
+		var res: Resource = load(res_path)
+		if res is Texture2D:
+			return res
+	var abs_path := ProjectSettings.globalize_path(res_path)
+	if FileAccess.file_exists(abs_path):
+		var img := Image.load_from_file(abs_path)
+		if img:
+			return ImageTexture.create_from_image(img)
+	return null
 
 
 func _back_to_aim() -> void:
@@ -407,7 +457,20 @@ func _back_to_aim() -> void:
 	cast_t = 1.0
 
 
+func set_cutscene_talking(active: bool) -> void:
+	_talking = active
+	_mouse_held = false
+	if is_instance_valid(_ui):
+		_ui.visible = not active
+	if is_instance_valid(_gauge):
+		_gauge.visible = false
+	queue_redraw()
+
+
 func close() -> void:
+	if is_instance_valid(_emote_node):
+		_emote_node.queue_free()
+		_emote_node = null
 	if player:
 		player.set_pose(&"")
 		player.can_move = true
@@ -474,8 +537,8 @@ func _draw() -> void:
 		var k: float = b.life / b.max
 		var pp: Vector2 = b.p - o + Vector2(sin(b.life * 9.0) * 1.0, -k * 5.0)
 		draw_rect(Rect2(pp.round(), Vector2(2, 2)), Color(0.92, 0.98, 1.0, 0.85 * (1.0 - k)))
-	# điểm ngắm
-	if state == State.AIM:
+	# điểm ngắm (ẩn trong lúc đang thoại cutscene)
+	if state == State.AIM and not _talking:
 		var a := aim - o
 		var c := Color(1, 0.95, 0.75, 0.9)
 		_ellipse_outline(a, Vector2(9, 3.5), c)

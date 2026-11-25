@@ -1,0 +1,97 @@
+# Mở đầu Chương 1: Nhiệm vụ sửa ống nước
+# 1. Màn hình đen + tiếng Ông Nội gọi Minh dậy
+# 2. Tương tác vòi nước ở vườn để xác định 3 món đồ cần tìm
+# 3. Tương tác tủ tivi ở phòng khách
+
+~ morning_wakeup
+Ông Nội: Minh ơi dậy giúp ông sửa cái ống nước ở luống rau nào.
+=> END
+
+~ faucet_broken_before_quest
+Minh: Cái ống nước bị nứt ngay khớp nối, nước phun tung tóe lên cao thế kia...
+Minh: Ra sân nói chuyện với ông nội trước xem sao.
+=> END
+
+~ faucet_inspect
+Minh: Khớp nối ở giữa bị nứt bung ra rồi, nước phun vọt lên cao quá...
+Minh: Muốn sửa kín chắc cần cái đầu nối, vòng cao su với cái kẹp sắt.
+Minh: Quay lại sân hỏi ông nội xem ông để mấy món đó ở đâu vậy.
+do set_flag("ch1.inspected_faucet", true)
+=> END
+
+~ faucet_after_inspect
+Minh: Cần cái đầu nối, vòng cao su với cái kẹp sắt.
+Minh: Quay lại sân hỏi ông nội xem ông để ở đâu.
+=> END
+
+~ faucet_after_asked
+Minh: Ông bảo mấy món đồ sửa cất trong tủ tivi ở phòng khách.
+Minh: Vào nhà tìm mới được.
+=> END
+
+~ faucet_have_parts
+Minh: Mình tìm đủ đồ sửa ống nước rồi, sửa cái vòi nước thôi.
+=> END
+
+~ faucet_fixed
+if not has_flag("ch1.garden_watered"):
+    Minh: Vòi nước sửa kín lại rồi, không còn phun nước nữa.
+    Minh: Quay ra sân báo cho ông nội biết thôi.
+else:
+    Minh: Vòi nước sửa kín lại rồi, không còn phun nước nữa.
+=> END
+
+~ pipe_fixed_brag
+Minh: Mình đúng là thiên tài.
+=> END
+
+~ pipe_burst_shock
+Minh: Ôi ống nước của tôi!!
+=> END
+
+~ an_reunion_and_help
+An: Ơ Minh đấy à? Cậu về lúc nào thế?
+An: Mải hái xoài nên tớ rơi xuống rồi hahaaha!
+Minh: . . .
+An: Thôi để tớ sửa và tưới cây giúp cậu!
+=> END
+
+~ after_water_part1
+An: Mình đúng là tốt bụng mà.
+Minh: Cậu...
+An: Cậu về sao không bảo tớ? Hay tụi mình đi câu cá đi!
+Minh: Thôi, tớ chả đi đâu.
+=> END
+
+~ after_water_part2
+An: Thôi đi đi mà!
+=> END
+
+~ after_water_part3
+An: Ông ơi, hai tụi cháu đi chơi đây ạ!
+=> END
+
+~ after_water_part4
+Minh: Wtf?!
+=> END
+
+~ after_water_part5
+Ông Nội: Hai đứa đi chơi vui vẻ nhé.
+=> END
+
+~ an_arrived_fishing
+An: Tới bờ mương rồi! Ra câu cá thôi Minh ơi!
+=> END
+
+~ faucet_burst_after_an
+Minh: Ống nước lại vỡ tung ra rồi...
+Minh: Lần này nước bắn còn mạnh hơn lúc nãy nữa!
+=> END
+
+~ cabinet_not_yet
+Minh: Cái tủ tivi cũ của ông nội, bên trong để khá nhiều sách báo với đồ lặt vặt.
+=> END
+
+~ cabinet_done
+Minh: Mình đã lấy đủ đầu nối, vòng cao su với cái kẹp sắt trong tủ tivi rồi.
+=> END

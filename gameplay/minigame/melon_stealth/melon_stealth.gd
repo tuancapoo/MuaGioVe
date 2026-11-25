@@ -43,6 +43,7 @@ var _t := 0.0
 var _exposure := 0.0
 var _game_over := false
 var _in_dialogue := false
+var _cutscene_paused := false
 var _spots: Array[float] = []          # x vệt sáng hiện tại của từng đèn
 var _hiding_spot: Node2D = null
 var _spot_z := {}                      # chỗ núp → z_index gốc
@@ -61,6 +62,16 @@ func _ready() -> void:
 	_build_ui()
 	# Chờ Main đặt Minh vào map rồi mới ghi trạng thái xuất phát
 	await get_tree().process_frame
+	_save_start()
+
+
+func set_cutscene_paused(paused: bool) -> void:
+	_cutscene_paused = paused
+	if paused:
+		_exposure = 0.0
+
+
+func refresh_start_snapshot() -> void:
 	_save_start()
 
 
@@ -83,7 +94,7 @@ func _process(delta: float) -> void:
 	if player == null or _game_over:
 		return
 	_update_hiding(player)
-	if _in_dialogue:
+	if _in_dialogue or _cutscene_paused:
 		_exposure = 0.0
 		return
 	var lit := _lit(player.global_position.x) and _hiding_spot == null

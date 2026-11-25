@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" path="res://assets/maps/yard/98_foreground.png" id="L02"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="PackedScene" path="res://narrative/npc/characters/ong_noi/ong_noi.tscn" id="NPC_ongnoi"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(1104, 40)
@@ -60,6 +61,10 @@ position = Vector2(80, 313)
 
 [node name="NPCs" type="Node2D" parent="."]
 
+[node name="OngNoi" parent="NPCs" instance=ExtResource("NPC_ongnoi")]
+position = Vector2(380, 313)
+appear_condition = "chapter == 1 and not has_flag('ch1.ong_in_garden') and not has_flag('ch1.melon_carry_done')"
+
 [node name="Objects" type="Node2D" parent="."]
 
 [node name="Collectibles" type="Node2D" parent="."]
@@ -95,6 +100,8 @@ prompt_text = "Ra ngõ"
 prompt_offset = Vector2(0, -84.0)
 target_map = "nha_minh_va_an"
 target_spawn = "from_yard"
+condition = "chapter != 1 or is_quest_done('fix_pipe')"
+locked_dialogue = "Ông Nội: Sửa giúp ông cái ống nước đã Minh, vườn ở bên trái á."
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exits/Door_nha_minh_va_an"]
 shape = SubResource("T_door_shape")

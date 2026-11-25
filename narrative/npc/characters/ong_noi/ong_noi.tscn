@@ -5,3 +5,4 @@
 
 [node name="OngNoi" instance=ExtResource("1_npc")]
 data = ExtResource("2_data")
+use_action_bar = false

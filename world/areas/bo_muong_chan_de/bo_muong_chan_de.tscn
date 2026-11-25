@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" path="res://world/objects/seat.tscn" id="SEAT"]
 [ext_resource type="PackedScene" path="res://gameplay/minigame/minigame_spot.tscn" id="MG_spot"]
 [ext_resource type="Texture2D" path="res://assets/objects/fishing_spot_prop.png" id="T_fish_prop"]
+[ext_resource type="Script" path="res://world/areas/bo_muong_chan_de/after_fishing_cutscene.gd" id="BM_after_fish"]
 
 [sub_resource type="ShaderMaterial" id="W_surface"]
 shader = ExtResource("W_shader")
@@ -194,3 +195,6 @@ position = Vector2(300, 280)
 
 [node name="ChoNgoi2" parent="Objects" instance=ExtResource("SEAT")]
 position = Vector2(1020, 280)
+
+[node name="AfterFishingCutscene" type="Node" parent="."]
+script = ExtResource("BM_after_fish")

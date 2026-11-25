@@ -12,8 +12,10 @@ const UI_SCRIPTS := [
 	preload("res://ui/action_wheel/action_wheel.gd"),   # vòng chọn Xem / Nhặt / Dùng đồ
 	preload("res://ui/inventory/inventory_panel.gd"),   # Túi đồ (Tab)
 	preload("res://ui/hud/toast.gd"),                   # thông báo góc màn hình
+	preload("res://ui/hud/quest_hud.gd"),               # ô nhiệm vụ góc trên trái
 	preload("res://ui/mash_bar/mash_bar.gd"),           # thanh "bấm E liên tục" (hái dưa…)
 ]
+const AN_CHASE_GUIDE_SCRIPT := preload("res://gameplay/companion/an_chase_guide.gd")
 
 @onready var world: Node2D = $World
 @onready var player: Player = $Player
@@ -30,9 +32,12 @@ func _ready() -> void:
 	if companion_scene:
 		companion = companion_scene.instantiate()
 		world.add_child(companion)
+	var chase_guide: Node2D = AN_CHASE_GUIDE_SCRIPT.new()
+	world.add_child(chase_guide)
 	var is_ch0 := start_map != null and start_map.resource_path.ends_with("phong_minh_o_thanh_pho.tscn")
+	var is_ch1_morning := start_map != null and start_map.resource_path.ends_with("phong_ngu_minh.tscn")
 	GameState.chapter = 0 if is_ch0 else 1
-	GameState.npc_set("an", "following", not is_ch0)
+	GameState.npc_set("an", "following", not is_ch0 and not is_ch1_morning)
 	load_map(start_map)
 
 

@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://dd4kivy0xna7t"
+path="res://.godot/imported/ch1_after_fishing.dialogue-6bab3003062af9366e5e534d197294c0.tres"
+
+[deps]
+
+source_file="res://data/dialogues/ch1_after_fishing.dialogue"
+dest_files=["res://.godot/imported/ch1_after_fishing.dialogue-6bab3003062af9366e5e534d197294c0.tres"]
+
+[params]
+
+defaults=true

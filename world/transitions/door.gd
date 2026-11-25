@@ -11,6 +11,8 @@ extends "res://core/components/interactable.gd"
 @export var condition: String = ""
 ## Câu thông báo khi chưa đi được (hiện bằng toast)
 @export var locked_text: String = ""
+## Câu thoại khi chưa đi được (vd "Ông Nội: Sửa giúp ông cái ống nước đã Minh.") — ưu tiên hiện khung thoại.
+@export var locked_dialogue: String = ""
 ## Icon bong bóng hiện trên đầu khi đứng gần:
 ##   in = đi vào (mũi tên xuống) · out = đi ra (mũi tên lên) · left / right = sang trái / phải
 ##   auto = đoán theo prompt_text: "Vào…/Xuống…" → in, "Ra…/Lên…" → out
@@ -37,7 +39,10 @@ func interact(_player: Node) -> void:
 	if not enabled or SceneManager.is_busy():
 		return
 	if not GameState.check(condition):
-		if not locked_text.is_empty():
+		if not locked_dialogue.is_empty():
+			var res: DialogueResource = DialogueManager.create_resource_from_text("~ start\n" + locked_dialogue + "\n=> END\n")
+			DialogueManager.show_dialogue_balloon(res, "start")
+		elif not locked_text.is_empty():
 			EventBus.toast_requested.emit(locked_text)
 		return
 	interacted.emit(_player)

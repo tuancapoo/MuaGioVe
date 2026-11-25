@@ -145,17 +145,16 @@ func _run_arrival() -> void:
 	if not is_inside_tree():
 		return
 
-	# Sáng dần trở lại Góc cây đa (Bố đã đi, chỉ còn Minh và Ông Nội)
-	var tw_lit := create_tween()
-	tw_lit.tween_property(_fade_rect, "color:a", 0.0, 1.0)
-	await tw_lit.finished
-	if not is_inside_tree():
+	# Giữ màn hình đen và chuyển thẳng sang phòng ngủ Minh ở quê bắt đầu nhiệm vụ sửa ống nước (Chương 1)
+	if is_instance_valid(player):
+		player.unlock(&"bus_arrival")
+	var main := get_tree().current_scene
+	if main and main.has_method("load_map"):
+		main.load_map(load("res://world/areas/phong_ngu_minh/phong_ngu_minh.tscn"), "wake_up")
 		return
 
 	if is_instance_valid(_title_layer):
 		_title_layer.queue_free()
-	if is_instance_valid(player):
-		player.unlock(&"bus_arrival")
 
 
 func _build_chapter_title_overlay() -> void:

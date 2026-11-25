@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" path="res://assets/maps/living_room/09_foreground_char_table.png" id="L05"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="Script" path="res://core/components/interactable.gd" id="I_interact"]
+[ext_resource type="Script" path="res://world/areas/living_room/living_room_cabinet.gd" id="LR_cabinet"]
+[ext_resource type="Script" path="res://world/areas/living_room/chapter1_ending.gd" id="LR_ch1_end"]
+[ext_resource type="PackedScene" path="res://narrative/npc/characters/ong_noi/ong_noi.tscn" id="NPC_ongnoi"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(829, 40)
@@ -21,6 +25,9 @@ size = Vector2(64.0, 320.0)
 
 [sub_resource type="RectangleShape2D" id="T_door_shape"]
 size = Vector2(85.3, 160.0)
+
+[sub_resource type="RectangleShape2D" id="Shape_tv_cabinet"]
+size = Vector2(210.0, 140.0)
 
 [node name="LivingRoom" type="Node2D" unique_id=1046088886]
 scale = Vector2(0.75, 0.75)
@@ -72,7 +79,27 @@ position = Vector2(80, 345)
 
 [node name="NPCs" type="Node2D" parent="." unique_id=796496775]
 
+[node name="OngNoi" parent="NPCs" instance=ExtResource("NPC_ongnoi")]
+position = Vector2(485.0, 303.0)
+scale = Vector2(1.333333, 1.333333)
+appear_condition = "chapter == 1 and has_flag('ch1.melon_carry_done')"
+
 [node name="Objects" type="Node2D" parent="." unique_id=665314350]
+
+[node name="TvCabinetSpot" type="Area2D" parent="Objects"]
+position = Vector2(373.0, 250.0)
+script = ExtResource("I_interact")
+prompt_text = "Tủ tivi"
+prompt_offset = Vector2(0, -120.0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/TvCabinetSpot"]
+shape = SubResource("Shape_tv_cabinet")
+
+[node name="LivingRoomCabinet" type="Node" parent="."]
+script = ExtResource("LR_cabinet")
+
+[node name="Chapter1Ending" type="Node" parent="."]
+script = ExtResource("LR_ch1_end")
 
 [node name="Collectibles" type="Node2D" parent="." unique_id=597905392]
 
@@ -116,3 +143,6 @@ shape = SubResource("T_edge_shape")
 
 [node name="from_yard" type="Marker2D" parent="Spawns"]
 position = Vector2(167.3, 303.0)
+
+[node name="after_melon" type="Marker2D" parent="Spawns"]
+position = Vector2(255.0, 303.0)

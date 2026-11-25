@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" path="res://assets/maps/vuon_rau_giua_hai_nha/07_Rau_moi_nhu.png" id="L07"]
 [ext_resource type="Texture2D" path="res://assets/maps/vuon_rau_giua_hai_nha/08_Cay_xoai.png" id="L08"]
 [ext_resource type="Texture2D" path="res://assets/maps/vuon_rau_giua_hai_nha/09_Qua_xoai_vang.png" id="L09"]
-[ext_resource type="Texture2D" path="res://assets/maps/vuon_rau_giua_hai_nha/10_Duong_di.png" id="L10"]
+[ext_resource type="Texture2D" path="res://assets/maps/vuon_rau_giua_hai_nha/10_Hang_rao_tien_canh.png" id="L10"]
 [ext_resource type="Texture2D" path="res://assets/maps/vuon_rau_giua_hai_nha/11_Co_tien_canh.png" id="L11"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
@@ -20,9 +20,13 @@
 [ext_resource type="PackedScene" path="res://world/objects/searchable_bush.tscn" id="U_bush_new"]
 [ext_resource type="Texture2D" path="res://assets/objects/bush_yellow.png" id="U_bush_yellow"]
 [ext_resource type="Texture2D" path="res://assets/items/pipe_connector.png" id="U_connector"]
+[ext_resource type="Script" path="res://world/areas/garden/garden_faucet.gd" id="G_faucet"]
+[ext_resource type="PackedScene" path="res://narrative/npc/npc.tscn" id="NPC_base"]
+[ext_resource type="Resource" path="res://data/npcs/an.tres" id="NPC_an_data"]
+[ext_resource type="Script" path="res://world/areas/garden/an_tree_fall_cutscene.gd" id="G_an_fall"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
-size = Vector2(720, 40)
+size = Vector2(820, 40)
 
 [sub_resource type="RectangleShape2D" id="Shape_wall"]
 size = Vector2(20, 500)
@@ -40,7 +44,7 @@ size = Vector2(70, 110)
 script = ExtResource("1_map")
 map_id = "garden"
 map_name = "Vườn rau giữa hai nhà"
-map_size = Vector2i(640, 384)
+map_size = Vector2i(732, 384)
 
 [node name="Background" type="Node2D" parent="." unique_id=1794295577]
 z_index = -10
@@ -59,10 +63,12 @@ repeat_times = 3
 [node name="Sprite2D" type="Sprite2D" parent="Background/02_May" unique_id=1263301116]
 texture = ExtResource("L02")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 640, 384)
 
 [node name="03_Cay_hau_canh" type="Parallax2D" parent="Background" unique_id=251151962]
 scroll_scale = Vector2(0.95, 1)
-repeat_size = Vector2(640, 0)
+repeat_size = Vector2(732, 0)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/03_Cay_hau_canh" unique_id=679174670]
@@ -93,14 +99,10 @@ centered = false
 texture = ExtResource("L09")
 centered = false
 
-[node name="10_Duong_di" type="Sprite2D" parent="Background" unique_id=856634264]
-texture = ExtResource("L10")
-centered = false
-
 [node name="Bounds" type="StaticBody2D" parent="." unique_id=1109192113]
 
 [node name="Ground" type="CollisionShape2D" parent="Bounds" unique_id=1014669775]
-position = Vector2(320, 340)
+position = Vector2(366, 336)
 shape = SubResource("Shape_ground")
 
 [node name="WallLeft" type="CollisionShape2D" parent="Bounds" unique_id=369077113]
@@ -108,18 +110,31 @@ position = Vector2(-10, 192)
 shape = SubResource("Shape_wall")
 
 [node name="WallRight" type="CollisionShape2D" parent="Bounds" unique_id=339695341]
-position = Vector2(650, 192)
+position = Vector2(742, 192)
 shape = SubResource("Shape_wall")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1993761855]
-position = Vector2(80, 320)
+position = Vector2(80, 316)
 
 [node name="NPCs" type="Node2D" parent="." unique_id=1248460060]
 
 [node name="OngNoi" parent="NPCs" unique_id=918571588 instance=ExtResource("4_ongnoi")]
-position = Vector2(470, 320)
+position = Vector2(492, 316)
+appear_condition = "chapter >= 2 or (has_flag('ch1.ong_in_garden') and not has_flag('ch1.melon_carry_done'))"
+
+[node name="AnGarden" parent="NPCs" instance=ExtResource("NPC_base")]
+position = Vector2(304, 316)
+data = ExtResource("NPC_an_data")
+appear_condition = "has_flag('ch1.an_fell_from_tree') and not has_flag('ch1.after_water_cutscene_done') and not npc_get('an', 'following', false)"
+
+[node name="AnTreeFallCutscene" type="Node" parent="."]
+script = ExtResource("G_an_fall")
 
 [node name="Objects" type="Node2D" parent="." unique_id=211126820]
+
+[node name="GardenFaucet" type="Node2D" parent="Objects"]
+position = Vector2(342, 294)
+script = ExtResource("G_faucet")
 
 [node name="Collectibles" type="Node2D" parent="." unique_id=545948885]
 
@@ -127,9 +142,13 @@ position = Vector2(470, 320)
 z_index = 50
 texture_filter = 1
 
+[node name="10_Hang_rao_tien_canh" type="Sprite2D" parent="Foreground" unique_id=856634264]
+texture = ExtResource("L10")
+centered = false
+
 [node name="11_Co_tien_canh" type="Parallax2D" parent="Foreground" unique_id=62534075]
 scroll_scale = Vector2(1.05, 1)
-repeat_size = Vector2(640, 0)
+repeat_size = Vector2(732, 0)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="Foreground/11_Co_tien_canh" unique_id=113272337]
@@ -141,7 +160,7 @@ centered = false
 [node name="Exits" type="Node2D" parent="."]
 
 [node name="To_yard" type="Area2D" parent="Exits"]
-position = Vector2(616.0, 200.0)
+position = Vector2(708.0, 200.0)
 script = ExtResource("T_exit")
 target_map = "yard"
 target_spawn = "from_garden"
@@ -151,20 +170,10 @@ direction = 1
 shape = SubResource("T_edge_shape")
 
 [node name="from_yard" type="Marker2D" parent="Spawns"]
-position = Vector2(530.0, 320.0)
-
-[node name="DemoClamp" parent="Collectibles" instance=ExtResource("W_obj")]
-position = Vector2(150, 320)
-object_id = "garden_demo_clamp"
-examine_text = "Một cái kẹp sắt cũ nằm lẫn trong cỏ."
-take_item = &"pipe_clamp"
-take_text = "(Cầm theo, biết đâu ông cần.)"
-
-[node name="Sprite2D" parent="Collectibles/DemoClamp" index="0"]
-texture = ExtResource("W_clamp")
+position = Vector2(620.0, 316.0)
 
 [node name="DemoMangoTree" parent="Objects" instance=ExtResource("W_obj")]
-position = Vector2(300, 320)
+position = Vector2(226, 316)
 object_id = "garden_mango_tree"
 examine_text = "Cây xoài của ông. Trái nào cũng vàng ươm.
 (Chắc ông trồng lâu lắm rồi...)"
@@ -185,8 +194,7 @@ examine_text = "Minh: Một bụi cây nhỏ. Chắc là hoa sữa."
 [node name="Bush02" parent="Objects" instance=ExtResource("U_bush_new")]
 position = Vector2(245, 318)
 object_id = "garden_bush_02"
-examine_text = "Minh: Bụi cây này rậm hơn những bụi khác. Có vài cành lá đan xen vào nhau."
-reward_item = &"rubber_ring"
+examine_text = "Minh: Bụi cây này rậm hơn những bụi khác, có vài cành lá đan xen vào nhau."
 
 [node name="Sprite2D" parent="Objects/Bush02" index="0"]
 texture = ExtResource("U_bush_yellow")
@@ -195,13 +203,3 @@ texture = ExtResource("U_bush_yellow")
 position = Vector2(395, 318)
 object_id = "garden_bush_03"
 examine_text = "Minh: Một bụi cây nhỏ."
-
-[node name="ConnectorNearMango" parent="Collectibles" instance=ExtResource("W_obj")]
-position = Vector2(350, 320)
-object_id = "garden_connector"
-examine_text = "Một đầu nối ống nước nằm dưới gốc xoài."
-take_item = &"pipe_connector"
-take_text = "Minh: Tìm thấy đầu nối rồi!"
-
-[node name="Sprite2D" parent="Collectibles/ConnectorNearMango" index="0"]
-texture = ExtResource("U_connector")

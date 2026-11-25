@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bm3pt2dhfy1iw"
-path="res://.godot/imported/10_Duong_di.png-7fefe27b3123fbcf62dd7cee9a01c998.ctex"
+uid="uid://i15ln7xsuw7m"
+path="res://.godot/imported/emote_happy.png-1f28b60168040e6e37cac2f3fdd88142.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maps/vuon_rau_giua_hai_nha/10_Duong_di.png"
-dest_files=["res://.godot/imported/10_Duong_di.png-7fefe27b3123fbcf62dd7cee9a01c998.ctex"]
+source_file="res://assets/ui/emotes/emote_happy.png"
+dest_files=["res://.godot/imported/emote_happy.png-1f28b60168040e6e37cac2f3fdd88142.ctex"]
 
 [params]
 

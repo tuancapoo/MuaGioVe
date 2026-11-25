@@ -1,6 +1,7 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://m2v6tnl2b1wl"]
 
 [ext_resource type="Texture2D" uid="uid://dpv37jhu4pt83" path="res://assets/characters/ong_noi/ong_noi_idle.png" id="1_sheet"]
+[ext_resource type="Texture2D" path="res://assets/characters/ong_noi/ong_noi_walk.png" id="2_walk"]
 
 [sub_resource type="AtlasTexture" id="f0"]
 atlas = ExtResource("1_sheet")
@@ -34,6 +35,38 @@ region = Rect2(768, 0, 128, 128)
 atlas = ExtResource("1_sheet")
 region = Rect2(896, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="w0"]
+atlas = ExtResource("2_walk")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="w1"]
+atlas = ExtResource("2_walk")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="w2"]
+atlas = ExtResource("2_walk")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="w3"]
+atlas = ExtResource("2_walk")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="w4"]
+atlas = ExtResource("2_walk")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="w5"]
+atlas = ExtResource("2_walk")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="w6"]
+atlas = ExtResource("2_walk")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="w7"]
+atlas = ExtResource("2_walk")
+region = Rect2(896, 0, 128, 128)
+
 [resource]
 animations = [{
 "frames": [{
@@ -61,7 +94,36 @@ animations = [{
 "duration": 4.0,
 "texture": SubResource("f7")
 }],
-"loop": 1,
+"loop": true,
 "name": &"Idle",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("w0")
+}, {
+"duration": 1.0,
+"texture": SubResource("w1")
+}, {
+"duration": 1.0,
+"texture": SubResource("w2")
+}, {
+"duration": 1.0,
+"texture": SubResource("w3")
+}, {
+"duration": 1.0,
+"texture": SubResource("w4")
+}, {
+"duration": 1.0,
+"texture": SubResource("w5")
+}, {
+"duration": 1.0,
+"texture": SubResource("w6")
+}, {
+"duration": 1.0,
+"texture": SubResource("w7")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 10.5
 }]

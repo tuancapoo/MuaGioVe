@@ -1,0 +1,17 @@
+# Đoạn hội thoại kết thúc Chương 1 giữa Minh và Ông Nội ở phòng khách (living_room).
+# Mỗi dòng ngắn gọn tối đa 2 dòng hiển thị.
+
+~ part1
+Minh: Cháu câu được cá và dưa hấu nè ông!
+Ông Nội: Được, để hôm nay ông nấu món thịnh soạn cho cháu ăn.
+Minh: À ông, cháu không đi học nữa ông có giận cháu không?
+Ông Nội: Ông đương nhiên muốn cháu thành công, thành đạt...
+=> END
+
+~ part2
+Ông Nội: Nhưng ông muốn cháu mình sống khỏe mạnh hơn.
+=> END
+
+~ part3
+Ông Nội: Thôi, ăn cơm thôi.
+=> END

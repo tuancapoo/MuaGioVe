@@ -4,7 +4,7 @@
 # Biến & hàm lấy từ autoload GameState (đã bật shortcut nên không cần ghi "GameState.").
 
 ~ start
-if is_quest_new("fix_pipe") and current_map == "garden":
+if is_quest_new("fix_pipe") and (current_map == "yard" or current_map == "garden"):
     => intro_pipe
 elif is_quest_done("fix_pipe"):
     => pipe_done
@@ -12,8 +12,10 @@ elif is_quest_active("fix_pipe") and has_flag("ch1.garden_watered"):
     => pipe_done
 elif is_quest_active("fix_pipe") and has_flag("ch1.pipe_fixed"):
     => pipe_repaired
-elif is_quest_active("fix_pipe") and GameState.all_pipe_parts_delivered():
-    => pipe_ready
+elif is_quest_active("fix_pipe") and not has_flag("ch1.inspected_faucet"):
+    => pipe_go_inspect
+elif is_quest_active("fix_pipe") and not has_flag("ch1.asked_ong_tools"):
+    => pipe_ask_tools
 elif is_quest_active("fix_pipe"):
     => pipe_waiting
 elif current_map == "house" and time == "evening":
@@ -26,23 +28,35 @@ else:
     => idle
 
 ~ intro_pipe
-Ông Nội: Minh dậy rồi đó hả con? Ra vườn phụ ông chút nghen.
-Ông Nội: Cái vòi nước ngoài vườn rau lại rỉ nữa rồi...
-- Dạ, con phải làm gì ông?
-	Ông Nội: Con kiếm giùm ông cái đầu nối, miếng cao su với cái kẹp nha.
-- (Gật đầu, không nói gì)
-	Ông Nội: Ừ, không sao. Ông chỉ cho con nè.
-	Ông Nội: Kiếm giùm ông cái đầu nối, miếng cao su với cái kẹp nha.
+Ông Nội: Minh dậy rồi đó hả con?
+Ông Nội: Cái ống nước ngoài vườn rau bên trái bị hư rồi.
+Ông Nội: Sáng nay ông ra mở van tưới rau mà nước phun tung tóe cả vườn.
+Ông Nội: Ống phơi nắng mấy mùa hè nên giòn quá, khớp nối bung ra mất rồi.
+Ông Nội: Con sang vườn bên trái xem thử cần tìm những gì để sửa nha.
+Minh: Dạ vâng ạ.
 do start_quest("fix_pipe")
-Minh: (Ông nói chuyện hiền ghê... không giống mấy người ở trường cũ.)
-Ông Nội: Mấy món đó chắc rớt đâu quanh vườn thôi, từ từ mà kiếm con.
+=> END
+
+~ pipe_go_inspect
+Ông Nội: Con sang vườn bên trái xem thử cái vòi nước đang phun xem cần đồ gì nha.
+=> END
+
+~ pipe_ask_tools
+Minh: Ông ơi, con xem vòi nước ngoài vườn rồi ạ.
+Minh: Khớp nối bị bung, cần cái đầu nối, vòng cao su với cái kẹp sắt để sửa.
+Ông Nội: À đúng rồi đó con! Mấy đồ sửa ống nước ông cất trong tủ tivi ở phòng khách á.
+Ông Nội: Trong tủ hơi lộn xộn sách báo, con vô tìm rồi ra vườn sửa giúp ông nha.
+Minh: Dạ vâng ạ.
+do set_flag("ch1.asked_ong_tools", true)
 => END
 
 ~ pipe_waiting
-if GameState.count_pipe_parts_in_bag() > 0:
-    Ông Nội: Con kiếm được thêm {{GameState.count_pipe_parts_in_bag()}} món rồi hả? Đưa cho ông giữ giúp nhé.
+if GameState.count_pipe_parts_missing() == 0:
+    Ông Nội: Con tìm đủ cả 3 món rồi hả? Giỏi quá!
+    Ông Nội: Con mang sang vườn bên trái sửa cái vòi nước giúp ông nha.
 else:
-    Ông Nội: Còn thiếu {{GameState.count_pipe_parts_missing()}} món nữa hả? Con thử tìm gần các bụi cây xem sao.
+    Ông Nội: Còn thiếu {{GameState.count_pipe_parts_missing()}} món nữa đó con.
+    Ông Nội: Con vào phòng khách tìm trong cái tủ tivi xem sao nha.
 => END
 
 ~ pipe_report
@@ -68,31 +82,6 @@ do set_flag("thanked_pipe")
 
 ~ idle
 Ông Nội: Ừ, ông đây.
-=> END
-
-# Minh đưa cái kẹp cho ông (chọn món "Cái kẹp" trên thanh chọn khi đứng cạnh ông)
-
-~ give_pipe_clamp
-Ông Nội: Ồ, cái kẹp đây rồi!.
-Ông Nội: Con tinh mắt quá, ông tìm nó hoài mà không ra.
-=> END
-
-~ give_pipe_connector
-Ông Nội: Đúng cái đầu nối ông đang cần đây rồi!
-Ông Nội: Cảm ơn con, để ông cất vào chỗ sửa vòi.
-=> END
-
-~ give_rubber_ring
-Ông Nội: À, vòng cao su đây rồi! Có nó thì vòi nước mới kín được.
-Ông Nội: Giỏi lắm Minh!
-=> END
-
-~ pipe_ready
-Ông Nội: À, đủ cả ba món rồi đó Minh!
-Ông Nội: Có cái kẹp, đầu nối với vòng cao su là sửa được vòi nước rồi.
-Ông Nội: Con sửa luôn giúp ông nha.
-Minh: Dạ.
-do GameState.request_pipe_minigame()
 => END
 
 ~ pipe_repaired

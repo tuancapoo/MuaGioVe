@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" path="res://assets/maps/phong_ngu_minh/90_Tien_canh_khung_cua.png" id="L08"]
 [ext_resource type="Script" path="res://world/transitions/map_exit.gd" id="T_exit"]
 [ext_resource type="Script" path="res://world/transitions/door.gd" id="T_door"]
+[ext_resource type="Script" path="res://world/areas/phong_ngu_minh/chapter1_morning.gd" id="Ch1_morning"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ground"]
 size = Vector2(829, 40)
@@ -83,9 +84,15 @@ position = Vector2(759, 192)
 shape = SubResource("Shape_wall")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1781120759]
-position = Vector2(80, 345)
+position = Vector2(215, 365.3)
 
 [node name="Spawns" type="Node2D" parent="." unique_id=342396123]
+
+[node name="wake_up" type="Marker2D" parent="Spawns"]
+position = Vector2(215, 365.3)
+
+[node name="Chapter1Morning" type="Node" parent="."]
+script = ExtResource("Ch1_morning")
 
 [node name="Markers" type="Node2D" parent="." unique_id=2096559255]
 

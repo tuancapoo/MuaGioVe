@@ -25,14 +25,19 @@ const SCREEN_MARGIN := 24.0
 ## Bề rộng khung: co theo độ dài câu, trong khoảng này (px màn hình)
 const MIN_WIDTH := 420.0
 const MAX_WIDTH := 1100.0
+## Tối đa số dòng hiển thị trong 1 lần khung thoại; dài hơn sẽ tự ngắt sang trang tiếp theo.
+const MAX_LINES := 2
 
 @export var dialogue_resource: DialogueResource
 @export var start_from_cue: String = ""
 @export var next_action: StringName = &"interact"
 ## Màu viền mặc định (khi không tìm thấy người nói, vd. lời dẫn truyện).
 @export var default_color: Color = Color(0.51, 0.49, 0.72)
-## Màu cho nhân vật không có mặt trong scene (vd. "Bố" gọi điện).
-@export var speaker_colors: Dictionary = {}
+## Màu cho nhân vật không có mặt trong scene (vd. "Bố" gọi điện, "Ông Nội" gọi ngoài sân).
+@export var speaker_colors: Dictionary = {
+	"Ông Nội": Color(0.96, 0.7, 0.42, 1),
+	"Bố": Color(0.84, 0.44, 0.36, 1),
+}
 
 @export_group("Tiếng gõ chữ")
 ## Mỗi chữ hiện ra phát ngẫu nhiên 1 tiếng trong danh sách (khoảng trắng thì im)
@@ -65,6 +70,8 @@ var dialogue_line: DialogueLine:
 
 var _speaker: Node2D = null
 var _box_width := MAX_WIDTH
+var _pages: PackedStringArray = PackedStringArray()
+var _page_index: int = 0
 var _type_players: Array[AudioStreamPlayer] = []
 var _type_next_player := 0
 var _mutation_cooldown := Timer.new()
@@ -103,7 +110,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if not is_instance_valid(dialogue_line):
 		return
-	var waiting := is_waiting_for_input and not dialogue_label.is_typing and dialogue_line.responses.is_empty()
+	var waiting := is_waiting_for_input and not dialogue_label.is_typing and (_has_more_pages() or dialogue_line.responses.is_empty())
 	arrow.visible = waiting
 	if waiting:
 		_arrow_time += delta
@@ -134,11 +141,39 @@ func apply_dialogue_line() -> void:
 	name_label.visible = not dialogue_line.character.is_empty()
 	name_label.text = tr(dialogue_line.character, "dialogue")
 
+	_pages = _paginate_text(dialogue_line.text)
+	_page_index = 0
+	_show_current_page()
+
+
+func _has_more_pages() -> bool:
+	return _page_index + 1 < _pages.size()
+
+
+func _show_current_page() -> void:
+	is_waiting_for_input = false
+	_arrow_time = 0.0
+
+	var page_text: String = _pages[_page_index] if _page_index < _pages.size() else ""
+	var is_last_page: bool = not _has_more_pages()
+
+	var page_line := DialogueLine.new()
+	page_line.id = dialogue_line.id
+	page_line.next_id = dialogue_line.next_id
+	page_line.character = dialogue_line.character
+	page_line.text = page_text
+	page_line.time = dialogue_line.time
+	page_line.extra_game_states = dialogue_line.extra_game_states
+	if is_last_page:
+		page_line.responses = dialogue_line.responses
+		page_line.inline_mutations = dialogue_line.inline_mutations
+		page_line.speeds = dialogue_line.speeds
+
 	dialogue_label.hide()
-	dialogue_label.dialogue_line = dialogue_line
+	dialogue_label.dialogue_line = page_line
 	responses_menu.hide()
-	responses_menu.responses = dialogue_line.responses
-	_box_width = _fit_width()
+	responses_menu.responses = dialogue_line.responses if is_last_page else []
+	_box_width = _fit_width(page_text, is_last_page)
 
 	panel.show()
 	panel.focus_mode = Control.FOCUS_ALL
@@ -147,23 +182,31 @@ func apply_dialogue_line() -> void:
 	dialogue_label.show()
 	_layout()
 
-	if not dialogue_line.text.is_empty():
+	if not page_text.is_empty():
 		dialogue_label.type_out()
 		await dialogue_label.finished_typing
 
-	if dialogue_line.responses.size() > 0:
+	if is_last_page and dialogue_line.responses.size() > 0:
 		panel.focus_mode = Control.FOCUS_NONE
 		responses_menu.show()
 		_layout()
 		responses_menu.focus_first_item()
 	elif dialogue_line.time != "":
-		var t: float = dialogue_line.text.length() * 0.02 if dialogue_line.time == "auto" else dialogue_line.time.to_float()
+		var t: float = page_text.length() * 0.02 if dialogue_line.time == "auto" else dialogue_line.time.to_float()
 		await get_tree().create_timer(t).timeout
-		next(dialogue_line.next_id)
+		_advance_page_or_next()
 	else:
 		is_waiting_for_input = true
 		panel.focus_mode = Control.FOCUS_ALL
 		panel.grab_focus()
+
+
+func _advance_page_or_next() -> void:
+	if _has_more_pages():
+		_page_index += 1
+		_show_current_page()
+	else:
+		next(dialogue_line.next_id)
 
 
 func next(next_id: String) -> void:
@@ -232,17 +275,68 @@ func _layout() -> void:
 
 
 ## Bề rộng vừa câu thoại (1 dòng nếu ngắn), không quá MAX_WIDTH.
-func _fit_width() -> float:
+func _fit_width(page_text: String = "", include_responses: bool = true) -> float:
 	var font := dialogue_label.get_theme_font(&"normal_font")
-	var size := dialogue_label.get_theme_font_size(&"normal_font_size")
-	var plain := RegEx.create_from_string("\\[[^\\]]*\\]").sub(dialogue_line.text, "", true)
-	var text_w := font.get_string_size(plain, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+	var font_size := dialogue_label.get_theme_font_size(&"normal_font_size")
+	var bb_re := RegEx.create_from_string("\\[[^\\]]*\\]")
+	var src: String = page_text if not page_text.is_empty() else dialogue_line.text
+	var text_w: float = 0.0
+	for raw_line: String in src.split("\n"):
+		var plain: String = bb_re.sub(raw_line, "", true)
+		text_w = maxf(text_w, font.get_string_size(plain, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x)
 	if name_label.visible:
-		text_w = maxf(text_w, name_label.get_theme_font(&"font").get_string_size(name_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x)
-	for r in dialogue_line.responses:
-		text_w = maxf(text_w, font.get_string_size(r.text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x)
+		text_w = maxf(text_w, name_label.get_theme_font(&"font").get_string_size(name_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x)
+	if include_responses:
+		for r in dialogue_line.responses:
+			text_w = maxf(text_w, font.get_string_size(r.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x)
 	var pad := float(content.get_theme_constant(&"margin_left") + content.get_theme_constant(&"margin_right"))
-	return clampf(ceilf(text_w + pad + 4.0), MIN_WIDTH, MAX_WIDTH)
+	return clampf(ceilf(text_w + pad + 12.0), MIN_WIDTH, MAX_WIDTH)
+
+
+## Ngắt câu thoại thành nhiều trang, mỗi trang tối đa MAX_LINES (2 dòng) theo đúng bề rộng khung.
+func _paginate_text(raw_text: String) -> PackedStringArray:
+	var trimmed := raw_text.strip_edges()
+	if trimmed.is_empty():
+		return PackedStringArray([""])
+
+	var font := dialogue_label.get_theme_font(&"normal_font")
+	var font_size := dialogue_label.get_theme_font_size(&"normal_font_size")
+	var view := get_viewport().get_visible_rect().size
+	var pad := float(content.get_theme_constant(&"margin_left") + content.get_theme_constant(&"margin_right"))
+	var max_line_w := maxf(160.0, minf(MAX_WIDTH, view.x - SCREEN_MARGIN * 2.0) - pad - 16.0)
+	var bb_re := RegEx.create_from_string("\\[[^\\]]*\\]")
+
+	var visual_lines: PackedStringArray = PackedStringArray()
+	for para: String in trimmed.split("\n"):
+		var p_clean := para.strip_edges()
+		if p_clean.is_empty():
+			continue
+		var words: PackedStringArray = p_clean.split(" ", false)
+		var cur: String = ""
+		for w: String in words:
+			var candidate: String = w if cur.is_empty() else (cur + " " + w)
+			var plain_cand: String = bb_re.sub(candidate, "", true)
+			if not cur.is_empty() and font.get_string_size(plain_cand, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > max_line_w:
+				visual_lines.append(cur)
+				cur = w
+			else:
+				cur = candidate
+		if not cur.is_empty():
+			visual_lines.append(cur)
+
+	if visual_lines.is_empty():
+		return PackedStringArray([trimmed])
+
+	var pages: PackedStringArray = PackedStringArray()
+	var idx: int = 0
+	while idx < visual_lines.size():
+		var chunk: PackedStringArray = PackedStringArray()
+		for k: int in range(MAX_LINES):
+			if idx + k < visual_lines.size():
+				chunk.append(visual_lines[idx + k])
+		pages.append("\n".join(chunk))
+		idx += MAX_LINES
+	return pages
 
 
 # --- Tiếng gõ chữ ------------------------------------------------------------------
@@ -298,12 +392,12 @@ func _on_panel_gui_input(event: InputEvent) -> void:
 			dialogue_label.skip_typing()
 		return
 
-	if not is_waiting_for_input or dialogue_line.responses.size() > 0:
+	if not is_waiting_for_input or (not _has_more_pages() and dialogue_line.responses.size() > 0):
 		return
 
 	if clicked or (pressed_next and get_viewport().gui_get_focus_owner() == panel):
 		get_viewport().set_input_as_handled()
-		next(dialogue_line.next_id)
+		_advance_page_or_next()
 
 
 func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
